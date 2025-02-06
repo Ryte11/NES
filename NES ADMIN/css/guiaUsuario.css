@@ -1,0 +1,137 @@
+/* CSS */
+.guide {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 42rem;
+    position: relative;
+    display: none;
+    height: 80%;
+}
+
+.guide.active {
+    display: block;
+}
+
+.guide-header {
+    background-color: #3b82f6;
+    color: white;
+    padding: 1rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+}
+
+.emoji {
+    margin-right: 0.5rem;
+}
+
+h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.close-button {
+    cursor: pointer;
+}
+
+.close-button:hover {
+    opacity: 0.8;
+}
+
+.guide-content {
+    display: flex;
+    height: 85%;
+}
+
+.nav-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    background-color: #f3f4f6;
+}
+
+.content-area {
+    padding: 1.5rem;
+    flex: 1;
+    height: 100%;
+}
+
+.section {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.blue-line {
+    width: 4px;
+    background-color: #3b82f6;
+    margin-right: 0.5rem;
+    min-height: 100%;
+}
+.section-content{
+    height: 100%;
+}
+.section-content h3 {
+    font-size: 1.125rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.section-content p {
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+}
+
+.section-content ul {
+    list-style-type: disc;
+    list-style-position: inside;
+    color: #4b5563;
+    margin-top: 0.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.slide{
+    height: 100%;
+}
+/* Estilos para el overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 40;
+}
+
+/* Estilos para el contenedor modal */
+.modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 50;
+}

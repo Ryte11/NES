@@ -1,0 +1,357 @@
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 18:50:02
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 18:51:00
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 18:51:00
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 18:51:00
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 18:51:00
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 18:51:06
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 18:51:47
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 18:51:52
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 18:59:43
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 18:59:44
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 19:00:06
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 19:00:07
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 19:00:07
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 19:00:07
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 19:00:07
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 19:00:07
+----------------------------------------
+ID: 
+Fecha: 
+Ubicación: 
+Instalador: 
+Estado del dispositivo: 
+Fecha de registro: 2025-01-23 19:00:20
+----------------------------------------
+ID: 453535653
+Fecha: 2021-04-12
+Ubicación: 1234567890
+Instalador: Luisnagek ydhwd
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:10:28
+----------------------------------------
+ID: 453535653
+Fecha: 2021-04-12
+Ubicación: 1234567890
+Instalador: Luisnagek ydhwd
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:10:56
+----------------------------------------
+ID: 453535653
+Fecha: 2021-04-12
+Ubicación: 1234567890
+Instalador: Luisnagek ydhwd
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:10:58
+----------------------------------------
+ID: 453535653
+Fecha: 2021-04-12
+Ubicación: 1234567890
+Instalador: Luisnagek ydhwd
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:10:58
+----------------------------------------
+ID: 453535653
+Fecha: 2021-04-12
+Ubicación: 1234567890
+Instalador: Luisnagek ydhwd
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:10:59
+----------------------------------------
+ID: 453535653
+Fecha: 2021-04-12
+Ubicación: 1234567890
+Instalador: Luisnagek ydhwd
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:11:08
+----------------------------------------
+ID: 453535653
+Fecha: 2021-04-12
+Ubicación: 1234567890
+Instalador: Luisnagek ydhwd
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:11:09
+----------------------------------------
+ID: 453535653
+Fecha: 2021-04-12
+Ubicación: 1234567890
+Instalador: Luisnagek ydhwd
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:11:09
+----------------------------------------
+ID: 453535653
+Fecha: 2021-04-12
+Ubicación: 1234567890
+Instalador: Luisnagek ydhwd
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:11:09
+----------------------------------------
+ID: 4535356532
+Fecha: 2021-04-12
+Ubicación: 1234567890
+Instalador: Luisnagek ydhwd
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:11:16
+----------------------------------------
+ID: 453535653211
+Fecha: 2021-04-12
+Ubicación: 1234567890
+Instalador: Luisnagek ydhwd
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:11:25
+----------------------------------------
+ID: 21212121
+Fecha: 2020-04-12
+Ubicación: 1234567898765
+Instalador: natanael 56622
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:12:13
+----------------------------------------
+ID: 21212121992
+Fecha: 2020-04-12
+Ubicación: 1234567898765
+Instalador: natanael 56622
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:12:29
+----------------------------------------
+ID: 929292929
+Fecha: 2019-04-12
+Ubicación: 28948932843234
+Instalador: natanael DHSDID
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:13:09
+----------------------------------------
+ID: 929292929
+Fecha: 2019-04-12
+Ubicación: 28948932843234
+Instalador: natanael DHSDID
+Estado del dispositivo: inactivo
+Fecha de registro: 2025-01-23 19:13:15
+----------------------------------------
+ID: 4535356522
+Fecha: 2023-04-13
+Ubicación: 182182121
+Instalador: KLSJDLSADJSA
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:15:58
+----------------------------------------
+ID: 45353565223
+Fecha: 2023-04-13
+Ubicación: 18218212133
+Instalador: KLSJDLSADJSA
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:16:14
+----------------------------------------
+ID: 45353565223
+Fecha: 2023-04-13
+Ubicación: 18218212133
+Instalador: KLSJDLSADJSA
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:16:33
+----------------------------------------
+ID: 45353565223
+Fecha: 2023-04-13
+Ubicación: 18218212133
+Instalador: KLSJDLSADJSA
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:16:43
+----------------------------------------
+ID: 12345775
+Fecha: 2023-04-13
+Ubicación: 12121212133
+Instalador: Luisahuas
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:17:16
+----------------------------------------
+ID: 12345775
+Fecha: 2023-04-13
+Ubicación: 12121212133
+Instalador: Luisahuas
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:17:43
+----------------------------------------
+ID: 12345775
+Fecha: 2023-04-13
+Ubicación: 12121212133
+Instalador: Luisahuas
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:17:59
+----------------------------------------
+ID: 12345775
+Fecha: 2023-04-13
+Ubicación: 12121212133
+Instalador: Luisahuas
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:17:59
+----------------------------------------
+ID: 12345775
+Fecha: 2023-04-13
+Ubicación: 12121212133
+Instalador: Luisahuas
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:17:59
+----------------------------------------
+ID: 12345775
+Fecha: 2023-04-13
+Ubicación: 12121212133
+Instalador: Luisahuas
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:17:59
+----------------------------------------
+ID: 12345775
+Fecha: 2023-04-13
+Ubicación: 12121212133
+Instalador: Luisahuas
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:18:12
+----------------------------------------
+ID: 12345775
+Fecha: 2023-04-13
+Ubicación: 12121212133
+Instalador: Luisahuas
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:18:20
+----------------------------------------
+ID: 12345775
+Fecha: 2023-04-13
+Ubicación: 12121212133
+Instalador: Luisahuas
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:18:20
+----------------------------------------
+ID: 12345775
+Fecha: 2023-04-13
+Ubicación: 12121212133
+Instalador: Luisahuas
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:18:20
+----------------------------------------
+ID: 12345775
+Fecha: 2023-04-13
+Ubicación: 12121212133
+Instalador: Luisahuas
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 19:22:49
+----------------------------------------
+ID: 1234567
+Fecha: 2024-08-12
+Ubicación: asdfv1234567890hn
+Instalador: Manuel
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 20:18:29
+----------------------------------------
+ID: 1234567
+Fecha: 2024-08-12
+Ubicación: asdfv1234567890hn
+Instalador: Manuel
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 20:18:38
+----------------------------------------
+ID: 1234567345678
+Fecha: 2024-08-12
+Ubicación: asdfv1234567890hn
+Instalador: Manuel
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 20:18:50
+----------------------------------------
+ID: 21344575757
+Fecha: 2021-04-12
+Ubicación: 123456789
+Instalador: Luisangel RAmirez
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-23 20:20:41
+----------------------------------------

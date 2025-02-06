@@ -1,0 +1,14 @@
+ID: 45353565
+Fecha: 2023-04-14
+Ubicación: 431231212312
+Instalador: natanaelLuis
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-20 05:10:56
+----------------------------------------
+ID: 453535650
+Fecha: 2023-04-14
+Ubicación: 43123121231287
+Instalador: natanaelLuis
+Estado del dispositivo: activo
+Fecha de registro: 2025-01-20 05:11:07
+----------------------------------------

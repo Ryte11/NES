@@ -1,0 +1,21 @@
+Usuario: Abel 
+Teléfono: 809 912 9914
+Email: luisangelgamer20@gmail.com
+Cédula: 1234567880
+Estado: activo
+Fecha de Registro: 2025-01-16 16:57:02
+---------------------------
+Usuario: Luisangel ramirez
+Teléfono: 829 912 9914
+Email: luisramirezsanchez2450@gmail.com
+Cédula: 09876543211
+Estado: activo
+Fecha de Registro: 2025-01-20 05:15:11
+---------------------------
+Usuario: Luisangel123
+Teléfono: 829 912 9914
+Email: luisangelgamer0@gmail.com
+Cédula: 1234567789
+Estado: activo
+Fecha de Registro: 2025-01-23 20:02:14
+---------------------------

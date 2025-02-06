@@ -1,0 +1,379 @@
+:root{
+    --green: #00b755;
+    --yellow: #daaf38;
+    --red: #ca4754;
+    --black: #222;
+    --title-color: #004AAD;
+    --Blue-panel: #004AAD;
+    --back-input: #3177D4;
+    --Svg-color: #D5D5E2;
+}
+@font-face {
+    font-family: 'arimo';
+    src: url('../font/Arimo/static/Arimo-Regular.ttf');
+    font-weight: bold;
+    font-style: normal;
+}
+*, ::before, ::after {
+    box-sizing:unset !important; /* o bien `unset` si quieres volver al valor por defecto */
+}
+body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: arimo;
+    overflow: hidden;
+    background-color: #EBECED;
+}
+
+.principal{
+    display: flex;
+    height: 100%;
+}
+/* css del menu lateral */
+.menu-lat{
+    width: 18%;
+    height: 100%;
+    background-color: var(--Blue-panel);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.menu{
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: flex-start;
+ width: 90%;
+ height: 100%;
+ position: relative;
+}
+/* css del menu y de los svg */
+.menu svg{
+    color: var(--Svg-color);
+    width: 25px;
+    height: 25px;
+}
+.menu .imagen {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 20%;
+    width: 100%;
+}
+.menu .imagen img{
+    width: 90%;
+    height: 40%;
+    margin-top: -30px;
+    
+}
+/* menu principal */
+
+.menu-prin{
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-1{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+
+}
+/* css para el input */
+.input-div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--back-input);
+    padding: 5px 0px 5px 5px;
+    border-radius: 6px;
+    position: relative;
+}
+
+.input-div svg {
+    color: var(--Svg-color);
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0; 
+    pointer-events: none; 
+}
+
+.input-div input {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: var(--Svg-color); 
+    font-size: 15px;
+}
+
+.input-div input::placeholder {
+    color: var(--Svg-color);
+    font-size: 15px;
+}
+
+.input-div input::-webkit-search-cancel-button {
+    display: none;
+}
+
+/* css para los links */
+.menu-1 a{
+    height: 30px;
+    padding: 5px 2px 5px 5px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--Svg-color);
+    font-family: arimo;
+    transition: 0.5s ease-in-out;
+}
+.menu-1 a:hover{
+   
+    background-color: #0F4184;
+}
+.menu-1 button{
+    height: 30px;
+    padding: 5px 2px 5px 5px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--Svg-color);
+    font-family: arimo;
+    transition: 0.5s ease-in-out;
+    border: none;
+    background-color: transparent;
+    font-size: 15px;
+}
+.menu-1 button:hover{
+   
+    background-color: #0F4184;
+}
+
+.menu-item {
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.menu-item[style*="display: none"] {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+
+
+ /* Submenú */
+    .lista{
+        position: relative;
+         height: 30px;
+        padding: 5px 2px 5px 5px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        text-decoration: none;
+        color: var(--Svg-color);
+        font-family: arimo;
+        transition: 0.5s ease-in-out;
+    }
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 120px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: #005abb;
+            z-index: 1000;
+        }
+        .submenu li {
+            width: 200px; /* Ancho del submenú */
+        }
+        .submenu a {
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+        }
+        .submenu a:hover {
+            background-color: var(--title-color);
+        }
+
+        .menu-1 li:hover{
+   
+            background-color: #0F4184;
+        }
+        /* Mostrar submenú al pasar hover en Usuario */
+        .menu-1 li:hover .submenu {
+            display: block;
+        }
+
+.linea{
+    border: none; 
+    height: 2px;
+    background-color: var(--Svg-color); 
+    width: 115%;
+    border-radius: 5px; 
+    margin-left: -20px;
+    
+}
+
+/* Parte derecha donde ira el contenido */
+.derecha{
+    width: 100%;
+    height: 100%;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+.titulo{
+    color: var(--title-color);
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+}
+
+.datos{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+.perfil{
+    display: flex;
+    align-items: center;
+    position: relative;
+    gap: 20px;
+}
+.perfil .online{
+    position: absolute;
+    background-color: green;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    bottom: 15px;
+    right: 108px;
+}
+.perfil img{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+.perfil h2{
+    color: var(--title-color);
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* notificaciones apartado */
+.Notificaciones{
+    background-color: var(--Blue-panel);
+    color: var(--Svg-color);
+    padding: 10px;
+    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+    flex-shrink: 0; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.Notificaciones::before{
+    content: '1';
+    background-color: red;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+    font-size: 10PX;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Notificaciones svg{
+   
+    height: 25px;
+    width: 25px;
+    flex-shrink: 0; 
+    
+}
+
+/* css config */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(14px);
+}
+
+.dark-mode .bg-white {
+    background-color: #2d3748;
+}
+
+.dark-mode .text-gray-700 {
+    color: #e2e8f0;
+}
+
+.dark-mode .text-gray-500 {
+    color: #a0aec0;
+}
+
+.dark-mode input, .dark-mode select {
+    background-color: #4a5568;
+    color: #e2e8f0;
+}
+/* css confi */
