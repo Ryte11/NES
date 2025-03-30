@@ -1,0 +1,14 @@
+ID: 453535654
+Fecha: 2021-04-12
+Ubicación: 123456789
+Instalador: Natanael
+Estado del dispositivo: activo
+Fecha de registro: 2025-03-28 17:16:00
+----------------------------------------
+ID: 453535654
+Fecha: 2021-04-12
+Ubicación: 123456789
+Instalador: Natanael
+Estado del dispositivo: activo
+Fecha de registro: 2025-03-28 17:16:07
+----------------------------------------

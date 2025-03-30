@@ -2,7 +2,7 @@
 $host = "localhost";
 $usuario = "root";
 $password = "";
-$baseDeDatos = "nes_user";
+$baseDeDatos = "nes";
 $conn = new mysqli($host, $usuario, $password, $baseDeDatos);
 
 if ($conn->connect_error) {

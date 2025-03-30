@@ -19,3 +19,31 @@ Cédula: 1234567789
 Estado: activo
 Fecha de Registro: 2025-01-23 20:02:14
 ---------------------------
+Usuario: Ryte11
+Teléfono: 829 912 9914
+Email: luisrc@gmail.com
+Cédula: 12345678901
+Estado: activo
+Fecha de Registro: 2025-03-28 14:15:10
+---------------------------
+Usuario: Marcos
+Teléfono: 809 912 9914
+Email: marcosagar@gmail.com
+Cédula: 232132321312
+rol: activo
+Fecha de Registro: 2025-03-28 14:20:36
+---------------------------
+Usuario: manuel
+Teléfono: 829 912 9914
+Email: w@gmail.com
+Cédula: 09876543212
+rol: activo
+Fecha de Registro: 2025-03-28 14:40:18
+---------------------------
+Usuario: MArcos
+Teléfono: 809 912 9914
+Email: luisrc112716@gmail.com
+Cédula: 232132321312
+Estado: activo
+Fecha de Registro: 2025-03-28 15:34:41
+---------------------------

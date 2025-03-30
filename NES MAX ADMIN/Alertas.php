@@ -252,7 +252,7 @@
                             $host = "localhost";
                             $usuario = "root";
                             $password = "";
-                            $baseDeDatos = "nes_user";
+                            $baseDeDatos = "nes";
                             $conn = new mysqli($host, $usuario, $password, $baseDeDatos);
 
 
@@ -260,7 +260,7 @@
                                 die("Conexión fallida: " . $conn->connect_error);
                             }
 
-                            $sql = "SELECT * FROM denuncias ORDER BY fecha DESC";
+                            $sql = "SELECT * FROM alertas ORDER BY fecha DESC";
                             $result = $conn->query($sql);
 
                             if ($result->num_rows > 0) {
@@ -272,7 +272,7 @@
                                                 <div class="alert-icon">i</div>
                                                 <div class="alert-info">
                                                     <div><?php echo htmlspecialchars($row['nombre']); ?></div>
-                                                    <div class="code"><?php echo htmlspecialchars($row['cedula']); ?></div>
+                                                    <div class="code"><?php echo htmlspecialchars($row['codigo']); ?></div>
                                                 </div>
                                             </div>
                                         </td>
