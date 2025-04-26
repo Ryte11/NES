@@ -4,7 +4,7 @@ session_start();
 $host = "localhost";
 $usuario = "root";
 $password = "";
-$baseDeDatos = "nes_user";
+$baseDeDatos = "nes";
 
 $conn = new mysqli($host, $usuario, $password, $baseDeDatos);
 
@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 $email = $_POST['email'];
 $contrasena = $_POST['pswd'];
 
-$sql = $conn->prepare("SELECT * FROM usuarios WHERE email = ?");
+$sql = $conn->prepare("SELECT * FROM usuarios_users WHERE email = ?");
 $sql->bind_param("s", $email);
 $sql->execute();
 $result = $sql->get_result();
