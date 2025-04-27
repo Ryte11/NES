@@ -1,31 +1,47 @@
-document.getElementById('modoOscuro').addEventListener('change', function () {
-    if (this.checked) {
-        document.body.classList.add('bg-gray-900', 'text-white', 'dark-mode');
-    } else {
-        document.body.classList.remove('bg-gray-900', 'text-white', 'dark-mode');
+document.addEventListener('DOMContentLoaded', () => {
+    // Obtener elementos
+    const modoOscuroCheckbox = document.getElementById('modoOscuro');
+    const idiomaSelect = document.getElementById('idioma');
+    const notificacionesEmailCheckbox = document.getElementById('notificacionesEmail');
+    const notificacionesPushCheckbox = document.getElementById('notificacionesPush');
+
+    // Cargar configuraciones desde localStorage
+    const configuraciones = {
+        modoOscuro: localStorage.getItem('modoOscuro') === 'true',
+        idioma: localStorage.getItem('idioma') || 'Español',
+        notificacionesEmail: localStorage.getItem('notificacionesEmail') === 'true',
+        notificacionesPush: localStorage.getItem('notificacionesPush') === 'true'
+    };
+
+    // Aplicar configuraciones iniciales
+    modoOscuroCheckbox.checked = configuraciones.modoOscuro;
+    idiomaSelect.value = configuraciones.idioma;
+    notificacionesEmailCheckbox.checked = configuraciones.notificacionesEmail;
+    notificacionesPushCheckbox.checked = configuraciones.notificacionesPush;
+
+    if (configuraciones.modoOscuro) {
+        document.body.classList.add('dark-mode');
     }
-});
 
-document.getElementById('idioma').addEventListener('change', function () {
-    alert('Idioma cambiado a: ' + this.value);
-});
+    // Guardar configuraciones al cambiar
+    modoOscuroCheckbox.addEventListener('change', () => {
+        const isDarkMode = modoOscuroCheckbox.checked;
+        localStorage.setItem('modoOscuro', isDarkMode);
+        document.body.classList.toggle('dark-mode', isDarkMode);
+    });
 
-document.getElementById('notificacionesEmail').addEventListener('change', function () {
-    if (this.checked) {
-        alert('Notificaciones por Email activadas');
-    } else {
-        alert('Notificaciones por Email desactivadas');
-    }
-});
+    idiomaSelect.addEventListener('change', () => {
+        const idioma = idiomaSelect.value;
+        localStorage.setItem('idioma', idioma);
+    });
 
-document.getElementById('notificacionesPush').addEventListener('change', function () {
-    if (this.checked) {
-        alert('Notificaciones Push activadas');
-    } else {
-        alert('Notificaciones Push desactivadas');
-    }
-});
+    notificacionesEmailCheckbox.addEventListener('change', () => {
+        const emailNotifications = notificacionesEmailCheckbox.checked;
+        localStorage.setItem('notificacionesEmail', emailNotifications);
+    });
 
-document.getElementById('notificationBell').addEventListener('click', function () {
-    alert('Tienes nuevas notificaciones');
+    notificacionesPushCheckbox.addEventListener('change', () => {
+        const pushNotifications = notificacionesPushCheckbox.checked;
+        localStorage.setItem('notificacionesPush', pushNotifications);
+    });
 });

@@ -167,98 +167,57 @@
 
             </div>
             <div class="flex-1 p-6">
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Configuración de Alertas -->
-                    <div class="bg-white p-6 rounded shadow">
-                        <h2 class="text-2xl font-bold text-blue-700 mb-4" style="font-weight: bold;">Configuración de
-                            Alertas</h2>
-                        <h3 class="text-xl font-semibold mb-2">
-                            <i class="fas fa-volume-up mr-2"></i>
-                            Parámetros de medición
-                        </h3>
-                        <div class="mb-4">
-                            <label class="block text-gray-700" for="decibeles">Límite de Decibeles (dB)</label>
-                            <input class="w-full p-2 border rounded" id="decibeles" type="number" value="60" />
-                            <p class="text-gray-500 text-sm">Se generará una alerta cuando se supere este nivel</p>
+                <form id="configForm" action="guardar_configuracion.php" method="POST">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded shadow">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-4">Sistema</h2>
+                            <h3 class="text-xl font-semibold mb-2">
+                                <i class="fas fa-cogs mr-2"></i>
+                                Preferencias Generales
+                            </h3>
+                            <div class="mb-4 flex items-center justify-between">
+                                <span>Modo Oscuro</span>
+                                <label class="switch">
+                                    <input id="modoOscuro" name="modoOscuro" type="checkbox" class="configuracion-input" />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700" for="idioma">Idioma</label>
+                                <select class="w-full p-2 border rounded configuracion-input" id="idioma" name="idioma">
+                                    <option value="es">Español</option>
+                                    <option value="en">Inglés</option>
+                                    <option value="fr">Francés</option>
+                                    <option value="de">Alemán</option>
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-gray-700" for="ventana">Ventana de Tiempo (minutos)</label>
-                            <input class="w-full p-2 border rounded" id="ventana" type="text" value="15 (min)" />
-                            <p class="text-gray-500 text-sm">Tiempo mínimo de exposición para generar alerta</p>
-                        </div>
-                    </div>
-                    <!-- Sistema -->
-                    <div class="bg-white p-6 rounded shadow">
-                        <h2 class="text-2xl font-bold text-blue-700 mb-4">Sistema</h2>
-                        <h3 class="text-xl font-semibold mb-2">
-                            <i class="fas fa-cogs mr-2"></i>
-                            Preferencias Generales
-                        </h3>
-                        <div class="mb-4 flex items-center justify-between">
-                            <span>Modo Oscuro</span>
-                            <label class="switch">
-                                <input id="modoOscuro" type="checkbox" />
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div>
-                            <label class="block text-gray-700" for="idioma">Idioma</label>
-                            <select class="w-full p-2 border rounded" id="idioma">
-                                <option>Español</option>
-                                <option>Inglés</option>
-                                <option>Francés</option>
-                                <option>Alemán</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!-- Notificaciones -->
-                    <div class="bg-white p-6 rounded shadow">
-                        <h2 class="text-2xl font-bold text-blue-700 mb-4">Notificaciones</h2>
-                        <h3 class="text-xl font-semibold mb-2">
-                            <i class="fas fa-bell mr-2"></i>
-                            Configuración de Dispositivos
-                        </h3>
-                        <div class="mb-4 flex items-center justify-between">
-                            <span>Notificaciones por Email</span>
-                            <label class="switch">
-                                <input id="notificacionesEmail" type="checkbox" />
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span>Notificaciones Push</span>
-                            <label class="switch">
-                                <input id="notificacionesPush" type="checkbox" />
-                                <span class="slider round"></span>
-                            </label>
+                        <div class="bg-white p-6 rounded shadow">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-4">Notificaciones</h2>
+                            <h3 class="text-xl font-semibold mb-2">
+                                <i class="fas fa-bell mr-2"></i>
+                                Configuración de Dispositivos
+                            </h3>
+                            <div class="mb-4 flex items-center justify-between">
+                                <span>Notificaciones por Email</span>
+                                <label class="switch">
+                                    <input id="notificacionesEmail" name="notificacionesEmail" type="checkbox" class="configuracion-input" />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>Notificaciones Push</span>
+                                <label class="switch">
+                                    <input id="notificacionesPush" name="notificacionesPush" type="checkbox" class="configuracion-input" />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
-                    <!-- Dispositivos -->
-                    <div class="bg-white p-6 rounded shadow">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-2xl font-bold text-blue-700" id="dispositivosTitulo">Dispositivos</h2>
-                            <button class="bg-blue-700 text-white p-2 rounded" id="addDeviceBtn">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-2">
-                            <i class="fas fa-mobile-alt mr-2"></i>
-                            <span id="configuracionDispositivosTitulo">Configuración de Dispositivos</span>
-                        </h3>
-                        <div>
-                            <label class="block text-gray-700" for="frecuencia" id="frecuenciaMuestreoLabel">Frecuencia
-                                de
-                                Muestreo</label>
-                            <select class="w-full p-2 border rounded" id="frecuencia">
-                                <option>Cada 30 segundos</option>
-                                <option>Cada 1 minuto</option>
-                                <option>Cada 5 minutos</option>
-                            </select>
-                        </div>
+                    <div class="mt-6">
+                        <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded">Guardar Configuración</button>
                     </div>
-                </div>
-            </div>
+                </form>
             <!-- guia de usuario -->
             <div id="guide" class="guide">
                 <div class="guide-header">
@@ -355,7 +314,14 @@
     </div>
 
     <script src="js/config.js"></script>
-    <script src="js/PanelControl.js"></script>
+   
+    <style>
+        /* Estilo para el modo oscuro */
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+    </style>
 </body>
 
 </html>
