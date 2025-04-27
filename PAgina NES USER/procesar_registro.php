@@ -3,7 +3,7 @@ session_start();
 $servername = "localhost";
 $username = "root";
 $password = ""; 
-$database = "nes_user";
+$database = "nes";
 
 $conn = new mysqli($servername, $username, $password, $database);
 
@@ -17,7 +17,7 @@ $email = isset($_POST['email']) ? $_POST['email'] : '';
 $cedula = $_POST['Cedula'];
 $contrasena = password_hash($_POST['Contraseña'], PASSWORD_DEFAULT); // Encriptar la contraseña
 
-$sql_check = "SELECT * FROM usuarios WHERE cedula = '$cedula'";
+$sql_check = "SELECT * FROM usuarios_users WHERE cedula = '$cedula'";
 $result = $conn->query($sql_check);
 
 if ($result->num_rows > 0) {
@@ -28,7 +28,7 @@ if ($result->num_rows > 0) {
     exit();
 }
 
-$sql = "INSERT INTO usuarios (nombre, cedula, email, contraseña, estado, fecha_registro) 
+$sql = "INSERT INTO usuarios_users (nombre, cedula, email, contraseña, estado, fecha_registro) 
         VALUES ('$usuario', '$cedula', '$email', '$contrasena', 'activo', NOW())";
 
 if ($conn->query(query: $sql) === TRUE) {

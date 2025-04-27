@@ -47,3 +47,17 @@ Cédula: 232132321312
 Estado: activo
 Fecha de Registro: 2025-03-28 15:34:41
 ---------------------------
+Usuario: el mejor
+Teléfono: 23123213
+Email: elmejor05@gmail.com
+Cédula: 23123123123
+Estado: activo
+Fecha de Registro: 2025-04-26 00:49:18
+---------------------------
+Usuario: nuevo usuario
+Teléfono: 2221323213
+Email: luisangelgamer2220@gmail.com
+Cédula: 23213232131222
+Estado: activo
+Fecha de Registro: 2025-04-26 01:57:26
+---------------------------

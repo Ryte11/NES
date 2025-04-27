@@ -2,7 +2,7 @@
 $host = "localhost"; 
 $usuario = "root"; 
 $password = ""; 
-$baseDeDatos = "nes_user"; 
+$baseDeDatos = "nes"; 
 
 $conn = new mysqli($host, $usuario, $password, $baseDeDatos);
 
@@ -30,7 +30,7 @@ if (empty($nombre) || empty($cedula) || empty($ubicacion) || empty($tipo) || emp
     exit();
 }
 
-$sql = $conn->prepare("INSERT INTO denuncias (nombre, cedula, ubicacion, tipo, descripcion, fecha) VALUES (?, ?, ?, ?, ?, NOW())");
+$sql = $conn->prepare("INSERT INTO denuncias_users (nombre, cedula, ubicacion, tipo, descripcion, fecha) VALUES (?, ?, ?, ?, ?, NOW())");
 
 if (!$sql) {
     die("Error en la preparación de la consulta: " . $conn->error);

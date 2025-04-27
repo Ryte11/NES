@@ -1,6 +1,6 @@
 <?php
 $host = "localhost";
-$db = "nes_user";
+$db = "nes";
 $user = "root";
 $pass = ""; 
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-04-2025 a las 20:50:02
+-- Tiempo de generación: 26-04-2025 a las 02:00:11
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -77,23 +77,59 @@ INSERT INTO `alertas` (`id`, `nombre`, `codigo`, `ubicacion`, `tipo`, `fecha`, `
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `denuncias_users`
+--
+
+CREATE TABLE `denuncias_users` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `cedula` varchar(15) NOT NULL,
+  `ubicacion` varchar(255) NOT NULL,
+  `tipo` varchar(255) NOT NULL,
+  `descripcion` text NOT NULL,
+  `fecha` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `denuncias_users`
+--
+
+INSERT INTO `denuncias_users` (`id`, `nombre`, `cedula`, `ubicacion`, `tipo`, `descripcion`, `fecha`) VALUES
+(17, 'Luisangel', '232132321312', 'sadasdasdasdsadsadwadwadwadwadwadwa', 'construccion', 'ijdiajd9iasdiasjidjasdjasdjasdjassa', '2025-01-23 15:04:49'),
+(18, 'Luisangel ', '12345678901', 'caleta rd', 'ruido', 'jkldhjashdjkashdsjkahdjkashdjkashdjkash soy frayyyyyyyyyy', '2025-04-25 19:58:00');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `dispositivos`
 --
 
 CREATE TABLE `dispositivos` (
-  `ID` int(11) NOT NULL,
-  `Ubicacion` varchar(255) NOT NULL,
-  `Fecha` date NOT NULL,
-  `Instalador` varchar(100) NOT NULL,
-  `Estado_Dispositivo` varchar(50) NOT NULL
+  `id` int(11) NOT NULL,
+  `id_tecnico` int(11) NOT NULL,
+  `id_dispositivo` varchar(50) NOT NULL,
+  `fecha_instalacion` date NOT NULL,
+  `ubicacion_geografica` varchar(100) NOT NULL,
+  `zona_referencia` varchar(100) DEFAULT NULL,
+  `estado_dispositivo` varchar(50) DEFAULT NULL,
+  `comentario` text DEFAULT NULL,
+  `latitud` decimal(10,8) NOT NULL,
+  `longitud` decimal(11,8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `dispositivos`
+-- Estructura de tabla para la tabla `tecnicos`
 --
 
-INSERT INTO `dispositivos` (`ID`, `Ubicacion`, `Fecha`, `Instalador`, `Estado_Dispositivo`) VALUES
-(2147483647, '123456789', '2021-04-12', 'Luisangel RAmirez', 'activo');
+CREATE TABLE `tecnicos` (
+  `id` int(11) NOT NULL,
+  `usuario` varchar(50) NOT NULL,
+  `nombre_completo` varchar(100) NOT NULL,
+  `cedula` varchar(20) NOT NULL,
+  `contraseña` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -125,7 +161,36 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `rol`) VALUES
 (23, 'Luisangel ', 'luisangelgamer20@gmail.com', '$2y$10$ZPCCdPld3f3BUIdZMqEpB.QT1YDaD8C0CROgZ68QjvWDHJqNNJRbK', 'admin'),
 (24, 'njkadnasdsdasd', 'marinneuif@gmail.cokm', 'sf5HNyDmh8GmktH', 'normal'),
-(25, 'Luisangel123', 'luisramirezsanchez2450@gmail.com', '$2y$10$WXTqewHj/WIx2YlyOHiHceynFsHAr55XlKJeWEHLkm0KDC0UG0oQW', 'admin');
+(25, 'Luisangel123', 'luisramirezsanchez2450@gmail.com', '$2y$10$WXTqewHj/WIx2YlyOHiHceynFsHAr55XlKJeWEHLkm0KDC0UG0oQW', 'admin'),
+(27, 'Victoria flores', 'luisangelgamer2000@gmail.com', 'Luisange11', 'normal');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios_users`
+--
+
+CREATE TABLE `usuarios_users` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `contraseña` varchar(255) NOT NULL,
+  `fecha_registro` datetime NOT NULL,
+  `estado` enum('activo','inactivo') NOT NULL,
+  `cedula` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios_users`
+--
+
+INSERT INTO `usuarios_users` (`id`, `nombre`, `email`, `contraseña`, `fecha_registro`, `estado`, `cedula`) VALUES
+(30, 'Luisangel', 'luisangelgamer20@gmail.com', '$2y$10$lZHXawpnVt2kYt1rfQiZG.xa7YIG1Mocs2Il5tab/tvOcHOgg/9b2', '2025-01-16 09:04:20', 'activo', '12345678901'),
+(31, 'Luisangel', 'luisangelgamer20@gmail.com', '$2y$10$mLNO.0Hfk1t9hC9vlPpY6OXnW/5kTQzOp5eOn8AY5.UiEVOvHJzFm', '2025-01-16 11:48:39', 'activo', '09876543212'),
+(32, 'Abel', 'luisangelgamer20@gmail.com', '$2y$10$KYp9PA9ncl4lu0UW1TeNQ.qeVd.JrZpbuWsITzQZZg2Oa9uYwMpxG', '2025-01-16 11:57:02', 'activo', '1234567880'),
+(33, 'Luisangel ramirez', 'luisramirezsanchez2450@gmail.com', '$2y$10$2Aibkh8udg98wmh82Wwz/OA1h9XGeeJAyGvogoUF4mNYK7/IYtKMS', '2025-01-20 00:15:11', 'activo', '09876543211'),
+(34, 'Luisangel123', 'luisangelgamer0@gmail.com', '$2y$10$hCfqxwwFX1EX1MeKJToUpesk70g0Gd7a5hQFR.Te4axFBzCG1.x7e', '2025-01-23 15:02:14', 'activo', '1234567789'),
+(35, 'nuevo usuario', 'luisangelgamer2220@gmail.com', '$2y$10$KnEv56oR4uiGnq4jj47ddeNdl0QnVfzyvtXykclqhSIXBVgmLPy/.', '2025-04-25 19:57:26', 'activo', '23213232131222');
 
 --
 -- Índices para tablas volcadas
@@ -138,10 +203,25 @@ ALTER TABLE `alertas`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `denuncias_users`
+--
+ALTER TABLE `denuncias_users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `dispositivos`
 --
 ALTER TABLE `dispositivos`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_tecnico` (`id_tecnico`);
+
+--
+-- Indices de la tabla `tecnicos`
+--
+ALTER TABLE `tecnicos`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `usuario` (`usuario`),
+  ADD UNIQUE KEY `cedula` (`cedula`);
 
 --
 -- Indices de la tabla `usuarios`
@@ -149,6 +229,12 @@ ALTER TABLE `dispositivos`
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indices de la tabla `usuarios_users`
+--
+ALTER TABLE `usuarios_users`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -161,16 +247,44 @@ ALTER TABLE `alertas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
+-- AUTO_INCREMENT de la tabla `denuncias_users`
+--
+ALTER TABLE `denuncias_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT de la tabla `dispositivos`
 --
 ALTER TABLE `dispositivos`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `tecnicos`
+--
+ALTER TABLE `tecnicos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios_users`
+--
+ALTER TABLE `usuarios_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `dispositivos`
+--
+ALTER TABLE `dispositivos`
+  ADD CONSTRAINT `dispositivos_ibfk_1` FOREIGN KEY (`id_tecnico`) REFERENCES `tecnicos` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
