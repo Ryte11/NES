@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/alertas1.css">
-
+    <link rel="stylesheet" href="css/modoOscuro.css">
     <title>Alertas ax Admin</title>
 </head>
 
@@ -402,6 +402,7 @@
 
  
     <script src="js/alertas4.js" defer></script>
+    <script src="js/modoOscuro.js"></script>
 </body>
 
 </html>

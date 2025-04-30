@@ -213,10 +213,26 @@
                                 </label>
                             </div>
                         </div>
+                        <div class="bg-white p-6 rounded shadow">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-4">Copias de Seguridad</h2>
+                            <h3 class="text-xl font-semibold mb-2">Programar Copias de Seguridad</h3>
+                            <div class="mb-4">
+                                <label class="block text-gray-700" for="frecuenciaBackup">Frecuencia de Copia de Seguridad</label>
+                                <select class="w-full p-2 border rounded configuracion-input" id="frecuenciaBackup" name="frecuenciaBackup">
+                                    <option value="diaria">Diaria</option>
+                                    <option value="semanal">Semanal</option>
+                                    <option value="mensual">Mensual</option>
+                                </select>
+                            </div>
+                            <div class="mt-4">
+                                <button type="button" id="crearBackup" class="bg-blue-700 text-white px-4 py-2 rounded">Crear Copia de Seguridad</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="mt-6">
                         <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded">Guardar Configuración</button>
                     </div>
+                    
                 </form>
             <!-- guia de usuario -->
             <div id="guide" class="guide">
@@ -314,7 +330,7 @@
     </div>
 
     <script src="js/config.js"></script>
-   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         /* Estilo para el modo oscuro */
         .dark-mode {
@@ -322,6 +338,109 @@
             color: #ffffff;
         }
     </style>
+    <script>
+        // Al cargar la página, aplicar el modo oscuro si está activado en localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const modoOscuroCheckbox = document.getElementById('modoOscuro');
+            const isDarkMode = localStorage.getItem('modoOscuro') === 'true';
+
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                if (modoOscuroCheckbox) modoOscuroCheckbox.checked = true;
+            }
+
+            // Escuchar cambios en el checkbox y guardar el estado en localStorage
+            if (modoOscuroCheckbox) {
+                modoOscuroCheckbox.addEventListener('change', () => {
+                    const isChecked = modoOscuroCheckbox.checked;
+                    document.body.classList.toggle('dark-mode', isChecked);
+                    localStorage.setItem('modoOscuro', isChecked);
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Referencias a los elementos
+            const idiomaSelect = document.getElementById('idioma');
+            const notificacionesEmailCheckbox = document.getElementById('notificacionesEmail');
+            const notificacionesPushCheckbox = document.getElementById('notificacionesPush');
+
+            // Cargar configuraciones desde localStorage
+            const savedIdioma = localStorage.getItem('idioma');
+            const savedNotificacionesEmail = localStorage.getItem('notificacionesEmail') === 'true';
+            const savedNotificacionesPush = localStorage.getItem('notificacionesPush') === 'true';
+
+            // Aplicar configuraciones al cargar la página
+            if (savedIdioma && idiomaSelect) idiomaSelect.value = savedIdioma;
+            if (notificacionesEmailCheckbox) notificacionesEmailCheckbox.checked = savedNotificacionesEmail;
+            if (notificacionesPushCheckbox) notificacionesPushCheckbox.checked = savedNotificacionesPush;
+
+            // Guardar cambios en localStorage
+            if (idiomaSelect) {
+                idiomaSelect.addEventListener('change', () => {
+                    localStorage.setItem('idioma', idiomaSelect.value);
+                });
+            }
+
+            if (notificacionesEmailCheckbox) {
+                notificacionesEmailCheckbox.addEventListener('change', () => {
+                    localStorage.setItem('notificacionesEmail', notificacionesEmailCheckbox.checked);
+                });
+            }
+
+            if (notificacionesPushCheckbox) {
+                notificacionesPushCheckbox.addEventListener('change', () => {
+                    localStorage.setItem('notificacionesPush', notificacionesPushCheckbox.checked);
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const crearBackupButton = document.getElementById('crearBackup');
+
+            if (crearBackupButton) {
+                crearBackupButton.addEventListener('click', () => {
+                    // Simulación de datos de usuarios
+                    const usuarios = [
+                        { ID: 1, Nombre: 'Luisangel', Email: 'luisangelgamer20@gmail.com', Rol: 'admin' },
+                        { ID: 2, Nombre: 'Victoria flores', Email: 'luisangelgamer2000@gmail.com', Rol: 'normal' },
+                        // Agregar más usuarios según sea necesario
+                    ];
+
+                    // Simulación de datos de dispositivos
+                    const dispositivos = [
+                        { ID: 1, Nombre: 'Sensor A', Tipo: 'Temperatura', Estado: 'Activo' },
+                        { ID: 2, Nombre: 'Cámara B', Tipo: 'Seguridad', Estado: 'Inactivo' },
+                        // Agregar más dispositivos según sea necesario
+                    ];
+
+                    // Simulación de datos de alertas
+                    const alertas = [
+                        { ID: 1, Mensaje: 'Temperatura alta', Fecha: '2023-10-01', Prioridad: 'Alta' },
+                        { ID: 2, Mensaje: 'Movimiento detectado', Fecha: '2023-10-02', Prioridad: 'Media' },
+                        // Agregar más alertas según sea necesario
+                    ];
+
+                    // Crear hojas de datos
+                    const hojaUsuarios = XLSX.utils.json_to_sheet(usuarios);
+                    const hojaDispositivos = XLSX.utils.json_to_sheet(dispositivos);
+                    const hojaAlertas = XLSX.utils.json_to_sheet(alertas);
+
+                    // Crear libro de trabajo
+                    const libro = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(libro, hojaUsuarios, 'Usuarios');
+                    XLSX.utils.book_append_sheet(libro, hojaDispositivos, 'Dispositivos');
+                    XLSX.utils.book_append_sheet(libro, hojaAlertas, 'Alertas');
+
+                    // Generar archivo Excel
+                    const nombreArchivo = `reporte_completo_${new Date().toISOString().slice(0, 10)}.xlsx`;
+                    XLSX.writeFile(libro, nombreArchivo);
+
+                    alert('Reporte completo generado exitosamente en formato Excel.');
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
