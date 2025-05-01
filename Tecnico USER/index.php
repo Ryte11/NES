@@ -1,114 +1,127 @@
+<?php
+session_start();
+include 'php/conexion.php'; // Asegúrate de que esté bien configurado
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $usuario = $_POST['usuario'];
+    $contrasena = $_POST['contrasena'];
+
+    $query = "SELECT * FROM tecnicos WHERE usuario = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $usuario);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    if ($resultado->num_rows > 0) {
+        $fila = $resultado->fetch_assoc();
+
+        if (password_verify($contrasena, $fila['contraseña'])) {
+            $_SESSION['id'] = $fila['id'];
+            $_SESSION['usuario'] = $fila['usuario'];
+            $_SESSION['nombre_completo'] = $fila['nombre_completo'];
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            $error = "Contraseña incorrecta.";
+        }
+    } else {
+        $error = "Usuario no encontrado.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tecnicos</title>
-    <link rel="stylesheet" href="css/estilos.css">
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <script src="https://kit.fontawesome.com/20f9d7f848.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <title>Login Técnico</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f0f2f5;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
+        .login-container {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #007BFF;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            border-radius: 7px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <header class="hero">
-        <button id="abrir" class="abrir-menu"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-                fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
-            </svg></button>
-        <nav class="header" id="nav">
-            <button class="cerrar-menu" id="cerrar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="36" fill="currentColor" class="bi bi-x"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                </svg>
-            </button>
-        </nav>
-        <section class="hero__main container">
-            <div class="hero__texts">
-                <h1 class="hero__title">Bienvenido a NES</h1>
-                <p class="hero__subtitle">No al ruido</p>
-                <a href="" class="hero__cta">Resgistrate</a>
+    <div class="login-container">
+        <h2>Login Técnico</h2>
+        <?php if (isset($error)): ?>
+            <p class="error"><?php echo htmlspecialchars($error); ?></p>
+        <?php endif; ?>
+        <form method="POST">
+            <div class="form-group">
+                <input type="text" name="usuario" placeholder="Usuario" required>
             </div>
-            <figure class="hero__picture">
-                <a href="index.html"><img class="logo1" src="img/logo1.png" alt=""></a>
-            </figure>
-        </section>
-        <div style="height: 250px; overflow: hidden;" class="hero__waves"><svg viewBox="0 0 500 150"
-                preserveAspectRatio="none" style="height: 100%; width: 100%;">
-                <path d="M0.00,49.99 C262.08,217.40 378.89,-120.09 500.00,49.99 L500.00,150.00 L0.00,150.00 Z"
-                    style="stroke: none; fill: #fff;"></path>
-            </svg></div>
-    </header>
-
-    <section class="modal ">
-        <div class="modal__container">
-            <h2 class="modal__title"></h2>
-            <div class="main">
-                <input type="checkbox" id="chk" aria-hidden="false">
-                <div class="signup">
-                    <form id="formRegistro" action="procesar_registro.php" method="POST">
-                        <label for="chk" aria-hidden="true">Regístrate</label>
-                        <input type="text" name="Usuario" placeholder="Usuario" id="Usuario">
-                        <input type="text" name="Telefono" placeholder="Teléfono" id="Telefono">
-                        <input type="email" name="email" placeholder="Correo Electrónico" id="Correo Electronico">
-                        <input type="text" name="Cedula" placeholder="Cédula" id="Cedula">
-                        <input type="password" name="Contraseña" placeholder="Contraseña" id="Contraseña">
-                        <button type="submit" value="saludar" onClick="validarFormulario(event)">Continuar</button>
-                    </form>
-
-                </div>
-                <div class="login">
-                    <form id="formLogin" action="procesar_login.php" method="POST">
-                        <label for="chk" aria-hidden="true">Iniciar Sesión</label>
-                        <input type="email" name="email" placeholder="Correo Electrónico" id="email">
-                        <input type="password" name="pswd" placeholder="Contraseña" id="cont">
-                        <button type="submit" onclick="validarFormulario1(event)">Continuar</button>
-                    </form>
-                </div>
+            <div class="form-group">
+                <input type="password" name="contrasena" placeholder="Contraseña" required>
             </div>
-            <a href="#" class="modal__close">Cerrar </a>
-        </div>
-    </section>
-
-
-
-
-
-
-    <div class="footer-basic">
-        <footer>
-
-            <div class="social">
-                <a href="https://www.instagram.com/nes29448/"><i class="icon ion-social-instagram"></i></a>
-                <a href="https://mail.google.com/mail/u/0/#inbox"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://twitter.com/Nes39489676"><i class="icon ion-social-twitter"></i></a>
-                <a
-                    href="https://m.facebook.com/story.php?story_fbid=1254163131833931&substory_index=1254163131833931&id=100089342328341&sfnsn=mo&mibextid=RUbZ1f"><i
-                        class="icon ion-social-facebook"></i></a>
-            </div>
-
-            <ul class="list-inline">
-                <li class="list-inline-item"><a href="index.html">Inicio</a></li>
-                <li class="list-inline-item"><a href="Denuncias-html.html">Denuncias</a></li>
-                <li class="list-inline-item"><a href="qn.html">Quienes Somos</a></li>
-                <li class="list-inline-item"><a href="mapa.html">mapa</a></li>
-                <li class="list-inline-item"><a href="Dispositivo.html">Dispositivos</a></li>
-                <li class="list-inline-item"><a href="Contactos.html">Contactanos</a></li>
-            </ul>
-            <p class="copyright">Company NES © 2023</p>
-        </footer>
+            <button type="submit">Iniciar Sesión</button>
+        </form>
     </div>
-    <script src="javascript/js.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
-
 
 </html>

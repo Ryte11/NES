@@ -686,7 +686,7 @@ button{
 .svg{
     color: #1fe149;
     width: 500px;
-    margin-left: 105px;
+    margin-left: 20px;
     margin-top: -75px;
 
 }
@@ -886,6 +886,50 @@ button{
         }
     }
 }
+
+/* Estilos para el contenedor del mapa */
+#mapa {
+    height: 500px;
+    width: 95%;
+    margin: 20px auto;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    z-index: 1;
+    /* Quitamos position: relative y usamos overflow: hidden */
+    overflow: hidden;
+}
+
+/* Aseguramos que el contenedor padre tenga un contexto de apilamiento */
+main {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilos específicos para el contenedor de Leaflet */
+.leaflet-container {
+    height: 100%;
+    width: 100%;
+}
+
+/* Ajustes para dispositivos móviles */
+@media screen and (max-width: 768px) {
+    #mapa {
+        width: 90%;
+        height: 400px;
+    }
+}
+
+/* Aseguramos que los controles del mapa estén por encima */
+.leaflet-control-container {
+    z-index: 2;
+    position: relative;
+}
+
 /* footer */
 .footer-basic {
     

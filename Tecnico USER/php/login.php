@@ -3,6 +3,7 @@ session_start();
 require 'conexion.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $_SESSION['id'] = $fila['id']; // <--- Esto falta en tu login
     $usuario = $_POST['usuario'];
     $contraseña = $_POST['contraseña'];
 
