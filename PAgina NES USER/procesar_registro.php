@@ -48,7 +48,7 @@ if ($conn->query(query: $sql) === TRUE) {
 
     echo "<script>
         alert('Registro exitoso. Bienvenido.');
-        window.location.href = 'Denuncias-html.html';
+        window.location.href = 'Denuncias-html.php';
     </script>";
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;

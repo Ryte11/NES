@@ -1,6 +1,5 @@
 <?php
-session_start();
-require 'php/conexion.php';
+require 'php/conexion_html.php';
 
 // Consultar todos los dispositivos
 $sql = "SELECT id_dispositivo, latitud, longitud, zona_referencia, fecha_instalacion FROM dispositivos";
@@ -10,13 +9,15 @@ $result = $stmt->get_result();
 ?>
 <!DOCTYPE html>
 <html lang="es">
+<?php include 'php/verificar_sesion.php' ?>
 
 <head>
   <title>Mapa de la República Dominicana</title>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="css/Mapa.css" />
+  <link rel="stylesheet" href="css/config.css" />
   <script src="https://kit.fontawesome.com/20f9d7f848.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
@@ -26,7 +27,6 @@ $result = $stmt->get_result();
 
 <body>
   <header>
-
     <div class="header1">
       <button id="abrir" class="abrir-menu"><svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"
           fill="currentColor" class="abrir" viewBox="0 0 16 16">
@@ -38,7 +38,6 @@ $result = $stmt->get_result();
     <a href="index.html" class="a"> <img class="logo" src="img/logo. png" alt=""></a>
 
     <nav class="header" id="nav">
-
       <button class="cerrar-menu" id="cerrar"><svg xmlns="http://www.w3.org/2000/svg" width="60" height="46"
           fill="currentColor" class="cerrar" viewBox="0 0 16 16">
           <path
@@ -49,11 +48,24 @@ $result = $stmt->get_result();
       <div class="lista">
         <ul class="nav-list">
           <li><a href="index.html">Inicio</a></li>
-          <li><a href="Denuncias-html.html">Denuncias</a></li>
-          <li><a href="qn.html">Quienes somos</a></li>
-          <li><a href="mapa.html">Mapa</a></li>
-          <li><a href="Dispositivo.html">Dispositivo</a></li>
-          <li><a href="Contactos.html">Contactos</a></li>
+          <li><a href="Denuncias-html.php">Denuncias</a></li>
+          <li><a href="qn.php">Quienes somos</a></li>
+          <li><a href="mapa.php">Mapa</a></li>
+          <li><a href="Dispositivo.php">Dispositivo</a></li>
+          <li><a href="contactos.php">Contactos</a></li>
+          <li>
+            <div class="profile-icon-container">
+              <div class="profile-icon" id="profileIcon" onclick="openConfigModal()">
+                <!-- Si hay una foto de perfil, mostrarla -->
+                <img id="profileImage" style="display: none;" src="" alt="Perfil">
+                <!-- Si no hay foto, mostrar iniciales -->
+                <span class="profile-initials" id="profileInitials">?</span>
+              </div>
+              <div class="profile-tooltip" id="profileTooltip">
+                <span id="profileName">Usuario</span>
+              </div>
+            </div>
+          </li>
           <li>
             <button class="iconocampana" onclick="openModal()" style="background-color: white; color: black;">
               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="icon"
@@ -68,11 +80,6 @@ $result = $stmt->get_result();
     </nav>
   </header>
 
-
-
-
-
-  </div>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style="width: 100%; " class="wave">
     <path fill="#2a5298" fill-opacity="1" d="M0,96L48,101.3C96,107,192,117,288,149.3C384,
             181,480,235,576,229.3C672,224,768,160,864,133.3C960,107,1056,117,1152,133.3C1248,149,1344,
@@ -94,26 +101,37 @@ $result = $stmt->get_result();
       <div id="modal-container">
         <div id="modal-content">
           <p class="textocontenet">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" padd height="16" fill="currentColor" class="circle-fill"
-              viewBox="0 0 16 16" color="red">
-              <circle cx="8" cy="8" r="8" />
-            </svg>
-            Nagua tiene una nueva zona roja sea formo <br /><br />
+          <div class="notification-item">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="circle-fill"
-              viewBox="0 0 16 16" color="red">
-              <circle cx="8" cy="8" r="8" />
+              viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8" fill="red" />
             </svg>
-            Ya fue respondido tu mensage (revisa tu chat privado)
-            <br /><br />
+            <span>Nagua tiene una nueva zona roja</span>
+          </div>
+
+          <div class="notification-item">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="circle-fill"
-              viewBox="0 0 16 16" color="red">
-              <circle cx="8" cy="8" r="8" />
-            </svg>Comfirma tu correo electronico <br /><br />
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="circle-fill"
-              viewBox="0 0 16 16" color="red">
-              <circle cx="8" cy="8" r="8" />
+              viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8" fill="red" />
             </svg>
-            Se registro tu usuario (no olvides tu contraseña) <br />
+            <span>Ya fue respondido tu mensaje (revisa tu chat privado)</span>
+          </div>
+
+          <div class="notification-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="circle-fill"
+              viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8" fill="red" />
+            </svg>
+            <span>Confirma tu correo electrónico</span>
+          </div>
+
+          <div class="notification-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="circle-fill"
+              viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8" fill="red" />
+            </svg>
+            <span>Se registró tu usuario (no olvides tu contraseña)</span>
+          </div>
           </p>
           <span class="close-btn" onclick="closeModal()">
             <p>Cerrar</p>
@@ -143,14 +161,13 @@ $result = $stmt->get_result();
         dispositivo NES operativo.
       </p>
     </div>
-  
+
     <main style="display: flex; flex-direction: column; align-items: center; color: white;">
       <h1>Dispositivos registrados</h1>
       <div id="mapa" class=""
         style="height: 500px; width: 65%; margin: 20px auto; border: 2px solid #ddd; border-radius: 10px;">
       </div>
     </main>
-
   </div>
 
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style="margin-top: -30px; " class="svg1">
@@ -158,8 +175,6 @@ $result = $stmt->get_result();
       d="M0,128L60,144C120,160,240,192,360,170.7C480,149,600,75,720,69.3C840,64,960,128,1080,165.3C1200,203,1320,213,1380,218.7L1440,224L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z">
     </path>
   </svg>
-
- 
 
   <div class="footer-basic">
     <footer>
@@ -176,45 +191,201 @@ $result = $stmt->get_result();
       <ul class="list-inline">
         <li class="list-inline-item"><a href="index.html">Home</a></li>
         <li class="list-inline-item">
-          <a href="Denuncias-html.html">Denuncias</a>
+          <a href="Denuncias-html.php">Denuncias</a>
         </li>
-        <li class="list-inline-item"><a href="qn.html">Quienes Somos</a></li>
+        <li class="list-inline-item"><a href="qn.php">Quienes Somos</a></li>
         <li class="list-inline-item">
-          <a href="Dispositivo.html">Dispositivos</a>
+          <a href="Dispositivo.php">Dispositivos</a>
         </li>
         <li class="list-inline-item">
-          <a href="Contactos.html">Contactanos</a>
+          <a href="contactos.php">Contactanos</a>
         </li>
       </ul>
       <p class="copyright">Company NES © 2023</p>
     </footer>
   </div>
 
+  <!-- Modal de Configuración -->
+  <div id="configModal" class="config-modal">
+    <div class="config-modal-content">
+      <div class="config-header">
+        <h2>Configuración de perfil</h2>
+        <span class="close-config" onclick="closeConfigModal()">&times;</span>
+      </div>
+      <div class="config-body">
+        <form id="configForm" onsubmit="return saveConfig(event)">
+          <div class="config-group">
+            <label for="configNombre">Nombre</label>
+            <input type="text" id="configNombre" name="nombre" required>
+          </div>
+          <div class="config-group">
+            <label for="configEmail">Email</label>
+            <input type="email" id="configEmail" name="email" required>
+          </div>
+          <div class="config-group">
+            <label for="configPassword">Nueva Contraseña</label>
+            <input type="password" id="configPassword" name="password">
+            <small>Dejar en blanco si no desea cambiarla</small>
+          </div>
+          <div class="config-buttons">
+            <button type="submit" class="btn-guardar">Guardar cambios</button>
+            <button type="button" class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mostrar el nombre del usuario si está logueado
+    document.addEventListener('DOMContentLoaded', function () {
+      // Función para cargar datos del usuario
+      function loadUserProfile() {
+        // Verificar si el usuario está logueado 
+        if (typeof window.usuarioLogueado !== 'undefined' && window.usuarioLogueado) {
+          // Si ya tenemos el nombre en el objeto window
+          if (window.nombreUsuario) {
+            updateProfileIcon(window.nombreUsuario);
+          } else {
+            // Obtener datos del usuario desde el servidor
+            fetch('php/get_user_data.php')
+              .then(response => response.json())
+              .then(data => {
+                if (!data.error) {
+                  updateProfileIcon(data.nombre);
+                }
+              })
+              .catch(error => console.error('Error cargando perfil:', error));
+          }
+        }
+      }
+
+      // Función para actualizar el ícono de perfil con las iniciales
+      function updateProfileIcon(nombre) {
+        const profileInitials = document.getElementById('profileInitials');
+        const profileName = document.getElementById('profileName');
+
+        if (profileInitials && profileName && nombre) {
+          // Obtener iniciales (primera letra del nombre y primera del apellido si existe)
+          const nameParts = nombre.trim().split(' ');
+          let initials = nameParts[0].charAt(0);
+
+          if (nameParts.length > 1) {
+            initials += nameParts[nameParts.length - 1].charAt(0);
+          }
+
+          profileInitials.textContent = initials.toUpperCase();
+          profileName.textContent = nombre;
+        }
+      }
+
+      // Llamar a la función para cargar el perfil
+      loadUserProfile();
+    });
+  </script>
   <script src="javascript/menu.js"></script>
   <script src="javascript/Mapa.js"></script>
 
+  <script>
+    // Función para abrir el modal de notificaciones
+    function openModal() {
+      document.getElementById('modal-container').style.display = 'flex';
+    }
 
-    <script>
-        // Inicializar el mapa una sola vez
-        const mapaDiv = L.map('mapa').setView([18.7357, -70.1627], 8);
+    // Función para cerrar el modal de notificaciones
+    function closeModal() {
+      document.getElementById('modal-container').style.display = 'none';
+    }
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(mapaDiv);
+    // Función para abrir el modal de configuración
+    function openConfigModal() {
+      document.getElementById('configModal').style.display = 'block';
 
-        // Agregar marcadores desde PHP
-        <?php 
-        while ($row = $result->fetch_assoc()) {
-            echo "L.marker([" . $row['latitud'] . ", " . $row['longitud'] . "])
-                    .addTo(mapaDiv)
-                    .bindPopup(`
-                        <b>ID:</b> " . $row['id_dispositivo'] . "<br>
-                        <b>Zona:</b> " . $row['zona_referencia'] . "<br>
-                        <b>Fecha:</b> " . $row['fecha_instalacion'] . "
-                    `);";
-        }
-        ?>
-    </script>
+      // Cargar datos actuales del usuario si está disponible
+      fetch('php/get_user_data.php')
+        .then(response => response.json())
+        .then(data => {
+          if (!data.error) {
+            document.getElementById('configNombre').value = data.nombre || '';
+            document.getElementById('configEmail').value = data.email || '';
+          }
+        })
+        .catch(error => console.error('Error cargando datos del usuario:', error));
+    }
+
+    // Función para cerrar el modal de configuración
+    function closeConfigModal() {
+      document.getElementById('configModal').style.display = 'none';
+    }
+
+    // Función para guardar la configuración
+    function saveConfig(event) {
+      event.preventDefault();
+
+      const formData = new FormData(document.getElementById('configForm'));
+
+      fetch('php/update_user.php', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Datos actualizados correctamente');
+            closeConfigModal();
+            // Actualizar perfil
+            if (data.nombre) {
+              updateProfileIcon(data.nombre);
+            }
+          } else {
+            alert('Error al actualizar datos: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error al procesar la solicitud');
+        });
+
+      return false;
+    }
+
+    // Función para cerrar sesión
+    function cerrarSesion() {
+      fetch('php/logout.php')
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = 'login.php';
+          } else {
+            alert('Error al cerrar sesión');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
+
+  <script>
+    // Inicializar el mapa una sola vez
+    const mapaDiv = L.map('mapa').setView([18.7357, -70.1627], 8);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(mapaDiv);
+
+    // Agregar marcadores desde PHP
+    <?php
+    while ($row = $result->fetch_assoc()) {
+      echo "L.marker([" . $row['latitud'] . ", " . $row['longitud'] . "])
+                .addTo(mapaDiv)
+                .bindPopup(`
+                    <b>ID:</b> " . $row['id_dispositivo'] . "<br>
+                    <b>Zona:</b> " . $row['zona_referencia'] . "<br>
+                    <b>Fecha:</b> " . $row['fecha_instalacion'] . "
+                `);";
+    }
+    ?>
+  </script>
+  <script src="javascript/config.js"></script>
 </body>
 
 </html>

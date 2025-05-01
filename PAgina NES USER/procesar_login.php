@@ -40,7 +40,7 @@ if ($result->num_rows > 0) {
             echo "Error al guardar los datos de inicio de sesión en el archivo.";
         }
         
-        header("Location: Denuncias-html.html"); 
+        header("Location: Denuncias-html.php"); 
         exit();
     } else {
         echo "Contraseña incorrecta. <a href='index.html'>Intentar de nuevo</a>";

@@ -1,0 +1,272 @@
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Formulario de Contactos</title>
+	<link rel="stylesheet" href="css/contactos1.css">
+	<link rel="stylesheet" href="css/config.css">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+	<script src="https://kit.fontawesome.com/20f9d7f848.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+	<?php include 'php/verificar_sesion.php' ?>
+	<header>
+
+		<div class="header1">
+			<button id="abrir" class="abrir-menu">
+				<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="abrir"
+					viewBox="0 0 16 16">
+					<path fill-rule="evenodd"
+						d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+				</svg>
+			</button>
+		</div>
+		<a href="index.html" class="a"> <img class="logo" src="img/logo. png" alt="" /></a>
+
+		<nav class="header" id="nav">
+			<button class="cerrar-menu" id="cerrar">
+				<svg xmlns="http://www.w3.org/2000/svg" width="60" height="46" fill="currentColor" class="cerrar"
+					viewBox="0 0 16 16">
+					<path
+						d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+				</svg>
+			</button>
+
+			<nav class="header" id="nav">
+				<button class="cerrar-menu" id="cerrar">
+					<svg xmlns="http://www.w3.org/2000/svg" width="60" height="46" fill="currentColor" class="cerrar"
+						viewBox="0 0 16 16">
+						<path
+							d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+					</svg>
+				</button>
+
+				<div class="lista">
+					<ul class="nav-list">
+						<li><a href="index.html">Inicio</a></li>
+						<li><a href="Denuncias-html.php">Denuncias</a></li>
+						<li><a href="qn.php">Quienes somos</a></li>
+						<li><a href="mapa.php">Mapa</a></li>
+						<li><a href="Dispositivo.php">Dispositivo</a></li>
+						<li><a href="contactos.php">Contactos</a></li>
+						<li id="userNameContainer" style="display: none;">
+							<span id="userNameDisplay"></span>
+						</li>
+						<li>
+							<div class="profile-icon-container">
+								<div class="profile-icon" id="profileIcon" onclick="openConfigModal()">
+									<!-- Si hay una foto de perfil, mostrarla -->
+									<img id="profileImage" style="display: none;" src="" alt="Perfil">
+									<!-- Si no hay foto, mostrar iniciales -->
+									<span class="profile-initials" id="profileInitials">?</span>
+								</div>
+								<div class="profile-tooltip" id="profileTooltip">
+									<span id="profileName">Usuario</span>
+								</div>
+							</div>
+						</li>
+						<li>
+							<button class="iconocampana" onclick="openModal()"
+								style="background-color: white; border: none;">
+								<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor"
+									class="icon" viewBox="0 0 16 16">
+									<path
+										d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901" />
+								</svg>
+							</button>
+						</li>
+
+					</ul>
+				</div>
+			</nav>
+			<div id="modal-container">
+				<div id="modal-content">
+					<p class="textocontenet">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" padd height="16" fill="currentColor"
+							class="circle-fill" viewBox="0 0 16 16" color="red">
+							<circle cx="8" cy="8" r="8" />
+						</svg>
+						Nagua tiene una nueva zona roja sea formo <br /><br />
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+							class="circle-fill" viewBox="0 0 16 16" color="red">
+							<circle cx="8" cy="8" r="8" />
+						</svg>
+						Ya fue respondido tu mensage (revisa tu chat privado)
+						<br /><br />
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+							class="circle-fill" viewBox="0 0 16 16" color="red">
+							<circle cx="8" cy="8" r="8" />
+						</svg>Comfirma tu correo electronico <br /><br />
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+							class="circle-fill" viewBox="0 0 16 16" color="red">
+							<circle cx="8" cy="8" r="8" />
+						</svg>
+						Se registro tu usuario (no olvides tu contraseña) <br />
+					</p>
+					<span class="close-btn" onclick="closeModal()">
+						<p>Cerrar</p>
+					</span>
+				</div>
+			</div>
+
+			</div>
+
+	</header>
+
+
+	<div style="margin-bottom: -10px; " class="hero__waves">
+		<div class="titulo">
+			<H1>Contáctanos</H1>
+		</div>
+
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style=" width: 100%;">
+			<path fill="#2a5298" fill-opacity="1"
+				d="M0,96L48,101.3C96,107,192,117,288,149.3C384,181,480,235,576,229.3C672,224,768,160,864,133.3C960,107,1056,117,1152,133.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+			</path>
+		</svg>
+	</div>
+
+
+
+
+	<div style="display: flex;" class="hero">
+
+
+
+		<div class="container-form">
+			<div class="info-form">
+
+				<a
+					href="https://www.google.com/maps/place/Politecnico+ITLA/@18.4481639,-69.667264,15z/data=!4m6!3m5!1s0x8eaf7ff3e13da611:0x945565db2d08b9a8!8m2!3d18.4509386!4d-69.6618307!16s%2Fg%2F11dym99pbn"><i
+						class="fa fa-map-marked"></i> La Caleta,Republica Dominicana</a>
+				<a href="https://mail.google.com/mail/u/0/#inbox"><i class="fa fa-envelope"></i> Ness63540@gmail.com</a>
+				<a href="https://web.whatsapp.com/"><i class="fa fa-phone"></i> +1 (829) 912-9914</a>
+
+
+			</div>
+		
+			<form id="contactForm" onsubmit="return enviarContacto(event)">
+				<input type="text" name="nombre" id="Nombre" placeholder="Nombre" class="campo" required>
+				<input type="email" name="email" id="Email" placeholder="Email" class="campo" required>
+				<textarea name="mensaje" id="Mensaje" placeholder="Mensaje..." required></textarea>
+				<input type="submit" name="enviar" value="Enviar Mensaje" class="btn-enviar">
+			</form>
+		</div>
+
+
+
+
+	</div>
+
+	<div class="footer-basic">
+		<footer>
+
+			<div class="social">
+				<a href="https://www.instagram.com/nes29448/"><i class="icon ion-social-instagram"></i></a>
+				<a href="https://mail.google.com/mail/u/0/#inbox"><i class="fa-solid fa-envelope"></i></a>
+				<a href="https://twitter.com/Nes39489676"><i class="icon ion-social-twitter"></i></a>
+				<a
+					href="https://m.facebook.com/story.php?story_fbid=1254163131833931&substory_index=1254163131833931&id=100089342328341&sfnsn=mo&mibextid=RUbZ1f"><i
+						class="icon ion-social-facebook"></i></a>
+			</div>
+
+			<ul class="list-inline">
+				<li class="list-inline-item"><a href="index.html">Home</a></li>
+				<li class="list-inline-item"><a href="Denuncias-html.php">Denuncias</a></li>
+				<li class="list-inline-item"><a href="qn.php">Quienes Somos</a></li>
+				<li class="list-inline-item"><a href="Dispositivo.php">Dispositivos</a></li>
+				<li class="list-inline-item"><a href="contactos.php">Contactanos</a></li>
+
+			</ul>
+			<p class="copyright">Company NES © 2023</p>
+		</footer>
+
+		<!-- Agregar antes del cierre del body -->
+		<!-- Modal de Configuración -->
+		<div id="configModal" class="config-modal">
+			<div class="config-modal-content">
+				<div class="config-header">
+					<h2>Configuración de perfil</h2>
+					<span class="close-config" onclick="closeConfigModal()">&times;</span>
+				</div>
+				<div class="config-body">
+					<form id="configForm" onsubmit="return saveConfig(event)">
+						<div class="config-group">
+							<label for="configNombre">Nombre</label>
+							<input type="text" id="configNombre" name="nombre" required>
+						</div>
+						<div class="config-group">
+							<label for="configEmail">Email</label>
+							<input type="email" id="configEmail" name="email" required>
+						</div>
+						<div class="config-group">
+							<label for="configPassword">Nueva Contraseña</label>
+							<input type="password" id="configPassword" name="password">
+							<small>Dejar en blanco si no desea cambiarla</small>
+						</div>
+						<div class="config-buttons">
+							<button type="submit" class="btn-guardar">Guardar cambios</button>
+							<button type="button" class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		// Mostrar el nombre del usuario si está logueado
+		document.addEventListener('DOMContentLoaded', function () {
+			// Función para cargar datos del usuario
+			function loadUserProfile() {
+				// Verificar si el usuario está logueado 
+				if (typeof window.usuarioLogueado !== 'undefined' && window.usuarioLogueado) {
+					// Si ya tenemos el nombre en el objeto window
+					if (window.nombreUsuario) {
+						updateProfileIcon(window.nombreUsuario);
+					} else {
+						// Obtener datos del usuario desde el servidor
+						fetch('php/get_user_data.php')
+							.then(response => response.json())
+							.then(data => {
+								if (!data.error) {
+									updateProfileIcon(data.nombre);
+								}
+							})
+							.catch(error => console.error('Error cargando perfil:', error));
+					}
+				}
+			}
+
+			// Función para actualizar el ícono de perfil con las iniciales
+			function updateProfileIcon(nombre) {
+				const profileInitials = document.getElementById('profileInitials');
+				const profileName = document.getElementById('profileName');
+
+				if (profileInitials && profileName && nombre) {
+					// Obtener iniciales (primera letra del nombre y primera del apellido si existe)
+					const nameParts = nombre.trim().split(' ');
+					let initials = nameParts[0].charAt(0);
+
+					if (nameParts.length > 1) {
+						initials += nameParts[nameParts.length - 1].charAt(0);
+					}
+
+					profileInitials.textContent = initials.toUpperCase();
+					profileName.textContent = nombre;
+				}
+			}
+
+			// Llamar a la función para cargar el perfil
+			loadUserProfile();
+		});
+	</script>
+	<script src="javascript/contactos.js"></script>
+	<script src="javascript/contac.js"></script>
+	<script src="javascript/config.js"></script>
+	<script src="javascript/menu_usuario.js"></script>
+</body>
+
+</html>

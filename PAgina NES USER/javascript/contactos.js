@@ -14,29 +14,67 @@ cerrar.addEventListener("click", () => {
 
 //kmkefneikfne
 
-function validar() {
-  let nombre = document.getElementById("Nombre").value;
-  let email = document.getElementById("Email").value;
-  let mensaje = document.getElementById("Mensaje").value;
 
-  if (nombre === "") {
-      alert("Complete el campo de nombre");
-      return false;
-  } else if (email === "") {
-      alert("Complete el campo de correo electrónico");
-      return false;
-  } else if (mensaje === "") {
-      alert("Complete el campo de mensaje");
-      return false;
-  }
-  alert("su envio fue exitoso");
-  return true;
+// Agregar después del código existente
+function validarFormulario() {
+    const nombre = document.getElementById('Nombre').value.trim();
+    const email = document.getElementById('Email').value.trim();
+    const mensaje = document.getElementById('Mensaje').value.trim();
 
+    if (nombre.length < 3) {
+        alert('El nombre debe tener al menos 3 caracteres');
+        return false;
+    }
+
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        alert('Por favor, ingrese un email válido');
+        return false;
+    }
+
+    if (mensaje.length < 10) {
+        alert('El mensaje debe tener al menos 10 caracteres');
+        return false;
+    }
+
+    return true;
 }
+function enviarContacto(event) {
+    event.preventDefault();
 
-alert("mf")
+    if (!validarFormulario()) {
+        return false;
+    }
 
+    const formData = new FormData(document.getElementById('contactForm'));
 
+    fetch('./php/guardar_contacto.php', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            document.getElementById('contactForm').reset();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al enviar el mensaje. Por favor, intente nuevamente.');
+    });
+
+    return false;
+}
 
 
 

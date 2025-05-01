@@ -36,7 +36,6 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/usuario.css">
-<<<<<<< HEAD:NES MAX ADMIN/UsuarioTecnico.php
     <title>Usuarios tecnicos</title>
     <style>
         .action-icon {
@@ -142,10 +141,8 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
             width: 100%;
         }
     </style>
-=======
     <link rel="stylesheet" href="css/modoOscuro.css">
     <title>Usuarios Admins</title>
->>>>>>> c3c9cae6e4f591ef5dffa0b5346306b58378a158:NES MAX ADMIN/UsuarioTecnico.html
 </head>
 
 <body>
@@ -154,7 +151,7 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
         <div class="menu-lat">
             <div class="menu">
                 <div class="imagen">
-                    <a href="PanelDeControl.html">
+                    <a href="PanelDeControl.php">
                         <img src="IMG/logo1.png" alt="">
                     </a>
                 </div>
@@ -170,7 +167,7 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
                             </svg>
                             <input type="search" placeholder="search" id="menuSearch">
                         </div>
-                        <a href="PanelDeControl.html" class="menu-item">
+                        <a href="PanelDeControl.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -571,10 +568,8 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
         }
     </script>
     <script src="js/USerAdminTecnic.js"></script>
-=======
     <script src="js/UserAdmin1.js"></script>
     <script src="js/modoOscuro.js"></script>
->>>>>>> c3c9cae6e4f591ef5dffa0b5346306b58378a158:NES MAX ADMIN/UsuarioTecnico.html
 
 </body>
 

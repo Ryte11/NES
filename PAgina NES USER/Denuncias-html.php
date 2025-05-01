@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Denuncias</title>
+  <link rel="stylesheet" href="css/config.css">
   <link rel="stylesheet" href="css/denuncias1.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
@@ -13,9 +14,9 @@
 </head>
 
 <body>
-
+  
   <header >
-
+   <?php include 'php/verificar_sesion.php' ?>
     <div class="header1">
       <button id="abrir" class="abrir-menu"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="abrir" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
@@ -34,11 +35,27 @@
         <div class="lista">
           <ul class="nav-list">
               <li><a href="index.html">Inicio</a></li>
-              <li><a href="Denuncias-html.html">Denuncias</a></li>
-              <li><a href="qn.html">Quienes somos</a></li>
-              <li><a href="mapa.html">Mapa</a></li>
-              <li><a href="Dispositivo.html">Dispositivo</a></li>
-              <li><a href="Contactos.html">Contactos</a></li>
+              <li><a href="Denuncias-html.php">Denuncias</a></li>
+              <li><a href="qn.php">Quienes somos</a></li>
+              <li><a href="mapa.php">Mapa</a></li>
+              <li><a href="Dispositivo.php">Dispositivo</a></li>
+              <li><a href="contactos.php">Contactos</a></li>
+              <li id="userNameContainer" style="display: none;">
+							<span id="userNameDisplay"></span>
+						</li>
+						<li>
+							<div class="profile-icon-container">
+								<div class="profile-icon" id="profileIcon" onclick="openConfigModal()">
+									<!-- Si hay una foto de perfil, mostrarla -->
+									<img id="profileImage" style="display: none;" src="" alt="Perfil">
+									<!-- Si no hay foto, mostrar iniciales -->
+									<span class="profile-initials" id="profileInitials">?</span>
+								</div>
+								<div class="profile-tooltip" id="profileTooltip">
+									<span id="profileName">Usuario</span>
+								</div>
+							</div>
+						</li>
               <li style="background-color: transparent;">
                 <button class="iconocampana" onclick="openModal()" style="color: black; background-color: #ffff; border: none;">
                     <svg
@@ -261,7 +278,36 @@
 
     </div>
 
-
+    <!-- Modal de Configuración -->
+		<div id="configModal" class="config-modal">
+			<div class="config-modal-content">
+				<div class="config-header">
+					<h2>Configuración de perfil</h2>
+					<span class="close-config" onclick="closeConfigModal()">&times;</span>
+				</div>
+				<div class="config-body">
+					<form id="configForm" onsubmit="return saveConfig(event)">
+						<div class="config-group">
+							<label for="configNombre">Nombre</label>
+							<input type="text" id="configNombre" name="nombre" required>
+						</div>
+						<div class="config-group">
+							<label for="configEmail">Email</label>
+							<input type="email" id="configEmail" name="email" required>
+						</div>
+						<div class="config-group">
+							<label for="configPassword">Nueva Contraseña</label>
+							<input type="password" id="configPassword" name="password">
+							<small>Dejar en blanco si no desea cambiarla</small>
+						</div>
+						<div class="config-buttons">
+							<button type="submit" class="btn-guardar">Guardar cambios</button>
+							<button type="button" class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>            
 
 
   </div>
@@ -278,22 +324,69 @@
 
       <ul class="list-inline">
         <li class="list-inline-item"><a href="index.html">Home</a></li>
-        <li class="list-inline-item"><a href="Denuncias-html.html">Denuncias</a></li>
-        <li class="list-inline-item"><a href="qn.html">Quienes Somos</a></li>
-        <li class="list-inline-item"><a href="mapa.html">mapa</a></li>
-        <li class="list-inline-item"><a href="Dispositivo.html">Dispositivos</a></li>
-        <li class="list-inline-item"><a href="Contactos.html">Contactanos</a></li>
+        <li class="list-inline-item"><a href="Denuncias-html.php">Denuncias</a></li>
+        <li class="list-inline-item"><a href="qn.php">Quienes Somos</a></li>
+        <li class="list-inline-item"><a href="mapa.php">mapa</a></li>
+        <li class="list-inline-item"><a href="Dispositivo.php">Dispositivos</a></li>
+        <li class="list-inline-item"><a href="contactos.php">Contactanos</a></li>
       </ul>
         <p class="copyright">Company NES © 2023</p>
     </footer>
 </div>
+  <script>
+		// Mostrar el nombre del usuario si está logueado
+		document.addEventListener('DOMContentLoaded', function () {
+			// Función para cargar datos del usuario
+			function loadUserProfile() {
+				// Verificar si el usuario está logueado 
+				if (typeof window.usuarioLogueado !== 'undefined' && window.usuarioLogueado) {
+					// Si ya tenemos el nombre en el objeto window
+					if (window.nombreUsuario) {
+						updateProfileIcon(window.nombreUsuario);
+					} else {
+						// Obtener datos del usuario desde el servidor
+						fetch('php/get_user_data.php')
+							.then(response => response.json())
+							.then(data => {
+								if (!data.error) {
+									updateProfileIcon(data.nombre);
+								}
+							})
+							.catch(error => console.error('Error cargando perfil:', error));
+					}
+				}
+			}
+
+			// Función para actualizar el ícono de perfil con las iniciales
+			function updateProfileIcon(nombre) {
+				const profileInitials = document.getElementById('profileInitials');
+				const profileName = document.getElementById('profileName');
+
+				if (profileInitials && profileName && nombre) {
+					// Obtener iniciales (primera letra del nombre y primera del apellido si existe)
+					const nameParts = nombre.trim().split(' ');
+					let initials = nameParts[0].charAt(0);
+
+					if (nameParts.length > 1) {
+						initials += nameParts[nameParts.length - 1].charAt(0);
+					}
+
+					profileInitials.textContent = initials.toUpperCase();
+					profileName.textContent = nombre;
+				}
+			}
+
+			// Llamar a la función para cargar el perfil
+			loadUserProfile();
+		});
+	</script>
 
   <script src="../NES MAX ADMIN/js/alertas1.js"></script>
   <script src="javascript/mapa.js"></script>
   <script src="javascript/chat1.js" defer></script>
-
+  <script src="javascript/config.js"></script>
+	<script src="javascript/menu_usuario.js"></script>
  
-
 </body>
 
 </html>
