@@ -136,6 +136,15 @@ CREATE TABLE `tecnicos` (
 --
 -- Estructura de tabla para la tabla `usuarios`
 --
+CREATE TABLE IF NOT EXISTS configuraciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    modo_oscuro TINYINT(1) NOT NULL DEFAULT 0,
+    idioma VARCHAR(10) NOT NULL DEFAULT 'es',
+    notificaciones_email TINYINT(1) NOT NULL DEFAULT 0,
+    notificaciones_push TINYINT(1) NOT NULL DEFAULT 0,
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,

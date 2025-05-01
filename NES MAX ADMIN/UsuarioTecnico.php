@@ -36,6 +36,7 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/usuario.css">
+<<<<<<< HEAD:NES MAX ADMIN/UsuarioTecnico.php
     <title>Usuarios tecnicos</title>
     <style>
         .action-icon {
@@ -141,6 +142,10 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
             width: 100%;
         }
     </style>
+=======
+    <link rel="stylesheet" href="css/modoOscuro.css">
+    <title>Usuarios Admins</title>
+>>>>>>> c3c9cae6e4f591ef5dffa0b5346306b58378a158:NES MAX ADMIN/UsuarioTecnico.html
 </head>
 
 <body>
@@ -545,6 +550,7 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
         </div>
     </div>
 
+<<<<<<< HEAD:NES MAX ADMIN/UsuarioTecnico.php
     <script>
         function abrirModificar(id, usuario, nombre, cedula) {
             document.getElementById('modificarId').value = id;
@@ -565,6 +571,10 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
         }
     </script>
     <script src="js/USerAdminTecnic.js"></script>
+=======
+    <script src="js/UserAdmin1.js"></script>
+    <script src="js/modoOscuro.js"></script>
+>>>>>>> c3c9cae6e4f591ef5dffa0b5346306b58378a158:NES MAX ADMIN/UsuarioTecnico.html
 
 </body>
 
