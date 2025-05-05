@@ -57,7 +57,7 @@ try {
             $_SESSION['rol'] = $usuario['rol'];
 
             if ($usuario['rol'] == 'admin') {
-                header('Location: ../PanelDeControl.html');
+                header('Location: ../PanelDeControl.php');
             } else if ($usuario['rol'] == 'normal') {
                 header('Location: ../Usuario.html');
             }

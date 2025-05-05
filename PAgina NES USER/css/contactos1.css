@@ -358,8 +358,10 @@ nav a:hover{
 }
 
 .nav-list {
+    display: flex;
     list-style-type: none;
-    
+    justify-content: flex-end;
+    align-items: center;
 }
 .nav-list a{
     color: #000000;    

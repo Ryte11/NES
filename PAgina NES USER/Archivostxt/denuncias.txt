@@ -35,3 +35,11 @@ Tipo: ruido
 Descripción: jkldhjashdjkashdsjkahdjkashdjkashdjkash soy frayyyyyyyyyy
 Fecha: 2025-04-26 01:58:00
 ---------------------------
+Nombre: Luisangel 
+Cédula: 232132321312
+Ubicación: caleta rd
+Tipo: ruido
+Descripción: Soy el goat
+
+Fecha: 2025-04-28 17:53:24
+---------------------------

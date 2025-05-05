@@ -4,17 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/usuario.css">
-    <title>Usuarios Admins</title>
+    <link rel="stylesheet" href="css/Style.css">
+    <link rel="stylesheet" href="css/guiaUsuario.css">
+    <link rel="stylesheet" href="css/modoOscuro.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <title>Panel De Control</title>
 </head>
-
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+<?php include 'php/verificar_sesion.php' ?>
 <body>
-
     <div class="principal">
         <div class="menu-lat">
             <div class="menu">
                 <div class="imagen">
-                    <a href="PanelDeControl.html">
+                    <a href="PanelDeControl.php">
                         <img src="IMG/logo1.png" alt="">
                     </a>
                 </div>
@@ -30,7 +37,7 @@
                             </svg>
                             <input type="search" placeholder="search" id="menuSearch">
                         </div>
-                        <a href="PanelDeControl.html" class="menu-item">
+                        <a href="PanelDeControl.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -104,7 +111,6 @@
                             <ul class="submenu">
                                 <li><a href="Usuario.html">Usuarios Administrativos</a></li>
                                 <li><a href="UsuarioMaxAdmin.html">Máximo Administrador</a></li>
-                                <li><a href="UsuarioMaxAdmin.html">Usurios tecnicos</a></li>
                             </ul>
                         </li>
                         <a href="Configuracion.html" class="menu-item">
@@ -152,7 +158,7 @@
         </div>
         <div class="derecha">
             <div class="header">
-                <h2 class="titulo">Gestión de Usuarios</h2>
+                <h2 class="titulo-panel">Panel de control</h2>
                 <div class="datos">
                     <div class="perfil">
                         <img src="IMG/Victoria.png" alt="">
@@ -215,148 +221,218 @@
                         </div>
                     </div>
 
-
                 </div>
-
             </div>
-
-
-
-
-            <div class="card">
-                <div class="card-header">
-                    <span></span>
-                    <h2 class="card-title">Usuarios Administradores</h2>
-                    <button class="add-button">+</button>
-                </div>
-
-                <table class="users-table">
-                    <thead>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>ID</th>
-                            <th>Correo electrónico</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="position: relative;">
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">
-                                        <img src="IMG/Victoria.png" alt="Victoria Flores">
-                                    </div>
-                                    <span>Victoria Flores</span>
-                                </div>
-                            </td>
-                            <td class="text-gray">(270) 555-0117</td>
-                            <td class="text-gray">Luisangelgamer20@gmail.com</td>
-                            <td>
-                                <span class="verified-icon">✓</span>
-                            </td>
-                            <td>
-                                <div class="menu-container">
-                                    <button class="more-options">⋮</button>
-                                    <div class="options-menu">
-                                        <button onclick="alert('Se podra modificar en un futuro.')">Modificar</button>
-                                        <button onclick="alert('Se eliminara en un futuro.')">Eliminar</button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr style="position: relative;">
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">
-                                        <img src="IMG/Victoria.png" alt="Victoria Flores">
-                                    </div>
-                                    <span>Victoria Flores</span>
-                                </div>
-                            </td>
-                            <td class="text-gray">(270) 555-0117</td>
-                            <td class="text-gray">Luisangelgamer20@gmail.com</td>
-                            <td>
-                                <span class="verified-icon">✓</span>
-                            </td>
-                            <td>
-                                <div class="menu-container">
-                                    <button class="more-options">⋮</button>
-                                    <div class="options-menu">
-                                        <button onclick="alert('Se podra modificar en un futuro.')">Modificar</button>
-                                        <button onclick="alert('Se eliminara en un futuro.')">Eliminar</button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr style="position: relative;">
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">
-                                        <img src="IMG/Victoria.png" alt="Victoria Flores">
-                                    </div>
-                                    <span>Victoria Flores</span>
-                                </div>
-                            </td>
-                            <td class="text-gray">(270) 555-0117</td>
-                            <td class="text-gray">Luisangelgamer20@gmail.com</td>
-                            <td>
-                                <span class="verified-icon">✓</span>
-                            </td>
-                            <td>
-                                <div class="menu-container">
-                                    <button class="more-options">⋮</button>
-                                    <div class="options-menu">
-                                        <button onclick="alert('Se podra modificar en un futuro.')">Modificar</button>
-                                        <button onclick="alert('Se eliminara en un futuro.')">Eliminar</button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-
-
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="modal" id="userModal">
-                <div class="modal-content">
-                    <div class="modal-left">
-                        <img src="IMG/stacked-waves-haikei.png" alt="Waves" class="waves-bg">
-                        <h2>Agregar un nuevo administrador</h2>
+            <div class="contenido">
+                <div class="arriba">
+                    <div class="div-gradiant">
+                        <div class="text">
+                            <h3>Alertas</h3>
+                            <p>Sistema de alertas, Este refleja todas las alertas enviadas por el usuario y el
+                                dispositivo.</p>
+                            <button>
+                                <a href="Alertas.php"  style="color: white; text-decoration: none; cursor: pointer;">Gestionar Alertas</a> 
+                            </button>
+                        </div>
+                        <div class="img-div">
+                            <div>
+                                <img src="IMG/under-constructions-55 (1).svg" alt="">
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-right">
-                        <h3>Nuevo Usuario</h3>
-                        <p>Llena los campos y agrega un nuevo Usuario!!</p>
-
-                        <form id="userForm" method="POST" action="php/user.php">
-                            <div class="form-group">
-                                <input type="text" class="form-input" id="usuario" name="nombre" placeholder="Usuario">
-                                <div class="error-message" id="usuarioError">Este ID es incorrecto</div>
+                    <div>
+                        <h3 class="titulo-chart">Denuncias Totales</h3>
+                        <div class="chart-container">
+                            <canvas id="myChart"></canvas>
+                            <div class="total">1230</div>
+                        </div>
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #4B0082;"></div>
+                                <span>Vehículos</span>
                             </div>
-
-                            <div class="form-group">
-                                <input type="email" class="form-input" id="email" name="email"
-                                    placeholder="Correo electrónico">
-                                <div class="error-message" id="emailError">Correo electrónico inválido</div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #00BCD4;"></div>
+                                <span>Construcción</span>
                             </div>
-
-                            <div class="form-group">
-                                <input type="password" class="form-input" id="password" name="password"
-                                    placeholder="Contraseña">
-                                <div class="error-message" id="passwordError">Contraseña inválida</div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #FF4444;"></div>
+                                <span>Parlantes</span>
                             </div>
+                        </div>
+                    </div>
+                    <div class="alertas-panel">
+                        <div class="alertas-titulo">Alertas Recientes</div>
+                        <ul class="alertas-lista">
+                            <li class="alerta-item">
+                                <div class="alerta-punto"></div>
+                                <div class="alerta-contenido">
+                                    <div class="alertas-activas">15 alertas activas</div>
+                                </div>
+                            </li>
+                            <li class="alerta-item">
+                                <div class="alerta-punto"></div>
+                                <div class="alerta-contenido">
+                                    Ultima alerta: 2 min atras
+                                    en Boca chica, La caleta
+                                </div>
+                            </li>
+                            <li class="alerta-item">
+                                <div class="alerta-punto"></div>
+                                <div class="alerta-contenido">
+                                    55 denuncias en Santo Domingo
+                                </div>
+                            </li>
+                            <li class="alerta-item">
+                                <div class="alerta-punto"></div>
+                                <div class="alerta-contenido">
+                                    Alertas por ruido vehicular en santiago
+                                </div>
+                            </li>
+                        </ul>
+                        <a href="Alertas.php">
+                            <button class="gestion-btn">Gestionar Alertas</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="abajo">
 
-                            <button type="submit" class="create-button">Crear usuario</button>
-                        </form>
+                    <div class="div-gradiant">
+                        <div class="text">
+                            <h3>Dashboard</h3>
+                            <p>Dashboard, este muestra una serie de gráficos los cuales muestran los datos de todas las
+                                denuncias.</p>
+                            <button>Ver Dashboard</button>
+                        </div>
+                        <div class="img-div">
+                            <div class="svg-2">
+                                <img src="IMG/finance-app-1-98 (1).svg" alt="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grafico-container">
+                        <div class="titulo">Tendencias de Denuncias</div>
+                        <div class="leyenda">
+                            <div class="leyenda-item">
+                                <div class="leyenda-color" style="background-color: #000080;"></div>
+                                <span>M</span>
+                            </div>
+                            <div class="leyenda-item">
+                                <div class="leyenda-color" style="background-color: #00BCD4;"></div>
+                                <span>F</span>
+                            </div>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="denunciasChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- guia de usuario -->
+            <div id="guide" class="guide">
+                <div class="guide-header">
+                    <div class="header-content">
+                        <span class="emoji">📘</span>
+                        <h2>Guía Completa de Uso</h2>
+                    </div>
+                    <i class="close-button" onclick="toggleGuide()">✕</i>
+                </div>
+                <div class="guide-content">
+                    <div class="nav-button" onclick="showPrevious()">
+                        <i class="arrow-left">‹</i>
+                    </div>
+                    <div class="content-area">
+                        <div id="slide1" class="slide">
+                            <div class="section">
+                                <div class="blue-line"></div>
+                                <div class="section-content">
+                                    <h3>
+                                        <span class="emoji">🚀</span> Introducción
+                                    </h3>
+                                    <p>Bienvenido a nuestra plataforma. Esta guía te ayudará a navegar y aprovechar al
+                                        máximo todas
+                                        las funcionalidades.</p>
+                                </div>
+                            </div>
+                            <div class="section">
+                                <div class="blue-line"></div>
+                                <div class="section-content">
+                                    <h3>
+                                        <span class="emoji">🔐</span> Primeros Pasos
+                                    </h3>
+                                    <p>1. Registro: Crea tu cuenta utilizando tu correo electrónico o redes sociales.
+                                    </p>
+                                    <p>2. Perfil: Completa tu información personal para personalizar tu experiencia.</p>
+                                </div>
+                            </div>
+                            <div class="section">
+                                <div class="blue-line"></div>
+                                <div class="section-content">
+                                    <h3>
+                                        <span class="emoji">🛠️</span> Configuración Avanzada
+                                    </h3>
+                                    <p>3. Personalización: Ajusta configuraciones de privacidad y notificaciones.</p>
+                                    <p>4. Integraciones: Conecta tu cuenta con otras plataformas.</p>
+                                    <p>5. Seguridad: Configura autenticación de dos factores.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="slide2" class="slide hidden">
+                            <div class="section">
+                                <div class="blue-line"></div>
+                                <div class="section-content">
+                                    <h3>
+                                        <span class="emoji">🧭</span> Navegación Principal
+                                    </h3>
+                                    <p>Explora nuestro menú dividido en secciones intuitivas:</p>
+                                    <ul>
+                                        <li>Inicio: Vista general de servicios.</li>
+                                        <li>Perfil: Gestiona tu información.</li>
+                                        <li>Servicios: Accede a todas las funcionalidades.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="section">
+                                <div class="blue-line"></div>
+                                <div class="section-content">
+                                    <h3>
+                                        <span class="emoji">📊</span> Gestión de Datos
+                                    </h3>
+                                    <p>6. Análisis: Explora herramientas de seguimiento y reportes.</p>
+                                    <p>7. Exportación: Descarga y comparte informacion importante.</p>
+                                    <p>8. Respaldos: Configura copias de seguridad automáticas.</p>
+                                </div>
+                            </div>
+                            <div class="section">
+                                <div class="blue-line"></div>
+                                <div class="section-content">
+                                    <h3>
+                                        <span class="emoji">❓</span> Soporte Técnico
+                                    </h3>
+                                    <p>Si encuentras un problema, contacta a nuestro equipo de soporte disponible 24/7.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-button" onclick="showNext()">
+                        <i class="arrow-right">›</i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="js/UserAdmin1.js"></script>
 
+
+
+    <script src="js/PanelControl.js"></script>
+    <script src="js/modoOscuro.js"></script>
 </body>
 
 </html>

@@ -61,3 +61,10 @@ Cédula: 23213232131222
 Estado: activo
 Fecha de Registro: 2025-04-26 01:57:26
 ---------------------------
+Usuario: Luisangel ramirez ca
+Teléfono: 829 912 9914
+Email: luisrc@gmail.com
+Cédula: 123456789012222
+Estado: activo
+Fecha de Registro: 2025-04-27 07:26:57
+---------------------------

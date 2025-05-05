@@ -19,7 +19,7 @@
     <div class="menu-lat">
         <div class="menu">
             <div class="imagen">
-                <a href="PanelDeControl.html">
+                <a href="PanelDeControl.php">
                     <img src="IMG/logo1.png" alt="">
                 </a>
             </div>
@@ -34,7 +34,7 @@
                         </svg>
                         <input type="search" placeholder="search" id="menuSearch">
                     </div>
-                    <a href="PanelDeControl.html" class="menu-item">
+                    <a href="PanelDeControl.php" class="menu-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-linecap="round" stroke-linejoin="round" width="32" height="32" stroke-width="1.75">
                             <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
@@ -167,98 +167,73 @@
 
             </div>
             <div class="flex-1 p-6">
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Configuración de Alertas -->
-                    <div class="bg-white p-6 rounded shadow">
-                        <h2 class="text-2xl font-bold text-blue-700 mb-4" style="font-weight: bold;">Configuración de
-                            Alertas</h2>
-                        <h3 class="text-xl font-semibold mb-2">
-                            <i class="fas fa-volume-up mr-2"></i>
-                            Parámetros de medición
-                        </h3>
-                        <div class="mb-4">
-                            <label class="block text-gray-700" for="decibeles">Límite de Decibeles (dB)</label>
-                            <input class="w-full p-2 border rounded" id="decibeles" type="number" value="60" />
-                            <p class="text-gray-500 text-sm">Se generará una alerta cuando se supere este nivel</p>
+                <form id="configForm" action="guardar_configuracion.php" method="POST">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded shadow">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-4">Sistema</h2>
+                            <h3 class="text-xl font-semibold mb-2">
+                                <i class="fas fa-cogs mr-2"></i>
+                                Preferencias Generales
+                            </h3>
+                            <div class="mb-4 flex items-center justify-between">
+                                <span>Modo Oscuro</span>
+                                <label class="switch">
+                                    <input id="modoOscuro" name="modoOscuro" type="checkbox" class="configuracion-input" />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700" for="idioma">Idioma</label>
+                                <select class="w-full p-2 border rounded configuracion-input" id="idioma" name="idioma">
+                                    <option value="es">Español</option>
+                                    <option value="en">Inglés</option>
+                                    <option value="fr">Francés</option>
+                                    <option value="de">Alemán</option>
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-gray-700" for="ventana">Ventana de Tiempo (minutos)</label>
-                            <input class="w-full p-2 border rounded" id="ventana" type="text" value="15 (min)" />
-                            <p class="text-gray-500 text-sm">Tiempo mínimo de exposición para generar alerta</p>
+                        <div class="bg-white p-6 rounded shadow">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-4">Notificaciones</h2>
+                            <h3 class="text-xl font-semibold mb-2">
+                                <i class="fas fa-bell mr-2"></i>
+                                Configuración de Dispositivos
+                            </h3>
+                            <div class="mb-4 flex items-center justify-between">
+                                <span>Notificaciones por Email</span>
+                                <label class="switch">
+                                    <input id="notificacionesEmail" name="notificacionesEmail" type="checkbox" class="configuracion-input" />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>Notificaciones Push</span>
+                                <label class="switch">
+                                    <input id="notificacionesPush" name="notificacionesPush" type="checkbox" class="configuracion-input" />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Sistema -->
-                    <div class="bg-white p-6 rounded shadow">
-                        <h2 class="text-2xl font-bold text-blue-700 mb-4">Sistema</h2>
-                        <h3 class="text-xl font-semibold mb-2">
-                            <i class="fas fa-cogs mr-2"></i>
-                            Preferencias Generales
-                        </h3>
-                        <div class="mb-4 flex items-center justify-between">
-                            <span>Modo Oscuro</span>
-                            <label class="switch">
-                                <input id="modoOscuro" type="checkbox" />
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div>
-                            <label class="block text-gray-700" for="idioma">Idioma</label>
-                            <select class="w-full p-2 border rounded" id="idioma">
-                                <option>Español</option>
-                                <option>Inglés</option>
-                                <option>Francés</option>
-                                <option>Alemán</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!-- Notificaciones -->
-                    <div class="bg-white p-6 rounded shadow">
-                        <h2 class="text-2xl font-bold text-blue-700 mb-4">Notificaciones</h2>
-                        <h3 class="text-xl font-semibold mb-2">
-                            <i class="fas fa-bell mr-2"></i>
-                            Configuración de Dispositivos
-                        </h3>
-                        <div class="mb-4 flex items-center justify-between">
-                            <span>Notificaciones por Email</span>
-                            <label class="switch">
-                                <input id="notificacionesEmail" type="checkbox" />
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span>Notificaciones Push</span>
-                            <label class="switch">
-                                <input id="notificacionesPush" type="checkbox" />
-                                <span class="slider round"></span>
-                            </label>
+                        <div class="bg-white p-6 rounded shadow">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-4">Copias de Seguridad</h2>
+                            <h3 class="text-xl font-semibold mb-2">Programar Copias de Seguridad</h3>
+                            <div class="mb-4">
+                                <label class="block text-gray-700" for="frecuenciaBackup">Frecuencia de Copia de Seguridad</label>
+                                <select class="w-full p-2 border rounded configuracion-input" id="frecuenciaBackup" name="frecuenciaBackup">
+                                    <option value="diaria">Diaria</option>
+                                    <option value="semanal">Semanal</option>
+                                    <option value="mensual">Mensual</option>
+                                </select>
+                            </div>
+                            <div class="mt-4">
+                                <button type="button" id="crearBackup" class="bg-blue-700 text-white px-4 py-2 rounded">Crear Copia de Seguridad</button>
+                            </div>
                         </div>
                     </div>
-                    <!-- Dispositivos -->
-                    <div class="bg-white p-6 rounded shadow">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-2xl font-bold text-blue-700" id="dispositivosTitulo">Dispositivos</h2>
-                            <button class="bg-blue-700 text-white p-2 rounded" id="addDeviceBtn">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-2">
-                            <i class="fas fa-mobile-alt mr-2"></i>
-                            <span id="configuracionDispositivosTitulo">Configuración de Dispositivos</span>
-                        </h3>
-                        <div>
-                            <label class="block text-gray-700" for="frecuencia" id="frecuenciaMuestreoLabel">Frecuencia
-                                de
-                                Muestreo</label>
-                            <select class="w-full p-2 border rounded" id="frecuencia">
-                                <option>Cada 30 segundos</option>
-                                <option>Cada 1 minuto</option>
-                                <option>Cada 5 minutos</option>
-                            </select>
-                        </div>
+                    <div class="mt-6">
+                        <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded">Guardar Configuración</button>
                     </div>
-                </div>
-            </div>
+                    
+                </form>
             <!-- guia de usuario -->
             <div id="guide" class="guide">
                 <div class="guide-header">
@@ -355,7 +330,117 @@
     </div>
 
     <script src="js/config.js"></script>
-    <script src="js/PanelControl.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        /* Estilo para el modo oscuro */
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+    </style>
+    <script>
+        // Al cargar la página, aplicar el modo oscuro si está activado en localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const modoOscuroCheckbox = document.getElementById('modoOscuro');
+            const isDarkMode = localStorage.getItem('modoOscuro') === 'true';
+
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                if (modoOscuroCheckbox) modoOscuroCheckbox.checked = true;
+            }
+
+            // Escuchar cambios en el checkbox y guardar el estado en localStorage
+            if (modoOscuroCheckbox) {
+                modoOscuroCheckbox.addEventListener('change', () => {
+                    const isChecked = modoOscuroCheckbox.checked;
+                    document.body.classList.toggle('dark-mode', isChecked);
+                    localStorage.setItem('modoOscuro', isChecked);
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Referencias a los elementos
+            const idiomaSelect = document.getElementById('idioma');
+            const notificacionesEmailCheckbox = document.getElementById('notificacionesEmail');
+            const notificacionesPushCheckbox = document.getElementById('notificacionesPush');
+
+            // Cargar configuraciones desde localStorage
+            const savedIdioma = localStorage.getItem('idioma');
+            const savedNotificacionesEmail = localStorage.getItem('notificacionesEmail') === 'true';
+            const savedNotificacionesPush = localStorage.getItem('notificacionesPush') === 'true';
+
+            // Aplicar configuraciones al cargar la página
+            if (savedIdioma && idiomaSelect) idiomaSelect.value = savedIdioma;
+            if (notificacionesEmailCheckbox) notificacionesEmailCheckbox.checked = savedNotificacionesEmail;
+            if (notificacionesPushCheckbox) notificacionesPushCheckbox.checked = savedNotificacionesPush;
+
+            // Guardar cambios en localStorage
+            if (idiomaSelect) {
+                idiomaSelect.addEventListener('change', () => {
+                    localStorage.setItem('idioma', idiomaSelect.value);
+                });
+            }
+
+            if (notificacionesEmailCheckbox) {
+                notificacionesEmailCheckbox.addEventListener('change', () => {
+                    localStorage.setItem('notificacionesEmail', notificacionesEmailCheckbox.checked);
+                });
+            }
+
+            if (notificacionesPushCheckbox) {
+                notificacionesPushCheckbox.addEventListener('change', () => {
+                    localStorage.setItem('notificacionesPush', notificacionesPushCheckbox.checked);
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const crearBackupButton = document.getElementById('crearBackup');
+
+            if (crearBackupButton) {
+                crearBackupButton.addEventListener('click', () => {
+                    // Simulación de datos de usuarios
+                    const usuarios = [
+                        { ID: 1, Nombre: 'Luisangel', Email: 'luisangelgamer20@gmail.com', Rol: 'admin' },
+                        { ID: 2, Nombre: 'Victoria flores', Email: 'luisangelgamer2000@gmail.com', Rol: 'normal' },
+                        // Agregar más usuarios según sea necesario
+                    ];
+
+                    // Simulación de datos de dispositivos
+                    const dispositivos = [
+                        { ID: 1, Nombre: 'Sensor A', Tipo: 'Temperatura', Estado: 'Activo' },
+                        { ID: 2, Nombre: 'Cámara B', Tipo: 'Seguridad', Estado: 'Inactivo' },
+                        // Agregar más dispositivos según sea necesario
+                    ];
+
+                    // Simulación de datos de alertas
+                    const alertas = [
+                        { ID: 1, Mensaje: 'Temperatura alta', Fecha: '2023-10-01', Prioridad: 'Alta' },
+                        { ID: 2, Mensaje: 'Movimiento detectado', Fecha: '2023-10-02', Prioridad: 'Media' },
+                        // Agregar más alertas según sea necesario
+                    ];
+
+                    // Crear hojas de datos
+                    const hojaUsuarios = XLSX.utils.json_to_sheet(usuarios);
+                    const hojaDispositivos = XLSX.utils.json_to_sheet(dispositivos);
+                    const hojaAlertas = XLSX.utils.json_to_sheet(alertas);
+
+                    // Crear libro de trabajo
+                    const libro = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(libro, hojaUsuarios, 'Usuarios');
+                    XLSX.utils.book_append_sheet(libro, hojaDispositivos, 'Dispositivos');
+                    XLSX.utils.book_append_sheet(libro, hojaAlertas, 'Alertas');
+
+                    // Generar archivo Excel
+                    const nombreArchivo = `reporte_completo_${new Date().toISOString().slice(0, 10)}.xlsx`;
+                    XLSX.writeFile(libro, nombreArchivo);
+
+                    alert('Reporte completo generado exitosamente en formato Excel.');
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

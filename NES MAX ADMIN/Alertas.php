@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/alertas1.css">
-
+    <link rel="stylesheet" href="css/modoOscuro.css">
     <title>Alertas ax Admin</title>
 </head>
 
@@ -14,7 +14,7 @@
         <div class="menu-lat">
             <div class="menu">
                 <div class="imagen">
-                    <a href="PanelDeControl.html">
+                    <a href="PanelDeControl.php">
                         <img src="IMG/logo1.png" alt="">
                     </a>
                 </div>
@@ -30,7 +30,7 @@
                             </svg>
                             <input type="search" placeholder="search" id="menuSearch">
                         </div>
-                        <a href="PanelDeControl.html" class="menu-item">
+                        <a href="PanelDeControl.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -453,6 +453,7 @@
 
     <script src="js/alertas.js"></script>         
     <script src="js/alertas4.js" defer></script>
+    <script src="js/modoOscuro.js"></script>
 </body>
 
 </html>

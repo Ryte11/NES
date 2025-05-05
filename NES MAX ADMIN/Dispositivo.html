@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dispositivos</title>
     <link rel="stylesheet" href="css/dispositivo1.css">
-        <link rel="stylesheet" href="css/guiaUsuario.css">
-
+    <link rel="stylesheet" href="css/guiaUsuario.css">
+    <link rel="stylesheet" href="css/modoOscuro.css">
 </head>
 
 <body>
     <div class="menu-lat">
         <div class="menu">
             <div class="imagen">
-                <a href="PanelDeControl.html">
+                <a href="PanelDeControl.php">
                     <img src="IMG/logo1.png" alt="">
                 </a>
             </div>
@@ -29,7 +29,7 @@
                         </svg>
                         <input type="search" placeholder="search" id="menuSearch">
                     </div>
-                    <a href="PanelDeControl.html" class="menu-item">
+                    <a href="PanelDeControl.php" class="menu-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-linecap="round" stroke-linejoin="round" width="32" height="32" stroke-width="1.75">
                             <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
@@ -171,7 +171,7 @@
             <div class="overlay" id="modalOverlay">
                 <div class="modal">
                     
-            <form id="dispositivo-form" method="POST" action="php/dispositivo.php">
+            <form id="dispositivo-form" method="POST" action="php/Dispositivo.html">
                 <h2>Incorpora un dispositivo!</h2>
             
                 <input type="text" id="id" name="id" placeholder="ID del dispositivo" class="id">
@@ -327,6 +327,7 @@
 
 
     <script src="js/Dispositivo2.js"></script>
+    <script src="js/modoOscuro.js"></script>
 </body>
 
 </html>

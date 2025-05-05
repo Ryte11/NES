@@ -41,7 +41,7 @@ $sql->bind_param("sssss", $nombre, $cedula, $ubicacion, $tipo, $descripcion);
 if ($sql->execute()) {
     echo "<script>
         alert('Denuncia guardada correctamente.');
-        window.location.href = 'Denuncias-html.html'; // Cambia según la página que quieras redirigir
+        window.location.href = 'Denuncias-html.php'; // Cambia según la página que quieras redirigir
     </script>";
 } else {
     echo "Error al ejecutar la consulta: " . $conn->error;
