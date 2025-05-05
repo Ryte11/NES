@@ -9,13 +9,13 @@ if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
     exit();
 }
 
-$host = "localhost";
-$usuario = "root";
-$password = "";
-$baseDeDatos = "nes";
+$servername = "localhost";
+$username = "root"; 
+$password = ""; 
+$dbname = "nes";
 
 try {
-    $conn = new mysqli($host, $usuario, $password, $baseDeDatos);
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
     if ($conn->connect_error) {
         throw new Exception("Error de conexión: " . $conn->connect_error);

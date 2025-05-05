@@ -1,15 +1,41 @@
+<?php
+// Iniciar sesión
+session_start();
+
+// Configuración de conexión a la base de datos
+$servername = "localhost";
+$username = "root"; 
+$password = ""; 
+$dbname = "nes";
+
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+if (!$conn) {
+    die("Error de conexión: " . mysqli_connect_error());
+}
+
+// Añade al inicio del script para ver los errores
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
+// Consulta para obtener usuarios técnicos con toda la información relevante
+$sql = "SELECT id, usuario, nombre_completo, cedula, password, id_dispositivo, fecha_instalacion, ubicacion_geografica, zona_referencia, estado_dispositivo, comentario FROM tecnicos";
+$result = mysqli_query($conn, $sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/alertas.css">
-
-    <title>Alertas ax Admin</title>
+    <link rel="stylesheet" href="css/usuario.css">
+    <title>Usuarios Admins</title>
 </head>
 
 <body>
+
     <div class="principal">
         <div class="menu-lat">
             <div class="menu">
@@ -42,7 +68,7 @@
                             <h3>Panel de control</h3>
 
                         </a>
-                        <a href="Alertas.html" class="menu-item">
+                        <a href="Alertas.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -90,6 +116,23 @@
                             </svg>
                             <h3>Dispositivo</h3>
                         </a>
+                        <li class="lista">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+                            </svg>
+                            <a href="Usuario.html">Usuarios</a>
+                            <ul class="submenu">
+                                <li><a href="UsuariosADMIN.php">Usuarios Administrativos</a></li>
+                                <li><a href="UsuarioMAXADMIN.php">Máximo Administrador</a></li>
+                                <li><a href="UsuarioTECNICO.php">Usurios tecnicos</a></li>
+                            </ul>
+                        </li>
                         <a href="Configuracion.html" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
@@ -135,13 +178,14 @@
         </div>
         <div class="derecha">
             <div class="header">
-                <h2 class="titulo-panel">Alertas</h2>
+                <h2 class="titulo">Gestión de Usuarios</h2>
                 <div class="datos">
                     <div class="perfil">
                         <img src="IMG/Victoria.png" alt="">
                         <div class="online"></div>
                         <h2>Victoria</h2>
                     </div>
+                    <!-- Popup Modal para Editar Perfil -->
                     <div class="perfil-modal" id="perfilModal">
                         <div class="perfil-modal-content">
                             <div class="perfil-modal-header">
@@ -201,138 +245,121 @@
                 </div>
 
             </div>
-            <main class="main-content">
-                <header class="header">
 
-                    <div class="container">
-                        <div class="stat-button light" id="sistemas-btn">
-                            <p class="stat-number">32</p>
-                            <p class="stat-label">Sistema</p>
-                        </div>
-                        <div class="stat-button dark" id="dispositivos-btn">
-                            <p class="stat-number">99+</p>
-                            <p class="stat-label">Dispotivos</p>
-                        </div>
+
+
+
+            <div class="card">
+                <div class="card-header">
+                    <span></span>
+                    <h2 class="card-title">Usuarios Tecnico</h2>
+                    <button class="add-button">+</button>
+                </div>
+
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>ID</th>
+                            <th>Nombre Completo</th>
+                            <th>Cédula</th>
+                            <th>Correo electrónico</th>
+                            <th>ID Dispositivo</th>
+                            <th>Fecha Instalación</th>
+                            <th>Ubicación</th>
+                            <th>Zona</th>
+                            <th>Estado</th>
+                            <th>Comentario</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php 
+                        // Mostrar los datos de la tabla tecnicos
+                        if (mysqli_num_rows($result) > 0) {
+                            while($row = mysqli_fetch_assoc($result)) {
+                                echo '<tr style="position: relative;">
+                                        <td>
+                                            <div class="user-info">
+                                                <div class="user-avatar">
+                                                    <img src="IMG/Victoria.png" alt="' . $row["usuario"] . '">
+                                                </div>
+                                                <span>' . $row["usuario"] . '</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-gray">' . $row["id"] . '</td>
+                                        <td class="text-gray">' . $row["nombre_completo"] . '</td>
+                                        <td class="text-gray">' . $row["cedula"] . '</td>
+                                        <td class="text-gray">Luisangelgamer20@gmail.com</td>
+                                        <td class="text-gray">' . ($row["id_dispositivo"] ? $row["id_dispositivo"] : "NULL") . '</td>
+                                        <td class="text-gray">' . ($row["fecha_instalacion"] ? $row["fecha_instalacion"] : "0000-00-00") . '</td>
+                                        <td class="text-gray">' . ($row["ubicacion_geografica"] ? $row["ubicacion_geografica"] : "NULL") . '</td>
+                                        <td class="text-gray">' . ($row["zona_referencia"] ? $row["zona_referencia"] : "NULL") . '</td>
+                                        <td class="text-gray">' . ($row["estado_dispositivo"] ? $row["estado_dispositivo"] : "NULL") . '</td>
+                                        <td class="text-gray">' . ($row["comentario"] ? $row["comentario"] : "NULL") . '</td>
+                                        <td>
+                                            <span class="verified-icon">✓</span>
+                                        </td>
+                                        <td>
+                                            <div class="menu-container">
+                                                <button class="more-options">⋮</button>
+                                                <div class="options-menu">
+                                                    <button onclick="alert(\'Se podra modificar en un futuro.\')">Modificar</button>
+                                                    <button onclick="alert(\'Se eliminara en un futuro.\')">Eliminar</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>';
+                            }
+                        } else {
+                            echo '<tr><td colspan="13">No hay usuarios técnicos registrados</td></tr>';
+                        }
+                        ?>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal" id="userModal">
+                <div class="modal-content">
+                    <div class="modal-left">
+                        <img src="IMG/stacked-waves-haikei.png" alt="Waves" class="waves-bg">
+                        <h2>Agregar un nuevo administrador</h2>
                     </div>
-                </header>
+                    <div class="modal-right">
+                        <h3>Nuevo Usuario</h3>
+                        <p>Llena los campos y agrega un nuevo Usuario!!</p>
 
-                <div class="content-card">
-                    <div class="header-search">
-                        <div class="search-container">
-                            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg>
-                            <input type="text" class="search-input" placeholder="Buscador" id="searchInput">
-
-                        </div>
-
-                        <div class="menuicon"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24"
-                                height="24" stroke-width="2">
-                                <path d="M4 6h16"></path>
-                                <path d="M7 12h13"></path>
-                                <path d="M10 18h10"></path>
-                            </svg>
-                        </div>
-                    </div>
-
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Ubicación</th>
-                                <th>Tipo de denuncia</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-contenido">
-
-
-                            <div id="caseModal" class="modal">
-                                <div class="modal-content">
-                                    <div class="case-header">
-                                        <div class="close-modal"
-                                            onclick="document.getElementById('caseModal').classList.remove('active');">✕
-                                        </div>
-                                        <h2 class="case-title">Caso 123-4567891-1</h2>
-                                        <p class="case-subtitle">Reportado por Manuel Alejandro</p>
-                                        <span class="status-badge">En proceso</span>
-                                    </div>
-
-                                    <div class="case-info-grid">
-                                        <div class="info-card">
-                                            <div class="info-card-label">📅 Fecha de reporte</div>
-                                            <div class="info-card-value">13/2/2024</div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">📍 Ubicación</div>
-                                            <div class="info-card-value">Santo Domingo ESTE</div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔊 Tipo de denuncia</div>
-                                            <div class="info-card-value">Ruidos Por Parlantes</div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔢 Código</div>
-                                            <div class="info-card-value">123-4567891-1</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="case-description1">
-                                        <h3>Descripción del caso</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-                                            tempor incididunt ut labore
-                                            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                            ullamco laboris nisi ut
-                                            aliquip ex ea commodo consequat.</p>
-                                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                            eu fugiat nulla
-                                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                                            officia deserunt mollit
-                                            anim id est laborum.</p>
-                                    </div>
-
-                                    <div class="comment-section">
-                                        <textarea class="comment-input"
-                                            placeholder="Escribe un comentario sobre este caso..."></textarea>
-                                        <div class="button-group">
-                                            <button class="btn btn-deny" onclick="updateStatus('denied')">
-                                                ✕ Denegar
-                                            </button>
-                                            <button class="btn btn-accept" onclick="updateStatus('accepted')">
-                                                ✓ Aceptar
-                                            </button>
-                                            <button class="demo-button" onclick="resetStatus()"
-                                                style="margin-left: 10px; background: #64748b;">
-                                                Resetear Estado
-                                            </button>
-
-                                            <button class="Enviar">
-                                                Enviar
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </div>
+                        <form id="userForm" method="POST" action="php/user.php">
+                            <div class="form-group">
+                                <input type="text" class="form-input" id="usuario" name="nombre" placeholder="Usuario">
+                                <div class="error-message" id="usuarioError">Este ID es incorrecto</div>
                             </div>
 
+                            <div class="form-group">
+                                <input type="email" class="form-input" id="email" name="email"
+                                    placeholder="Correo electrónico">
+                                <div class="error-message" id="emailError">Correo electrónico inválido</div>
+                            </div>
 
+                            <div class="form-group">
+                                <input type="password" class="form-input" id="password" name="password"
+                                    placeholder="Contraseña">
+                                <div class="error-message" id="passwordError">Contraseña inválida</div>
+                            </div>
 
-                        </tbody>
-                    </table>
+                            <button type="submit" class="create-button">Crear usuario</button>
+                        </form>
+                    </div>
                 </div>
-            </main>
+            </div>
         </div>
     </div>
 
+    <script src="js/UserAdmin1.js"></script>
 
-
-    <script src="js/alertas1.js"></script>
 </body>
 
 </html>

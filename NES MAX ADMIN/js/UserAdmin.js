@@ -229,28 +229,54 @@ guardarPerfilBtn.addEventListener('click', () => {
 
 
 // submenu 3 puntos
- document.addEventListener("DOMContentLoaded", () => {
-            // Seleccionar todos los botones de opciones
-            const moreOptionsButtons = document.querySelectorAll(".more-options");
+ 
+// submenu 3 puntos
+// submenu 3 puntos
+document.addEventListener("DOMContentLoaded", () => {
+    // Seleccionar todos los botones de opciones
+    const moreOptionsButtons = document.querySelectorAll(".more-options");
 
-            moreOptionsButtons.forEach(button => {
-                button.addEventListener("click", (event) => {
-                    // Ocultar cualquier otro menú abierto
-                    document.querySelectorAll(".show-menu").forEach(el => {
-                        if (el !== button.parentNode) {
-                            el.classList.remove("show-menu");
-                        }
-                    });
-
-                    // Alternar el submenú
-                    button.parentNode.classList.toggle("show-menu");
-                });
-            });
-
-            // Cerrar menú al hacer clic fuera
-            document.addEventListener("click", (event) => {
-                if (!event.target.closest(".more-options") && !event.target.closest(".options-menu")) {
-                    document.querySelectorAll(".show-menu").forEach(el => el.classList.remove("show-menu"));
+    moreOptionsButtons.forEach(button => {
+        button.addEventListener("click", (event) => {
+            // Prevenir propagación del evento para evitar que se cierre inmediatamente
+            event.stopPropagation();
+            
+            // Ocultar cualquier otro menú abierto
+            document.querySelectorAll(".show-menu").forEach(el => {
+                if (el !== button.parentNode) {
+                    el.classList.remove("show-menu");
                 }
             });
+
+            // Alternar el submenú
+            button.parentNode.classList.toggle("show-menu");
         });
+    });
+
+    // Agregar listeners para las opciones del menú
+    document.querySelectorAll(".options-menu .modificar").forEach(option => {
+        option.addEventListener("click", () => {
+            alert("Se podrá modificar en un futuro.");
+            // Cerrar el menú después de hacer clic
+            document.querySelectorAll(".show-menu").forEach(el => el.classList.remove("show-menu"));
+        });
+    });
+
+    document.querySelectorAll(".options-menu .eliminar").forEach(option => {
+        option.addEventListener("click", () => {
+            if(confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+                alert("Usuario eliminado correctamente.");
+                // Aquí podrías agregar código para eliminar realmente al usuario
+            }
+            // Cerrar el menú después de hacer clic
+            document.querySelectorAll(".show-menu").forEach(el => el.classList.remove("show-menu"));
+        });
+    });
+
+    // Cerrar menú al hacer clic fuera
+    document.addEventListener("click", (event) => {
+        if (!event.target.closest(".more-options") && !event.target.closest(".options-menu")) {
+            document.querySelectorAll(".show-menu").forEach(el => el.classList.remove("show-menu"));
+        }
+    });
+});

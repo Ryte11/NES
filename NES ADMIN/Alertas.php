@@ -1,10 +1,12 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/alertas1.css">
+    <link rel="stylesheet" href="css/alertas.css">
 
     <title>Alertas ax Admin</title>
 </head>
@@ -42,7 +44,7 @@
                             <h3>Panel de control</h3>
 
                         </a>
-                        <a href="Alertas.php" class="menu-item">
+                        <a href="Alertas.html" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -103,6 +105,7 @@
                         </a>
                     </div>
                     <hr class="linea">
+                    <!-- guia de usuario menu 2 -->
                     <div class="menu-1">
 
                         <button href="" class="menu-item" onclick="toggleGuide()">
@@ -202,6 +205,7 @@
             </div>
             <main class="main-content">
                 <header class="header">
+
                     <div class="container">
                         <div class="stat-button light" id="sistemas-btn">
                             <p class="stat-number">32</p>
@@ -209,7 +213,7 @@
                         </div>
                         <div class="stat-button dark" id="dispositivos-btn">
                             <p class="stat-number">99+</p>
-                            <p class="stat-label">Dispositivos</p>
+                            <p class="stat-label">Dispotivos</p>
                         </div>
                     </div>
                 </header>
@@ -224,10 +228,10 @@
                                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                             </svg>
                             <input type="text" class="search-input" placeholder="Buscador" id="searchInput">
+
                         </div>
 
-                        <div class="menuicon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        <div class="menuicon"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24"
                                 height="24" stroke-width="2">
                                 <path d="M4 6h16"></path>
@@ -236,6 +240,7 @@
                             </svg>
                         </div>
                     </div>
+
 
                     <table>
                         <thead>
@@ -451,8 +456,10 @@
     </div>
 
 
-    <script src="js/alertas.js"></script>         
-    <script src="js/alertas4.js" defer></script>
+
+    <script src="js/alertas.js"></script>
+    
+    
 </body>
 
 </html>
