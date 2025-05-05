@@ -5,7 +5,7 @@
 	<title>Formulario de Contactos</title>
 	<link rel="stylesheet" href="css/contactos1.css">
 	<link rel="stylesheet" href="css/config.css">
-
+	<link rel="stylesheet" href="css/notificaciones.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 	<script src="https://kit.fontawesome.com/20f9d7f848.js" crossorigin="anonymous"></script>
 
@@ -111,6 +111,11 @@
 					</span>
 				</div>
 			</div>
+			<div class="Notificaciones" id="Notificaciones">
+				<div class="Notificaciones" id="Notificaciones">
+					<span id="notificacion-contador"></span>
+					<svg>...</svg>
+				</div>
 
 			</div>
 
@@ -147,7 +152,7 @@
 
 
 			</div>
-		
+
 			<form id="contactForm" onsubmit="return enviarContacto(event)">
 				<input type="text" name="nombre" id="Nombre" placeholder="Nombre" class="campo" required>
 				<input type="email" name="email" id="Email" placeholder="Email" class="campo" required>
@@ -263,6 +268,7 @@
 			loadUserProfile();
 		});
 	</script>
+	<script src="javascript/notificaciones.js"></script>
 	<script src="javascript/contactos.js"></script>
 	<script src="javascript/contac.js"></script>
 	<script src="javascript/config.js"></script>

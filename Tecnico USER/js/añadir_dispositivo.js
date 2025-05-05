@@ -1,60 +1,53 @@
-// Esperar a que cargue el DOM
-document.addEventListener("DOMContentLoaded", function () {
-    const btnAgregar = document.getElementById("btnAgregar");
-    const modal = document.getElementById("modalConfirmacion");
-    const btnCancelar = document.getElementById("btnCancelar");
-    const btnConfirmar = document.getElementById("btnConfirmar");
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('formConfirmar').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-    btnAgregar.addEventListener("click", () => {
-        modal.style.display = "block";
-    });
+        const clave = this.querySelector('[name="clave_confirmacion"]').value;
+        const zonaReferencia = this.querySelector('[name="zona_referencia"]').value;
 
-    btnCancelar.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
+        console.log('Enviando zona:', zonaReferencia); // Debug
 
-    btnConfirmar.addEventListener("click", () => {
-        const password = document.getElementById("confirmPassword").value;
-
-        if (password.trim() === "") {
-            alert("Por favor, ingresa tu contraseña.");
+        if (!clave || !zonaReferencia) {
+            alert("Todos los campos son obligatorios.");
             return;
         }
 
-        // Obtener geolocalización
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-
-                // Enviar datos al backend
-                fetch("guardar_dispositivo.php", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        password: password,
-                        latitud: lat,
-                        longitud: lng
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.exito) {
-                        alert("Dispositivo registrado exitosamente.");
-                        modal.style.display = "none";
-                        location.reload(); // opcional
-                    } else {
-                        alert("Error: " + data.mensaje);
-                    }
-                });
-            }, () => {
-                alert("No se pudo obtener tu ubicación.");
-            });
-        } else {
-            alert("Tu navegador no soporta geolocalización.");
+        if (!navigator.geolocation) {
+            alert("Geolocalización no soportada.");
+            return;
         }
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            const formData = new FormData();
+            formData.append('clave_confirmacion', clave);
+            formData.append('zona_referencia', zonaReferencia);
+            formData.append('lat', lat);
+            formData.append('lng', lng);
+
+            fetch('guardar_dispositivo.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Respuesta servidor:', data); // Debug
+                if (data.status === 'ok') {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Hubo un error al guardar el dispositivo.");
+            });
+        }, function() {
+            alert("No se pudo obtener tu ubicación.");
+        });
     });
 });
 

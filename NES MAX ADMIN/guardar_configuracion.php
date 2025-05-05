@@ -23,7 +23,7 @@ $sql = "INSERT INTO configuracioness (usuario_id, modo_oscuro, idioma, notificac
 
 if ($conexion->query($sql) === TRUE) {
     // Redirigir a configuracionhtml después de guardar
-    header("Location: configuracion.html");
+    header("Location: Configuracion.php");
     exit();
 } else {
     echo "Error al guardar la configuración: " . $conexion->error;

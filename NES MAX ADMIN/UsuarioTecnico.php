@@ -200,7 +200,7 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
                             </svg>
                             <h3>Notificaciones</h3>
                         </a>
-                        <a href="Dashboard.html" class="menu-item">
+                        <a href="Dashboard.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -215,7 +215,7 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
                             </svg>
                             <h3>Dashboard</h3>
                         </a>
-                        <a href="Dispositivo.html" class="menu-item">
+                        <a href="Dispositivo.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -244,7 +244,7 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
                                 <li><a href="UsuarioMaxAdmin.html">Usurios tecnicos</a></li>
                             </ul>
                         </li>
-                        <a href="Configuracion.html" class="menu-item">
+                        <a href="Configuracion.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -547,7 +547,6 @@ $totalPaginas = ceil($totalRegistros / $porPagina);
         </div>
     </div>
 
-<<<<<<< HEAD:NES MAX ADMIN/UsuarioTecnico.php
     <script>
         function abrirModificar(id, usuario, nombre, cedula) {
             document.getElementById('modificarId').value = id;

@@ -2,58 +2,69 @@
 session_start();
 require 'php/conexion.php';
 
-// Obtener datos del formulario
-$id_tecnico = $_SESSION['id'];
-$nombre_instalador = $_SESSION['nombre_completo']; // Obtener el nombre del instalador desde la sesión
-$clave = $_POST['clave'];
-$lat = $_POST['lat'];
-$lng = $_POST['lng'];
-$fecha = date('Y-m-d');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtener datos del formulario
+    $id_tecnico = $_SESSION['id'];
+    $nombre_instalador = $_SESSION['nombre_completo'];
+    $clave = $_POST['clave_confirmacion']; // Changed from 'clave'
+    $zona_referencia = $_POST['zona_referencia'];
+    $lat = $_POST['lat'];
+    $lng = $_POST['lng'];
+    $fecha = date('Y-m-d');
 
-// Validar que el técnico existe
-$sql = "SELECT * FROM tecnicos WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id_tecnico);
-$stmt->execute();
-$resultado = $stmt->get_result();
+    // Debug log
+    error_log("Datos recibidos: " . print_r($_POST, true));
 
-if ($resultado->num_rows == 1) {
-    $fila = $resultado->fetch_assoc();
+    // Validar que el técnico existe
+    $sql = "SELECT * FROM tecnicos WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_tecnico);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
-    // Verificar contraseña
-    if (password_verify($clave, $fila['contraseña'])) {
-        // Zona simple por ahora (puedes automatizar con API más adelante)
-        $zona = "Desconocida";
+    if ($resultado->num_rows == 1) {
+        $fila = $resultado->fetch_assoc();
 
-        // Crear ID único
-        $id_unico = "DISP-" . uniqid();
+        // Verificar contraseña
+        if (password_verify($clave, $fila['contraseña'])) {
+            // Crear ID único
+            $id_unico = "DISP-" . uniqid();
+            
+            // Insertar en la base de datos
+            $insert = $conn->prepare("INSERT INTO dispositivos 
+                (id_tecnico, nombre_instalador, id_dispositivo, fecha_instalacion, 
+                 ubicacion_geografica, zona_referencia, estado_dispositivo, latitud, longitud) 
+                VALUES (?, ?, ?, ?, ?, ?, 'Instalado', ?, ?)");
 
-        // Insertar en la base de datos
-        // Insertar en la base de datos
-        $insert = $conn->prepare("INSERT INTO dispositivos 
-            (id_tecnico, nombre_instalador, id_dispositivo, fecha_instalacion, ubicacion_geografica, zona_referencia, estado_dispositivo, latitud, longitud) 
-            VALUES (?, ?, ?, ?, ?, ?, 'Instalado', ?, ?)");
+            if (!$insert) {
+                die("Error en la consulta: " . $conn->error);
+            }
 
-        if (!$insert) {
-            die("Error en la consulta: " . $conn->error);
-        }
+            $ubicacion = "Capturada automáticamente";
+            
+            $insert->bind_param("isssssdd", 
+                $id_tecnico, 
+                $nombre_instalador, 
+                $id_unico, 
+                $fecha, 
+                $ubicacion,
+                $zona_referencia,
+                $lat, 
+                $lng
+            );
 
-        $ubicacion = "Capturada automáticamente";
-
-        // Cadena de tipos corregida: "issssdds"
-        $insert->bind_param("issssdds", $id_tecnico, $nombre_instalador, $id_unico, $fecha, $ubicacion, $zona, $lat, $lng);
-
-        if ($insert->execute()) {
-            echo "ok";
+            if ($insert->execute()) {
+                echo json_encode(['status' => 'ok', 'message' => 'Dispositivo guardado correctamente']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Error al insertar: ' . $insert->error]);
+            }
         } else {
-            echo "error al insertar";
+            echo json_encode(['status' => 'error', 'message' => 'Clave incorrecta']);
         }
-
     } else {
-        echo "clave incorrecta";
+        echo json_encode(['status' => 'error', 'message' => 'Técnico no encontrado']);
     }
-
 } else {
-    echo "tecnico no encontrado";
+    echo json_encode(['status' => 'error', 'message' => 'Método no permitido']);
 }
 ?>

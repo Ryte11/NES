@@ -90,3 +90,44 @@ document.getElementById("agregar-dispositivo-btn").addEventListener("click", fun
         form.submit(); // Solo se envía si no hay errores
     }
 });
+
+function showOptions(id) {
+    const menu = document.getElementById(`options-${id}`);
+    const allMenus = document.querySelectorAll('.options-menu');
+    
+    // Ocultar todos los menús abiertos
+    allMenus.forEach(m => {
+        if (m.id !== `options-${id}`) {
+            m.style.display = 'none';
+        }
+    });
+    
+    // Mostrar/ocultar el menú seleccionado
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+
+function editDevice(id) {
+    // Implementar lógica de edición
+    console.log('Editar dispositivo:', id);
+}
+
+function deleteDevice(id) {
+    if (confirm('¿Está seguro de que desea eliminar este dispositivo?')) {
+        fetch(`php/eliminar_dispositivo.php?id=${id}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error al eliminar el dispositivo');
+            }
+        });
+    }
+}
+
+function viewDetails(id) {
+    // Implementar lógica para ver detalles
+    console.log('Ver detalles del dispositivo:', id);
+}

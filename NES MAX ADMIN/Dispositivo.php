@@ -18,7 +18,7 @@
                     <img src="IMG/logo1.png" alt="">
                 </a>
             </div>
-    
+
             <div class="menu-prin">
                 <div class="menu-1">
                     <div class="input-div">
@@ -38,7 +38,7 @@
                             <path d="M7 12a5 5 0 0 1 5 -5"></path>
                         </svg>
                         <h3>Panel de control</h3>
-    
+
                     </a>
                     <a href="Alertas.php" class="menu-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -59,7 +59,7 @@
                         </svg>
                         <h3>Notificaciones</h3>
                     </a>
-                    <a href="Dashboard.html" class="menu-item">
+                    <a href="Dashboard.php" class="menu-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-linecap="round" stroke-linejoin="round" width="32" height="32" stroke-width="1.75">
                             <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1">
@@ -73,7 +73,7 @@
                         </svg>
                         <h3>Dashboard</h3>
                     </a>
-                    <a href="Dispositivo.html" class="menu-item">
+                    <a href="Dispositivo.php" class="menu-item">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-tabler icons-tabler-outline icon-tabler-device-watch">
@@ -98,9 +98,10 @@
                         <ul class="submenu">
                             <li><a href="Usuario.html">Usuarios Administrativos</a></li>
                             <li><a href="UsuarioMaxAdmin.html">Máximo Administrador</a></li>
+                            <li><a href="UsuarioTecnico.php">Usuario Tecnico</a></li>
                         </ul>
                     </li>
-                    <a href="Configuracion.html" class="menu-item">
+                    <a href="Configuracion.php" class="menu-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-linecap="round" stroke-linejoin="round" width="32" height="32" stroke-width="1.75">
                             <path
@@ -114,7 +115,7 @@
                 <hr class="linea">
                 <!-- guia de usuario menu 2 -->
                 <div class="menu-1">
-    
+
                     <button href="" class="menu-item" onclick="toggleGuide()">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-linecap="round" stroke-linejoin="round" width="32" height="32" stroke-width="1.75">
@@ -137,7 +138,7 @@
                 </div>
             </div>
         </div>
-    
+
     </div>
 
     <main class="main-content">
@@ -155,171 +156,106 @@
         <div class="content-card">
             <div class="search-container">
                 <div>
-                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
                     <input type="text" class="search-input" placeholder="Buscador" id="searchInput">
                 </div>
-                <button id="openModalBtn"><i class="fas fa-plus">+</i></button>
+                <!-- <button id="openModalBtn"><i class="fas fa-plus">+</i></button> -->
 
             </div>
-            
+
 
             <!-- Formulario oculto -->
-            <div class="overlay" id="modalOverlay">
+            <!-- <div class="overlay" id="modalOverlay">
                 <div class="modal">
-                    
-            <form id="dispositivo-form" method="POST" action="php/Dispositivo.html">
-                <h2>Incorpora un dispositivo!</h2>
-            
-                <input type="text" id="id" name="id" placeholder="ID del dispositivo" class="id">
-                <p class="error-message" style="display: none; color: red;"></p>
-            
-                <input type="text" id="fecha" name="fecha" placeholder="Fecha de instalación (AAAA-MM-DD)" class="fecha">
-                <p class="error-message" style="display: none; color: red;"></p>
-            
-                <input type="text" id="ubicacion" name="ubicacion" placeholder="Ubicación geográfica (Por coordenadas)"
-                    class="ubicacion">
-                <p class="error-message" style="display: none; color: red;"></p>
-            
-                <input type="text" id="instalador" name="instalador" placeholder="Nombre del instalador o responsable"
-                    class="instalador">
-                <p class="error-message" style="display: none; color: red;"></p>
-            
-                <input type="text" id="zona" name="zona" placeholder="Zona de referencia" class="zona">
-                <p class="error-message" style="display: none; color: red;"></p>
-            
-                <textarea id="comentario" name="comentario" placeholder="Comentario" class="comentario"></textarea>
-                <p class="error-message" style="display: none; color: red;"></p>
-            
-                <select id="estado-dispositivo" name="estado-dispositivo" class="estado-dispositivo">
-                    <option value="">Estado del dispositivo</option>
-                    <option value="activo">Activo</option>
-                    <option value="inactivo">Inactivo</option>
-                </select>
-                <p class="error-message" style="display: none; color: red;"></p>
-            
-                <button type="submit" id="agregar-dispositivo-btn">
-                    Agregar dispositivo
-                </button>
-            </form>
+
+                    <form id="dispositivo-form" method="POST" action="php/Dispositivo.php">
+                        <h2>Incorpora un dispositivo!</h2>
+
+                        <input type="text" id="id" name="id" placeholder="ID del dispositivo" class="id">
+                        <p class="error-message" style="display: none; color: red;"></p>
+
+                        <input type="text" id="fecha" name="fecha" placeholder="Fecha de instalación (AAAA-MM-DD)"
+                            class="fecha">
+                        <p class="error-message" style="display: none; color: red;"></p>
+
+                        <input type="text" id="ubicacion" name="ubicacion"
+                            placeholder="Ubicación geográfica (Por coordenadas)" class="ubicacion">
+                        <p class="error-message" style="display: none; color: red;"></p>
+
+                        <input type="text" id="instalador" name="instalador"
+                            placeholder="Nombre del instalador o responsable" class="instalador">
+                        <p class="error-message" style="display: none; color: red;"></p>
+
+                        <input type="text" id="zona" name="zona" placeholder="Zona de referencia" class="zona">
+                        <p class="error-message" style="display: none; color: red;"></p>
+
+                        <textarea id="comentario" name="comentario" placeholder="Comentario"
+                            class="comentario"></textarea>
+                        <p class="error-message" style="display: none; color: red;"></p>
+
+                        <select id="estado-dispositivo" name="estado-dispositivo" class="estado-dispositivo">
+                            <option value="">Estado del dispositivo</option>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                        <p class="error-message" style="display: none; color: red;"></p>
+
+                        <button type="submit" id="agregar-dispositivo-btn">
+                            Agregar dispositivo
+                        </button>
+                    </form>
 
                 </div>
-            </div>
+            </div> -->
 
             <table>
                 <thead>
                     <tr>
                         <th>Nombre</th>
                         <th>Ubicación</th>
-                        <th>Tipo de denuncia</th>
+                        <th>ID Dispositivo</th>
                         <th>Fecha/Date</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
+                    <?php
+                    include 'php/conexion.php';
 
-                    
-                    <tr>
-                        <td>
-                            <div class="alert-item">
-                                <div class="alert-icon">i</div>
-                                <div class="alert-info">
-                                    <div>Manuel Alejandro</div>
-                                    <div class="code">123-4567891-1</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>Santo Domingo ESTE</td>
-                        <td><span class="tag1"></span></td>
-                        <td><a href="#" class="view-btn">
-                                </svg>23/2/2003</a></td>
-                        <td><button class="more-btn">...</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="alert-item">
-                                <div class="alert-icon">i</div>
-                                <div class="alert-info">
-                                    <div>Manuel Alejandro</div>
-                                    <div class="code">123-4567891-1</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>Santo Domingo ESTE</td>
-                        <td><span class="tag3"></span></td>
-                        <td><a href="#" class="view-btn">
-                                </svg>23/2/2003</a></td>
-                        <td><button class="more-btn">...</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="alert-item">
-                                <div class="alert-icon">i</div>
-                                <div class="alert-info">
-                                    <div>Manuel Alejandro</div>
-                                    <div class="code">123-4567891-1</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>Santo Domingo ESTE</td>
-                        <td><span class="tag2"></span></td>
-                        <td><a href="#" class="view-btn">
-                                </svg>23/2/2003</a></td>
-                        <td><button class="more-btn">...</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="alert-item">
-                                <div class="alert-icon">i</div>
-                                <div class="alert-info">
-                                    <div>Manuel Alejandro</div>
-                                    <div class="code">123-4567891-1</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>Santo Domingo ESTE</td>
-                        <td><span class="tag1"></span></td>
-                        <td><a href="#" class="view-btn">
-                                </svg>23/2/2003</a></td>
-                        <td><button class="more-btn">...</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="alert-item">
-                                <div class="alert-icon">i</div>
-                                <div class="alert-info">
-                                    <div>Manuel Alejandro</div>
-                                    <div class="code">123-4567891-1</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>Santo Domingo ESTE</td>
-                        <td><span class="tag3"></span></td>
-                        <td><a href="#" class="view-btn">
-                                </svg>23/2/2003</a></td>
-                        <td><button class="more-btn">...</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="alert-item">
-                                <div class="alert-icon">i</div>
-                                <div class="alert-info">
-                                    <div>Manuel Alejandro</div>
-                                    <div class="code">123-4567891-1</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>Santo Domingo ESTE</td>
-                        <td><span class="tag1"></span></td>
-                        <td><a href="#" class="view-btn">
-                                </svg>23/2/2003</a></td>
-                        <td><button class="more-btn">...</button></td>
-                    </tr>
+                    try {
+                        $sql = "SELECT d.*, t.nombre_completo as nombre_tecnico 
+                    FROM dispositivos d 
+                    LEFT JOIN tecnicos t ON d.id_tecnico = t.id 
+                    ORDER BY d.fecha_instalacion DESC";
 
+                        $stmt = $conexion->prepare($sql);
+                        $stmt->execute();
 
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            echo "<tr>";
+                            echo "<td>
+                        <div class='alert-item'>
+                            <div class='alert-icon'>i</div>
+                            <div class='alert-info'>
+                                <div>" . htmlspecialchars($row['nombre_instalador']) . "</div>
+                                <div class='code'>" . htmlspecialchars($row['id_dispositivo']) . "</div>
+                            </div>
+                        </div>
+                    </td>";
+                            echo "<td>" . htmlspecialchars($row['zona_referencia']) . "</td>";
+                            echo "<td><span class='tag1'>" . htmlspecialchars($row['id_dispositivo']) . "</span></td>";
+                            echo "<td><a href='#' class='view-btn'>" . date('d/m/Y', strtotime($row['fecha_instalacion'])) . "</a></td>";
+                            echo "</tr>";
+                        }
+                    } catch (PDOException $e) {
+                        echo "<tr><td colspan='5'>Error al cargar los dispositivos: " . $e->getMessage() . "</td></tr>";
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>

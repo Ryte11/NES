@@ -56,6 +56,21 @@ $result_dispositivos = $stmt_dispositivos->get_result();
             background-color: #a71d2a;
             /* Rojo más oscuro */
         }
+
+        .popup-content input[type="text"],
+        .popup-content input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .popup-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
     </style>
 </head>
 
@@ -107,6 +122,7 @@ $result_dispositivos = $stmt_dispositivos->get_result();
         <div class="popup-content">
             <h3>¿Confirmas que se ha instalado el dispositivo?</h3>
             <form id="formConfirmar" method="POST">
+                <input type="text" name="zona_referencia" placeholder="Zona de referencia" required />
                 <input type="password" name="clave_confirmacion" placeholder="Confirma tu contraseña" required />
                 <button type="submit">Sí, confirmar</button>
                 <button type="button" onclick="cerrarPopup()">Cancelar</button>
@@ -143,10 +159,11 @@ $result_dispositivos = $stmt_dispositivos->get_result();
         document.getElementById('formConfirmar').addEventListener('submit', function (e) {
             e.preventDefault();
 
-            const clave = this.clave_confirmacion.value;
+            const clave = this.querySelector('[name="clave_confirmacion"]').value;
+            const zonaReferencia = this.querySelector('[name="zona_referencia"]').value;
 
-            if (!clave) {
-                alert("Debes poner tu contraseña.");
+            if (!clave || !zonaReferencia) {
+                alert("Todos los campos son obligatorios.");
                 return;
             }
 
@@ -160,7 +177,8 @@ $result_dispositivos = $stmt_dispositivos->get_result();
                 const lng = position.coords.longitude;
 
                 const formData = new FormData();
-                formData.append('clave', clave);
+                formData.append('clave_confirmacion', clave);
+                formData.append('zona_referencia', zonaReferencia);
                 formData.append('lat', lat);
                 formData.append('lng', lng);
 
@@ -168,21 +186,20 @@ $result_dispositivos = $stmt_dispositivos->get_result();
                     method: 'POST',
                     body: formData
                 })
-                    .then(res => res.text())
-                    .then(data => {
-                        if (data.trim() === "ok") {
-                            alert("Dispositivo guardado correctamente!");
-                            cerrarPopup();
-                            location.reload();
-                        } else {
-                            alert("Error: " + data);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert("Hubo un error.");
-                    });
-
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        alert(data.message);
+                        document.getElementById('popupConfirmar').style.display = 'none';
+                        location.reload();
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Hubo un error al guardar el dispositivo.");
+                });
             }, function () {
                 alert("No se pudo obtener tu ubicación.");
             });

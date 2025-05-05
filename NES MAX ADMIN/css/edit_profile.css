@@ -1,0 +1,486 @@
+
+/* modal y cambiar usuario */
+
+.perfil-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.perfil-modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.perfil-modal-header h3 {
+    font-size: 20px;
+    color: var(--Blue-panel);
+    font-weight: 800;
+    font-family: arimo-bold;
+}
+
+.close-perfil {
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-perfil:hover {
+    color: #000;
+}
+
+.perfil-imagen-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#perfilPreview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.btn-cambiar-foto {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.perfil-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #666;
+}
+
+.form-group input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-guardar {
+    background-color: var(--Blue-panel);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-guardar:hover {
+    background-color: var(--title-color);
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes modalBackdropFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.perfil-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    animation: modalBackdropFadeIn 0.3s ease forwards;
+}
+
+.perfil-modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: modalFadeIn 0.4s ease forwards;
+}
+
+/* Animación para cerrar */
+@keyframes modalFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-60px);
+    }
+}
+
+@keyframes modalBackdropFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.perfil-modal.closing {
+    animation: modalBackdropFadeOut 0.3s ease forwards;
+}
+
+.perfil-modal.closing .perfil-modal-content {
+    animation: modalFadeOut 0.3s ease forwards;
+}
+
+/* notis */
+
+
+/* notificaciones apartado */
+.Notificaciones{
+    background-color: var(--Blue-panel);
+    color: var(--Svg-color);
+    padding: 10px;
+    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+    flex-shrink: 0; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.Notificaciones::before{
+    content: '1';
+    background-color: red;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+    font-size: 10PX;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Notificaciones svg{
+   
+    height: 25px;
+    width: 25px;
+    flex-shrink: 0; 
+    
+}
+
+.notificaciones-container {
+    display: none; 
+    position: absolute; 
+    top: 100%; 
+    right: 0.5em; 
+    width: 250px; 
+    height: 270px;
+    background-color: #fff; 
+    border: 1px solid #ddd; 
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
+    padding: 10px; 
+}
+
+.notificaciones-container.active {
+    display: block; 
+}
+
+.notificacion {
+    margin-bottom: 5px; 
+}
+
+.recientes{
+    color: #004AAD;
+    font-size: 20px;
+    position: relative;
+    bottom: 0.5em;
+}
+
+.p1{
+    color: #222;
+    position: absolute;
+    top: 3.7em;
+    right: 6.4em;
+}
+
+.p2{
+    position: absolute;
+    top: 5em;
+}
+
+.noti-1{
+    position: relative;
+    bottom: 5em;
+    left: 0.5em; 
+}
+
+.circulo{
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 4.6em;
+    right: 0.6em;
+}
+
+.noti-2{
+    position: relative;
+    bottom: 3em;
+    left: 0.5em;
+}
+
+.circulo-2{
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 4.6em;
+    right: 0.6em;
+}
+
+.noti-3{
+    position: relative;
+    bottom: 1em;
+    left: 0.5em;
+}
+
+.circulo-3{
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 4.6em;
+    right: 0.6em;
+}
+
+.noti-4{
+    position: relative;
+    bottom: -1em;
+    left: 0.5em;
+}
+
+.circulo-4{
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 4.6em;
+    right: 0.6em;
+}
+
+
+/* perfil de usuario para configuracion */
+
+/* Estilos para la configuración de perfil inline */
+.perfil-contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.perfil-imagen-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+#perfilPreview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.perfil-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #666;
+}
+
+.form-group input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Mantener estilos existentes para el modal */
+.perfil-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    animation: modalBackdropFadeIn 0.3s ease forwards;
+}
+
+.perfil-modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: modalFadeIn 0.4s ease forwards;
+}
+
+.perfil-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.perfil-modal-header h3 {
+    font-size: 20px;
+    color: var(--Blue-panel);
+    font-weight: 800;
+    font-family: arimo-bold;
+}
+
+.close-perfil {
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-perfil:hover {
+    color: #000;
+}
+
+/* Animaciones para el modal */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes modalBackdropFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-60px);
+    }
+}
+
+@keyframes modalBackdropFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.perfil-modal.closing {
+    animation: modalBackdropFadeOut 0.3s ease forwards;
+}
+
+.perfil-modal.closing .perfil-modal-content {
+    animation: modalFadeOut 0.3s ease forwards;
+}
+
+/* Media queries para adaptar la configuración de perfil en pantallas pequeñas */
+@media (max-width: 768px) {
+    .perfil-contenido {
+        align-items: stretch;
+    }
+    
+    #perfilPreview {
+        width: 100px;
+        height: 100px;
+    }
+}

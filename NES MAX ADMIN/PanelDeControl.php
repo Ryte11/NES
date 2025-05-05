@@ -16,6 +16,7 @@
     }
 </style>
 <?php include 'php/verificar_sesion.php' ?>
+
 <body>
     <div class="principal">
         <div class="menu-lat">
@@ -70,7 +71,7 @@
                             </svg>
                             <h3>Notificaciones</h3>
                         </a>
-                        <a href="Dashboard.html" class="menu-item">
+                        <a href="Dashboard.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -85,7 +86,7 @@
                             </svg>
                             <h3>Dashboard</h3>
                         </a>
-                        <a href="Dispositivo.html" class="menu-item">
+                        <a href="Dispositivo.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -111,9 +112,26 @@
                             <ul class="submenu">
                                 <li><a href="Usuario.html">Usuarios Administrativos</a></li>
                                 <li><a href="UsuarioMaxAdmin.html">Máximo Administrador</a></li>
+                                <li><a href="UsuarioTecnico.php">Tecnico Usuario</a></li>
                             </ul>
                         </li>
-                        <a href="Configuracion.html" class="menu-item">
+                        <a href="contactos.php" class="menu-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-address-book">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path
+                                    d="M20 6v12a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2z" />
+                                <path d="M10 16h6" />
+                                <path d="M13 11m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                <path d="M4 8h3" />
+                                <path d="M4 12h3" />
+                                <path d="M4 16h3" />
+                            </svg>
+                            <h3>Contactos</h3>
+                        </a>
+                        <a href="Configuracion.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -231,7 +249,8 @@
                             <p>Sistema de alertas, Este refleja todas las alertas enviadas por el usuario y el
                                 dispositivo.</p>
                             <button>
-                                <a href="Alertas.php"  style="color: white; text-decoration: none; cursor: pointer;">Gestionar Alertas</a> 
+                                <a href="Alertas.php"
+                                    style="color: white; text-decoration: none; cursor: pointer;">Gestionar Alertas</a>
                             </button>
                         </div>
                         <div class="img-div">
@@ -430,7 +449,7 @@
 
 
 
-
+    <script src="js/profile.js"></script>
     <script src="js/PanelControl.js"></script>
     <script src="js/modoOscuro.js"></script>
 </body>

@@ -4,10 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/alertas.css">
-
-    <title>Alertas ax Admin</title>
+    <link rel="stylesheet" href="css/contacto.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/modoOscuro.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <link rel="stylesheet" href="css/edit_profile.css">
+    <title>Panel De Control Contactos</title>
 </head>
+<?php include 'php/verificar_sesion.php' ?>
 
 <body>
     <div class="principal">
@@ -42,7 +46,7 @@
                             <h3>Panel de control</h3>
 
                         </a>
-                        <a href="Alertas.html" class="menu-item">
+                        <a href="Alertas.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -90,6 +94,22 @@
                             </svg>
                             <h3>Dispositivo</h3>
                         </a>
+                        <li class="lista">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+                            </svg>
+                            <a href="Usuario.html">Usuarios</a>
+                            <ul class="submenu">
+                                <li><a href="Usuario.html">Usuarios Administrativos</a></li>
+                                <li><a href="UsuarioMaxAdmin.html">Máximo Administrador</a></li>
+                            </ul>
+                        </li>
                         <a href="Configuracion.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
@@ -135,13 +155,14 @@
         </div>
         <div class="derecha">
             <div class="header">
-                <h2 class="titulo-panel">Alertas</h2>
+                <h2 class="titulo">Contactos</h2>
                 <div class="datos">
                     <div class="perfil">
                         <img src="IMG/Victoria.png" alt="">
                         <div class="online"></div>
                         <h2>Victoria</h2>
                     </div>
+                    <!-- Popup Modal para Editar Perfil -->
                     <div class="perfil-modal" id="perfilModal">
                         <div class="perfil-modal-content">
                             <div class="perfil-modal-header">
@@ -197,142 +218,117 @@
                         </div>
                     </div>
 
-
                 </div>
 
             </div>
-            <main class="main-content">
-                <header class="header">
-
-                    <div class="container">
-                        <div class="stat-button light" id="sistemas-btn">
-                            <p class="stat-number">32</p>
-                            <p class="stat-label">Sistema</p>
-                        </div>
-                        <div class="stat-button dark" id="dispositivos-btn">
-                            <p class="stat-number">99+</p>
-                            <p class="stat-label">Dispotivos</p>
-                        </div>
-                    </div>
-                </header>
-
-                <div class="content-card">
-                    <div class="header-search">
-                        <div class="search-container">
-                            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg>
-                            <input type="text" class="search-input" placeholder="Buscador" id="searchInput">
-
-                        </div>
-
-                        <div class="menuicon"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24"
-                                height="24" stroke-width="2">
-                                <path d="M4 6h16"></path>
-                                <path d="M7 12h13"></path>
-                                <path d="M10 18h10"></path>
-                            </svg>
-                        </div>
-                    </div>
-
-
-                    <table>
+            <!-- dashboard -->
+            <!-- aqui -->
+            <div class="contenido">
+                <div class="panel-contactos">
+                    <h2>Contactos Recibidos</h2>
+                    <table class="contactos-table">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Nombre</th>
-                                <th>Ubicación</th>
-                                <th>Tipo de denuncia</th>
-                                <th></th>
-                                <th></th>
+                                <th>Email</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="tabla-contenido">
+                        <tbody>
+                            <?php
+                            // Conexión a la base de datos
+                            include 'php/conexion.php';
 
+                            try {
+                                // Consulta para obtener los contactos usando PDO
+                                $sql = "SELECT id, nombre, email, mensaje, fecha_envio, estado FROM contactos ORDER BY fecha_envio DESC";
+                                $stmt = $conexion->prepare($sql);
+                                $stmt->execute();
+                                $contactos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                            <div id="caseModal" class="modal">
-                                <div class="modal-content">
-                                    <div class="case-header">
-                                        <div class="close-modal"
-                                            onclick="document.getElementById('caseModal').classList.remove('active');">✕
-                                        </div>
-                                        <h2 class="case-title">Caso 123-4567891-1</h2>
-                                        <p class="case-subtitle">Reportado por Manuel Alejandro</p>
-                                        <span class="status-badge">En proceso</span>
-                                    </div>
+                                if (count($contactos) > 0) {
+                                    foreach ($contactos as $row) {
+                                        $estado_class = ($row['estado'] == 'Visto') ? 'visto' : 'pendiente';
+                                        echo "<tr>";
+                                        echo "<td>" . htmlspecialchars($row['id']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($row['email']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($row['fecha_envio']) . "</td>";
+                                        echo "<td class='" . $estado_class . "'>" . htmlspecialchars($row['estado']) . "</td>";
+                                        echo "<td>
+                <button class='btn-ver' 
+                    data-id='" . htmlspecialchars($row['id']) . "' 
+                    data-mensaje='" . htmlspecialchars($row['mensaje'], ENT_QUOTES) . "' 
+                    data-email='" . htmlspecialchars($row['email']) . "' 
+                    data-nombre='" . htmlspecialchars($row['nombre']) . "'>
+                    Ver Mensaje
+                </button>
+              </td>";
+                                        echo "</tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='6'>No hay contactos disponibles</td></tr>";
+                                }
+                            } catch (PDOException $e) {
+                                echo "<tr><td colspan='6'>Error al cargar los contactos: " . $e->getMessage() . "</td></tr>";
+                            }
 
-                                    <div class="case-info-grid">
-                                        <div class="info-card">
-                                            <div class="info-card-label">📅 Fecha de reporte</div>
-                                            <div class="info-card-value">13/2/2024</div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">📍 Ubicación</div>
-                                            <div class="info-card-value">Santo Domingo ESTE</div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔊 Tipo de denuncia</div>
-                                            <div class="info-card-value">Ruidos Por Parlantes</div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔢 Código</div>
-                                            <div class="info-card-value">123-4567891-1</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="case-description1">
-                                        <h3>Descripción del caso</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-                                            tempor incididunt ut labore
-                                            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                            ullamco laboris nisi ut
-                                            aliquip ex ea commodo consequat.</p>
-                                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                            eu fugiat nulla
-                                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                                            officia deserunt mollit
-                                            anim id est laborum.</p>
-                                    </div>
-
-                                    <div class="comment-section">
-                                        <textarea class="comment-input"
-                                            placeholder="Escribe un comentario sobre este caso..."></textarea>
-                                        <div class="button-group">
-                                            <button class="btn btn-deny" onclick="updateStatus('denied')">
-                                                ✕ Denegar
-                                            </button>
-                                            <button class="btn btn-accept" onclick="updateStatus('accepted')">
-                                                ✓ Aceptar
-                                            </button>
-                                            <button class="demo-button" onclick="resetStatus()"
-                                                style="margin-left: 10px; background: #64748b;">
-                                                Resetear Estado
-                                            </button>
-
-                                            <button class="Enviar">
-                                                Enviar
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
+                            // No es necesario cerrar la conexión con PDO
+                            ?>
                         </tbody>
                     </table>
                 </div>
-            </main>
+
+                <!-- Modal para ver mensaje -->
+                <div id="mensajeModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Detalle del Mensaje</h3>
+                            <span class="close">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mensaje-info">
+                                <p><strong>De:</strong> <span id="modal-nombre"></span></p>
+                                <p><strong>Email:</strong> <span id="modal-email"></span></p>
+                                <div class="mensaje-texto">
+                                    <h4>Mensaje:</h4>
+                                    <p id="modal-mensaje"></p>
+                                </div>
+                            </div>
+                            <div class="mensaje-acciones">
+                                <form id="responderForm" action="php/procesar_contacto.php" method="post">
+                                    <input type="hidden" id="contacto_id" name="contacto_id">
+                                    <div class="form-group">
+                                        <label for="respuesta">Respuesta:</label>
+                                        <textarea id="respuesta" name="respuesta" rows="4"
+                                            placeholder="Escribe tu respuesta aquí..."></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" name="accion" value="responder"
+                                            class="btn-responder">Responder</button>
+                                        <button type="submit" name="accion" value="marcar" class="btn-marcar">Marcar
+                                            como
+                                            visto</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 
 
-
-    <script src="js/alertas.js"></script>
+    <script src="js/PanelControl.js"></script>
+    <script src="js/modoOscuro.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/contactos.js"></script>
 </body>
 
 </html>

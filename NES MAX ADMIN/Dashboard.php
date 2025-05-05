@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/modoOscuro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
-
+    <link rel="stylesheet" href="css/edit_profile.css">
     <title>Panel De Control dashboard</title>
 </head>
+<?php include 'php/verificar_sesion.php' ?>
 
 <body>
     <div class="principal">
@@ -65,7 +66,7 @@
                             </svg>
                             <h3>Notificaciones</h3>
                         </a>
-                        <a href="Dashboard.html" class="menu-item">
+                        <a href="Dashboard.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -80,7 +81,7 @@
                             </svg>
                             <h3>Dashboard</h3>
                         </a>
-                        <a href="Dispositivo.html" class="menu-item">
+                        <a href="Dispositivo.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -108,7 +109,7 @@
                                 <li><a href="UsuarioMaxAdmin.html">Máximo Administrador</a></li>
                             </ul>
                         </li>
-                        <a href="Configuracion.html" class="menu-item">
+                        <a href="Configuracion.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -160,7 +161,30 @@
                         <div class="online"></div>
                         <h2>Victoria</h2>
                     </div>
-                    <div class="Notificaciones">
+                    <!-- Popup Modal para Editar Perfil -->
+                    <div class="perfil-modal" id="perfilModal">
+                        <div class="perfil-modal-content">
+                            <div class="perfil-modal-header">
+                                <h3>Editar Perfil</h3>
+                                <span class="close-perfil">&times;</span>
+                            </div>
+                            <div class="perfil-modal-body">
+                                <div class="perfil-imagen-container">
+                                    <img id="perfilPreview" src="IMG/Victoria.png" alt="Foto de perfil">
+                                    <input type="file" id="perfilImagen" accept="image/*" style="display: none;">
+                                    <button id="cambiarFotoBtn" class="btn-cambiar-foto">Cambiar Foto</button>
+                                </div>
+                                <div class="perfil-form">
+                                    <div class="form-group">
+                                        <label for="nombreUsuario">Nombre</label>
+                                        <input type="text" id="nombreUsuario" value="Victoria">
+                                    </div>
+                                    <button id="guardarPerfil" class="btn-guardar">Guardar Cambios</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Notificaciones" id="Notificaciones">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-linecap="round" stroke-linejoin="round" width="32" height="32" stroke-width="1.75">
                             <path
@@ -168,6 +192,29 @@
                             </path>
                             <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
                         </svg>
+                        <div class="notificaciones-container">
+                            <p class="recientes">Notificaciones recientes</p>
+                            <div class="noti-1">
+                                <img src="IMG/circle-noti.png" alt="notificacion" class="circulo">
+                                <p class="p1">Alertas: Dispositivo</p>
+                                <p class="p2">+7 Reportes en Santo Domingo</p>
+                            </div>
+                            <div class="noti-2">
+                                <img src="IMG/circle-noti.png" alt="notificacion" class="circulo-2">
+                                <p class="p1">Alertas: Dispositivo</p>
+                                <p class="p2">+7 Reportes en Santo Domingo</p>
+                            </div>
+                            <div class="noti-3">
+                                <img src="IMG/circle-noti.png" alt="notificacion" class="circulo-3">
+                                <p class="p1">Alertas: Dispositivo</p>
+                                <p class="p2">+7 Reportes en Santo Domingo</p>
+                            </div>
+                            <div class="noti-4">
+                                <img src="IMG/circle-noti.png" alt="notificacion" class="circulo-4">
+                                <p class="p1">Alertas: Dispositivo</p>
+                                <p class="p2">+7 Reportes en Santo Domingo</p>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -318,6 +365,7 @@
     <script src="js/dashboard.js"></script>
     <script src="js/PanelControl.js"></script>
     <script src="js/modoOscuro.js"></script>
+    <script src="js/profile.js"></script>
 </body>
 
 </html>

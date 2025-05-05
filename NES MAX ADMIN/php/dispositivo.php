@@ -62,7 +62,7 @@ try {
             echo json_encode([
                 "success" => true,
                 "message" => "Datos guardados correctamente en la base de datos y archivo de registro.",
-                "redirect" => "..\Dispositivo.html"
+                "redirect" => "..\Dispositivo.php"
             ]);
         } else {
             throw new Exception("Error al guardar los datos: " . $stmt->error);

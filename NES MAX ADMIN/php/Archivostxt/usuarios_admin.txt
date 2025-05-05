@@ -58,3 +58,8 @@ Email: luis@gmail.com
 Rol: admin
 Fecha de Registro: 2025-05-01 16:03:13
 ---------------------------
+Nombre: Luisangel 
+Email: luisrc112716@gmail.com
+Rol: admin
+Fecha de Registro: 2025-05-05 20:04:14
+---------------------------
