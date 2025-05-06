@@ -92,7 +92,7 @@
                             </svg>
                             <h3>Dispositivo</h3>
                         </a>
-                        <a href="Configuracion.html" class="menu-item">
+                        <a href="Configuracion.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">

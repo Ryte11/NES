@@ -160,82 +160,55 @@ if (typeof sistemasData === 'undefined') {
     var sistemasData = [];
 }
 
-// Datos de dispositivos
-const dispositivosData = [
-    {
-        id: 10,
-        nombre: "Carlos Rodriguez",
-        codigo: "456-7891234-2",
-        ubicacion: "Santiago",
-        tipo: "Fallo de Equipo",
-        fecha: "14/2/2024",
-        direccion: "Calle Principal #123",
-        email: "carlos.rodriguez@email.com"
-    },
-    {
-        id: 11,
-        nombre: "María López",
-        codigo: "789-1234567-3",
-        ubicacion: "La Romana",
-        tipo: "Error de Sistema",
-        fecha: "15/2/2024",
-        direccion: "Calle Segunda #78",
-        email: "maria.lopez@email.com"
-    }
-];
+
 
 // Variable global para mantener el conjunto de datos actual
 let currentData = sistemasData.length > 0 ? sistemasData : [];
 
 // Función para crear una fila de la tabla
 function createTableRow(data, index) {
+    // Check if it's sound_data
+    if (data.db_value !== undefined) {
+        return `
+            <tr class="data-row">
+                <td>
+                    <div class="alert-item">
+                        <div class="alert-icon">i</div>
+                        <div class="alert-info">
+                            <div>${data.id_dispositivo || 'N/A'}</div>
+                            <div class="code">${data.db_value || 'N/A'}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>${data.zona || 'N/A'}</td>
+                <td><span class="tag">${data.db_value || 'N/A'}</span></td>
+                <td>
+                    <button class="view-btn">
+                        ${data.timestamp || 'N/A'}
+                    </button>
+                </td>
+            </tr>`;
+    }
+    
+    // Original format for sistemas data
     return `
         <tr class="data-row">
             <td>
                 <div class="alert-item">
                     <div class="alert-icon">i</div>
                     <div class="alert-info">
-                        <div>${data.nombre}</div>
-                        <div class="code">${data.codigo}</div>
+                        <div>${data.nombre || 'N/A'}</div>
+                        <div class="code">${data.codigo || 'N/A'}</div>
                     </div>
                 </div>
             </td>
-            <td>${data.ubicacion}</td>
-            <td><span class="tag">${data.tipo}</span></td>
+            <td>${data.ubicacion || 'N/A'}</td>
+            <td><span class="tag">${data.tipo || 'N/A'}</span></td>
             <td>
-                <button class="view-btn" onclick="toggleDetails(${data.id})">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                        <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                    </svg>
-                    Vista
-                </button>
+                <button class="view-btn" onclick="toggleDetails(${data.id})">Vista</button>
             </td>
-            <td><button class="more-btn" data-tooltip="Más opciones">...</button></td>
-        </tr>
-        <tr class="expandable-content" id="content-${data.id}" data-content="${data.id}" style="display: none;">
-            <td colspan="5">
-                <div class="info-grid">
-                    <div class="info-item">
-                        <i>📅</i>
-                        <span>${data.fecha}</span>
-                    </div>
-                    <div class="info-item">
-                        <i>📍</i>
-                        <span>${data.direccion || data.ubicacion}</span>
-                    </div>
-                    <div class="info-item">
-                        <i>✉️</i>
-                        <span>${data.email || data.nombre}</span>
-                    </div>
-                </div>
-                <div class="case-description">
-                    <p>${data.descripcion || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut laborum...'}</p>
-                </div>
-                <button class="view-case-btn" onclick="openModal(${data.id})">Ver caso</button>
-            </td>
-        </tr>
-    `;
+            <td><button class="more-btn">...</button></td>
+        </tr>`;
 }
 
 // Función para actualizar la tabla
@@ -569,21 +542,43 @@ document.addEventListener('DOMContentLoaded', () => {
         sistemasBtn.addEventListener('click', function() {
             document.querySelectorAll('.stat-button').forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
-            currentData = sistemasData;
-            if (searchInput) searchInput.value = '';
+            currentData = sistemasData || [];
             updateTable(currentData);
         });
     }
+    function fetchSoundData() {
+    fetch('get_sound_data.php')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (Array.isArray(data)) {
+                currentData = data;
+                updateTable(currentData);
+            } else {
+                console.error('Data received is not an array:', data);
+                currentData = [];
+                updateTable([]);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching sound data:', error);
+            currentData = [];
+            updateTable([]);
+        });
+}
     
     if (dispositivosBtn) {
-        dispositivosBtn.addEventListener('click', function() {
-            document.querySelectorAll('.stat-button').forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            currentData = dispositivosData;
-            if (searchInput) searchInput.value = '';
-            updateTable(currentData);
-        });
-    }
+    dispositivosBtn.addEventListener('click', function() {
+        document.querySelectorAll('.stat-button').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        fetchSoundData(); // Call our new function
+        if (searchInput) searchInput.value = '';
+    });
+}
     
     // Configurar botón de cierre del modal de caso
     const closeModalBtn = document.querySelector('.close-modal');
