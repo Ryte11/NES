@@ -1,12 +1,10 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/UsuarioMaxAdmin.css">
-    <link rel="stylesheet" href="css/modoOscuro.css">
-
+    <link rel="stylesheet" href="css/usuario.css">
     <title>Usuarios Admins</title>
 </head>
 
@@ -16,7 +14,7 @@
         <div class="menu-lat">
             <div class="menu">
                 <div class="imagen">
-                    <a href="PanelDeControl.php">
+                    <a href="PanelDeControl.html">
                         <img src="IMG/logo1.png" alt="">
                     </a>
                 </div>
@@ -32,7 +30,7 @@
                             </svg>
                             <input type="search" placeholder="search" id="menuSearch">
                         </div>
-                        <a href="PanelDeControl.php" class="menu-item">
+                        <a href="PanelDeControl.html" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -65,7 +63,7 @@
                             </svg>
                             <h3>Notificaciones</h3>
                         </a>
-                        <a href="Dashboard.php" class="menu-item">
+                        <a href="Dashboard.html" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -80,7 +78,7 @@
                             </svg>
                             <h3>Dashboard</h3>
                         </a>
-                        <a href="Dispositivo.php" class="menu-item">
+                        <a href="Dispositivo.html" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -105,11 +103,11 @@
                             <a href="Usuario.html">Usuarios</a>
                             <ul class="submenu">
                                 <li><a href="Usuario.html">Usuarios Administrativos</a></li>
-                                <li><a href="UsuarioMaxAdmin.php">Máximo Administrador</a></li>
-                                <li><a href="UsuarioTecnicos.php">Usurios tecnicos</a></li>
+                                <li><a href="UsuarioMaxAdmin.html">Máximo Administrador</a></li>
+                                <li><a href="UsuarioMaxAdmin.html">Usurios tecnicos</a></li>
                             </ul>
                         </li>
-                        <a href="Configuracion.php" class="menu-item">
+                        <a href="Configuracion.html" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -228,8 +226,8 @@
             <div class="card">
                 <div class="card-header">
                     <span></span>
-                    <h2 class="card-title">Maximo administrador</h2>
-                    <button class="add-button" onclick="showModal()">+</button>
+                    <h2 class="card-title">Usuarios Administradores</h2>
+                    <button class="add-button">+</button>
                 </div>
 
                 <table class="users-table">
@@ -316,62 +314,48 @@
                             </td>
                         </tr>
 
+
                     </tbody>
                 </table>
             </div>
 
             <div class="modal" id="userModal">
                 <div class="modal-content">
-                    <h1 class="modal-title">Nuevo máximo administrador</h1>
-                    <p class="modal-subtitle">Llena los campos y agrega un a un nuevo Máximo Administrador!!</p>
+                    <div class="modal-left">
+                        <img src="IMG/stacked-waves-haikei.png" alt="Waves" class="waves-bg">
+                        <h2>Agregar un nuevo administrador</h2>
+                    </div>
+                    <div class="modal-right">
+                        <h3>Nuevo Usuario</h3>
+                        <p>Llena los campos y agrega un nuevo Usuario!!</p>
 
-                    <form id="adminForm" action="php/usermax.php" method="POST">
-                        <div class="form-grid">
-                            <div>
+                        <form id="userForm" method="POST" action="php/user.php">
+                            <div class="form-group">
                                 <input type="text" class="form-input" id="usuario" name="nombre" placeholder="Usuario">
-                                <div class="error-message" id="usuarioError">*Este ID es incorrecto</div>
+                                <div class="error-message" id="usuarioError">Este ID es incorrecto</div>
                             </div>
 
-                            <div>
+                            <div class="form-group">
                                 <input type="email" class="form-input" id="email" name="email"
                                     placeholder="Correo electrónico">
-                                <div class="error-message" id="emailError"></div>
+                                <div class="error-message" id="emailError">Correo electrónico inválido</div>
                             </div>
 
-                            <div>
-                                <input type="text" class="form-input" id="cedula" name="cedula" placeholder="Cédula">
-                                <div class="error-message" id="cedulaError"></div>
-                            </div>
-
-                            <div>
+                            <div class="form-group">
                                 <input type="password" class="form-input" id="password" name="password"
                                     placeholder="Contraseña">
-                                <div class="error-message" id="passwordError"></div>
+                                <div class="error-message" id="passwordError">Contraseña inválida</div>
                             </div>
 
-                            <div>
-                                <input type="tel" class="form-input" id="telefono" name="telefono"
-                                    placeholder="Teléfono">
-                                <div class="error-message" id="telefonoError"></div>
-                            </div>
-
-                            <div>
-                                <input type="password" class="form-input" id="confirmPassword" name="confirmPassword"
-                                    placeholder="Confirmar contraseña">
-                                <div class="error-message" id="confirmPasswordError"></div>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="create-button">Crear usuario</button>
-                    </form>
-
+                            <button type="submit" class="create-button">Crear usuario</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="js/UserMaxAdmin1.js"></script>
-    <script src="js/modoOscuro.js" defer></script>
+    <script src="js/UserAdmin1.js"></script>
 
 </body>
 
