@@ -13,7 +13,7 @@ $notificacionesEmail = isset($_POST['notificacionesEmail']) ? 1 : 0;
 $notificacionesPush = isset($_POST['notificacionesPush']) ? 1 : 0;
 
 // Insertar o actualizar los valores en la base de datos
-$sql = "INSERT INTO configuracioness (usuario_id, modo_oscuro, idioma, notificaciones_email, notificaciones_push)
+$sql = "INSERT INTO configuraciones (usuario_id, modo_oscuro, idioma, notificaciones_email, notificaciones_push)
         VALUES (1, $modoOscuro, '$idioma', $notificacionesEmail, $notificacionesPush)
         ON DUPLICATE KEY UPDATE 
         modo_oscuro = $modoOscuro, 
