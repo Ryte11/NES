@@ -828,7 +828,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                             <ul class="submenu">
                                 <li><a href="UsuariosADMIN.php">Usuarios Administrativos</a></li>
                                 <li><a href="UsuarioMAXADMIN.php">Máximo Administrador</a></li>
-                                <li><a href="UsuarioTECNICO.php">Usurios tecnicos</a></li>
+                                <li><a href="UsuarioTecnicos.php">Usurios tecnicos</a></li>
                             </ul>
                         </li>
                         <a href="contactos.php" class="menu-item">

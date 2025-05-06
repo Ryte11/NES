@@ -10,14 +10,14 @@ if (isset($_GET['id'])) {
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            echo "<script>alert('Técnico eliminado exitosamente.'); window.location='../UsuarioTecnico.php';</script>";
+            echo "<script>alert('Técnico eliminado exitosamente.'); window.location='../UsuarioTecnicos.php';</script>";
         } else {
-            echo "<script>alert('Error al eliminar el técnico.'); window.location='../UsuarioTecnico.php';</script>";
+            echo "<script>alert('Error al eliminar el técnico.'); window.location='../UsuarioTecnicos.php';</script>";
         }
     } catch (PDOException $e) {
-        echo "<script>alert('Error: " . $e->getMessage() . "'); window.location='../UsuarioTecnico.php';</script>";
+        echo "<script>alert('Error: " . $e->getMessage() . "'); window.location='../UsuarioTecnicos.php';</script>";
     }
 } else {
-    echo "<script>alert('ID no válido.'); window.location='../UsuarioTecnico.php';</script>";
+    echo "<script>alert('ID no válido.'); window.location='../UsuarioTecnicos.php';</script>";
 }
 ?>

@@ -1,29 +1,34 @@
 <?php
-// Iniciar sesión
-session_start();
+include 'php/conexion.php';
 
-// Configuración de conexión a la base de datos
-$servername = "localhost";
-$username = "root"; 
-$password = ""; 
-$dbname = "nes";
+// Contar técnicos
+$queryCountTecnicos = "SELECT COUNT(*) as total FROM tecnicos";
+$stmtCountTecnicos = $conexion->query($queryCountTecnicos);
+$totalTecnicos = $stmtCountTecnicos->fetchColumn();
 
-$conn = mysqli_connect($servername, $username, $password, $dbname);
-if (!$conn) {
-    die("Error de conexión: " . mysqli_connect_error());
-}
+// Contar dispositivos
+$queryCountDispositivos = "SELECT COUNT(*) as total FROM dispositivos";
+$stmtCountDispositivos = $conexion->query($queryCountDispositivos);
+$totalDispositivos = $stmtCountDispositivos->fetchColumn();
 
-// Añade al inicio del script para ver los errores
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Consulta paginada para técnicos
+$porPagina = 10;
+$pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+$inicio = ($pagina - 1) * $porPagina;
 
+$query = "SELECT id, usuario, nombre_completo, cedula FROM tecnicos LIMIT :inicio, :porPagina";
+$stmt = $conexion->prepare($query);
+$stmt->bindValue(':inicio', $inicio, PDO::PARAM_INT);
+$stmt->bindValue(':porPagina', $porPagina, PDO::PARAM_INT);
+$stmt->execute();
+$resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Consulta para obtener usuarios técnicos con toda la información relevante
-$sql = "SELECT id, usuario, nombre_completo, cedula, password, id_dispositivo, fecha_instalacion, ubicacion_geografica, zona_referencia, estado_dispositivo, comentario FROM tecnicos";
-$result = mysqli_query($conn, $sql);
+// Obtener total de páginas
+$queryTotal = "SELECT COUNT(*) as total FROM tecnicos";
+$stmtTotal = $conexion->query($queryTotal);
+$totalRegistros = $stmtTotal->fetchColumn();
+$totalPaginas = ceil($totalRegistros / $porPagina);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,6 +36,112 @@ $result = mysqli_query($conn, $sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/usuario.css">
+    <title>Usuarios tecnicos</title>
+    <style>
+        .action-icon {
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content_edit {
+            display: flex;
+            flex-direction: column !important;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+
+            text-align: center;
+        }
+
+        .close-modal {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .close-modal:hover {
+            background: #a71d2a;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .stat-card .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2e70c6;
+            margin: 10px 0 0 0;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .pagination a {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .pagination a.active {
+            background: #2e70c6;
+            color: white;
+            border-color: #2e70c6;
+        }
+
+        .map-container {
+            margin: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #mapa {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="css/modoOscuro.css">
     <title>Usuarios Admins</title>
 </head>
 
@@ -40,7 +151,7 @@ $result = mysqli_query($conn, $sql);
         <div class="menu-lat">
             <div class="menu">
                 <div class="imagen">
-                    <a href="PanelDeControl.html">
+                    <a href="PanelDeControl.php">
                         <img src="IMG/logo1.png" alt="">
                     </a>
                 </div>
@@ -56,7 +167,7 @@ $result = mysqli_query($conn, $sql);
                             </svg>
                             <input type="search" placeholder="search" id="menuSearch">
                         </div>
-                        <a href="PanelDeControl.html" class="menu-item">
+                        <a href="PanelDeControl.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -89,7 +200,7 @@ $result = mysqli_query($conn, $sql);
                             </svg>
                             <h3>Notificaciones</h3>
                         </a>
-                        <a href="Dashboard.html" class="menu-item">
+                        <a href="Dashboard.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -104,7 +215,7 @@ $result = mysqli_query($conn, $sql);
                             </svg>
                             <h3>Dashboard</h3>
                         </a>
-                        <a href="Dispositivo.html" class="menu-item">
+                        <a href="Dispositivo.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -128,12 +239,12 @@ $result = mysqli_query($conn, $sql);
                             </svg>
                             <a href="Usuario.html">Usuarios</a>
                             <ul class="submenu">
-                                <li><a href="UsuariosADMIN.php">Usuarios Administrativos</a></li>
-                                <li><a href="UsuarioMAXADMIN.php">Máximo Administrador</a></li>
-                                <li><a href="UsuarioTECNICO.php">Usurios tecnicos</a></li>
+                                <li><a href="Usuario.html">Usuarios Administrativos</a></li>
+                                <li><a href="UsuarioMaxAdmin.html">Máximo Administrador</a></li>
+                                <li><a href="UsuarioMaxAdmin.html">Usurios tecnicos</a></li>
                             </ul>
                         </li>
-                        <a href="Configuracion.html" class="menu-item">
+                        <a href="Configuracion.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
                                 height="32" stroke-width="1.75">
@@ -178,7 +289,7 @@ $result = mysqli_query($conn, $sql);
         </div>
         <div class="derecha">
             <div class="header">
-                <h2 class="titulo">Gestión de Usuarios</h2>
+                <h2 class="titulo">Gestión de Usuarios tecnicos</h2>
                 <div class="datos">
                     <div class="perfil">
                         <img src="IMG/Victoria.png" alt="">
@@ -246,119 +357,218 @@ $result = mysqli_query($conn, $sql);
 
             </div>
 
-
-
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Total Técnicos</h3>
+                    <p class="stat-number"><?php echo $totalTecnicos; ?></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Dispositivos</h3>
+                    <p class="stat-number"><?php echo $totalDispositivos; ?></p>
+                </div>
+            </div>
 
             <div class="card">
                 <div class="card-header">
                     <span></span>
-                    <h2 class="card-title">Usuarios Tecnico</h2>
+                    <h2 class="card-title">Usuarios Administradores Tecnicos</h2>
                     <button class="add-button">+</button>
                 </div>
-
                 <table class="users-table">
                     <thead>
                         <tr>
                             <th>Usuario</th>
-                            <th>ID</th>
                             <th>Nombre Completo</th>
                             <th>Cédula</th>
-                            <th>Correo electrónico</th>
-                            <th>ID Dispositivo</th>
-                            <th>Fecha Instalación</th>
-                            <th>Ubicación</th>
-                            <th>Zona</th>
-                            <th>Estado</th>
-                            <th>Comentario</th>
-                            <th></th>
-                            <th></th>
+                            <th>Modificar</th>
+                            <th>Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <?php 
-                        // Mostrar los datos de la tabla tecnicos
-                        if (mysqli_num_rows($result) > 0) {
-                            while($row = mysqli_fetch_assoc($result)) {
-                                echo '<tr style="position: relative;">
-                                        <td>
-                                            <div class="user-info">
-                                                <div class="user-avatar">
-                                                    <img src="IMG/Victoria.png" alt="' . $row["usuario"] . '">
-                                                </div>
-                                                <span>' . $row["usuario"] . '</span>
-                                            </div>
-                                        </td>
-                                        <td class="text-gray">' . $row["id"] . '</td>
-                                        <td class="text-gray">' . $row["nombre_completo"] . '</td>
-                                        <td class="text-gray">' . $row["cedula"] . '</td>
-                                        <td class="text-gray">Luisangelgamer20@gmail.com</td>
-                                        <td class="text-gray">' . ($row["id_dispositivo"] ? $row["id_dispositivo"] : "NULL") . '</td>
-                                        <td class="text-gray">' . ($row["fecha_instalacion"] ? $row["fecha_instalacion"] : "0000-00-00") . '</td>
-                                        <td class="text-gray">' . ($row["ubicacion_geografica"] ? $row["ubicacion_geografica"] : "NULL") . '</td>
-                                        <td class="text-gray">' . ($row["zona_referencia"] ? $row["zona_referencia"] : "NULL") . '</td>
-                                        <td class="text-gray">' . ($row["estado_dispositivo"] ? $row["estado_dispositivo"] : "NULL") . '</td>
-                                        <td class="text-gray">' . ($row["comentario"] ? $row["comentario"] : "NULL") . '</td>
-                                        <td>
-                                            <span class="verified-icon">✓</span>
-                                        </td>
-                                        <td>
-                                            <div class="menu-container">
-                                                <button class="more-options">⋮</button>
-                                                <div class="options-menu">
-                                                    <button onclick="alert(\'Se podra modificar en un futuro.\')">Modificar</button>
-                                                    <button onclick="alert(\'Se eliminara en un futuro.\')">Eliminar</button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>';
-                            }
-                        } else {
-                            echo '<tr><td colspan="13">No hay usuarios técnicos registrados</td></tr>';
-                        }
-                        ?>
-
-
+                        <?php foreach ($resultado as $tecnico): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($tecnico['usuario']); ?></td>
+                                <td><?php echo htmlspecialchars($tecnico['nombre_completo']); ?></td>
+                                <td><?php echo htmlspecialchars($tecnico['cedula']); ?></td>
+                                <td>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="action-icon" onclick="abrirModificar(
+                                        '<?php echo $tecnico['id']; ?>', 
+                                        '<?php echo addslashes(htmlspecialchars($tecnico['usuario'])); ?>', 
+                                        '<?php echo addslashes(htmlspecialchars($tecnico['nombre_completo'])); ?>', 
+                                        '<?php echo addslashes(htmlspecialchars($tecnico['cedula'])); ?>'
+                                    )">
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                </td>
+                                <td>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="action-icon"
+                                        onclick="eliminarTecnico('<?php echo $tecnico['id']; ?>')">
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                    </svg>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
+                <div class="pagination">
+                    <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                        <a href="?pagina=<?php echo $i; ?>" <?php echo ($i == $pagina) ? 'class="active"' : ''; ?>>
+                            <?php echo $i; ?>
+                        </a>
+                    <?php endfor; ?>
+                </div>
             </div>
 
+            <!-- editar -->
+            <!-- Modal para modificar técnico -->
+            <div class="modal" id="modalModificar">
+                <div class="modal-content_edit">
+                    <h3>Modificar Técnico</h3>
+                    <form id="formModificar" method="POST" action="php/modificar_tecnico.php">
+                        <input type="hidden" id="modificarId" name="id">
+                        <div class="form-group">
+                            <input type="text" id="modificarUsuario" name="usuario" placeholder="Usuario" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="modificarNombre" name="nombre_completo" placeholder="Nombre Completo"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="modificarCedula" name="cedula" placeholder="Cédula" required>
+                        </div>
+                        <button type="submit" class="create-button">Guardar Cambios</button>
+                        <button type="button" class="close-modal" onclick="cerrarModal()">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+            <!-- nuevo usuario tecnico -->
             <div class="modal" id="userModal">
                 <div class="modal-content">
                     <div class="modal-left">
                         <img src="IMG/stacked-waves-haikei.png" alt="Waves" class="waves-bg">
-                        <h2>Agregar un nuevo administrador</h2>
+                        <h2>Agregar un nuevo técnico</h2>
                     </div>
                     <div class="modal-right">
-                        <h3>Nuevo Usuario</h3>
-                        <p>Llena los campos y agrega un nuevo Usuario!!</p>
+                        <h3>Nuevo Técnico</h3>
+                        <p>Llena los campos y agrega un nuevo técnico!</p>
 
-                        <form id="userForm" method="POST" action="php/user.php">
+                        <form id="userForm" method="POST" action="php/crear_tecnico.php">
                             <div class="form-group">
-                                <input type="text" class="form-input" id="usuario" name="nombre" placeholder="Usuario">
-                                <div class="error-message" id="usuarioError">Este ID es incorrecto</div>
+                                <input type="text" class="form-input" id="usuario" name="usuario" placeholder="Usuario"
+                                    required>
+                                <small id="usuarioError" class="error-message" style="display: none; color: red;">El
+                                    usuario debe tener al menos
+                                    3 caracteres.</small>
                             </div>
 
                             <div class="form-group">
-                                <input type="email" class="form-input" id="email" name="email"
-                                    placeholder="Correo electrónico">
-                                <div class="error-message" id="emailError">Correo electrónico inválido</div>
+                                <input type="text" class="form-input" id="nombre_completo" name="nombre_completo"
+                                    placeholder="Nombre Completo" required>
                             </div>
 
                             <div class="form-group">
-                                <input type="password" class="form-input" id="password" name="password"
-                                    placeholder="Contraseña">
-                                <div class="error-message" id="passwordError">Contraseña inválida</div>
+                                <input type="text" class="form-input" id="cedula" name="cedula" placeholder="Cédula"
+                                    required>
                             </div>
 
-                            <button type="submit" class="create-button">Crear usuario</button>
+                            <div class="form-group">
+                                <input type="password" class="form-input" id="contrasena" name="contrasena"
+                                    placeholder="Contraseña" required>
+                                <small id="passwordError" class="error-message" style="display: none; color: red;">La
+                                    contraseña debe tener al
+                                    menos 6 caracteres.</small>
+                            </div>
+
+                            <button type="submit" class="create-button">Crear Técnico</button>
                         </form>
                     </div>
                 </div>
             </div>
+
+            <div class="map-container">
+                <div id="mapa"></div>
+            </div>
+
+            <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+
+            <script>
+                // Inicializar el mapa
+                const map = L.map('mapa').setView([18.7357, -70.1627], 8);
+
+                // Agregar el tile layer
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+                // Función para cargar los dispositivos
+                async function cargarDispositivos() {
+                    try {
+                        const response = await fetch('php/obtener_dispositivos.php');
+                        if (!response.ok) {
+                            throw new Error('Error al obtener los dispositivos');
+                        }
+                        const dispositivos = await response.json();
+
+                        dispositivos.forEach(d => {
+                            if (d.latitud && d.longitud) {
+                                const marker = L.marker([parseFloat(d.latitud), parseFloat(d.longitud)])
+                                    .addTo(map)
+                                    .bindPopup(`
+                                        <div style="min-width: 200px;">
+                                            <h3 style="margin: 0 0 10px 0;">Dispositivo ${d.id_dispositivo}</h3>
+                                            <p style="margin: 5px 0;"><b>Instalador:</b> ${d.nombre_instalador || 'No especificado'}</p>
+                                            <p style="margin: 5px 0;"><b>Fecha:</b> ${d.fecha_instalacion || 'No especificada'}</p>
+                                            <p style="margin: 5px 0;"><b>Zona:</b> ${d.zona_referencia || 'No especificada'}</p>
+                                        </div>
+                                    `);
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                }
+
+                // Cargar los dispositivos cuando el mapa esté listo
+                map.whenReady(() => {
+                    cargarDispositivos();
+                });
+            </script>
         </div>
     </div>
 
+    <script>
+        function abrirModificar(id, usuario, nombre, cedula) {
+            document.getElementById('modificarId').value = id;
+            document.getElementById('modificarUsuario').value = usuario;
+            document.getElementById('modificarNombre').value = nombre;
+            document.getElementById('modificarCedula').value = cedula;
+            document.getElementById('modalModificar').style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalModificar').style.display = 'none';
+        }
+
+        function eliminarTecnico(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar este técnico?')) {
+                window.location.href = 'php/eliminar_tecnico.php?id=' + id;
+            }
+        }
+    </script>
+    <script src="js/USerAdminTecnic.js"></script>
     <script src="js/UserAdmin1.js"></script>
+    <script src="js/modoOscuro.js"></script>
 
 </body>
 

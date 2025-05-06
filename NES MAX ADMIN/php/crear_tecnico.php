@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_check->execute();
 
         if ($stmt_check->rowCount() > 0) {
-            echo "<script>alert('El usuario ya existe.'); window.location='../UsuarioTecnico.php';</script>";
+            echo "<script>alert('El usuario ya existe.'); window.location='../UsuarioTecnicos.php';</script>";
             exit();
         }
 
@@ -29,12 +29,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindValue(':contrasena', $contrasena, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
-            echo "<script>alert('Técnico creado exitosamente.'); window.location='../UsuarioTecnico.php';</script>";
+            echo "<script>alert('Técnico creado exitosamente.'); window.location='../UsuarioTecnicos.php';</script>";
         } else {
-            echo "<script>alert('Error al crear el técnico.'); window.location='../UsuarioTecnico.php';</script>";
+            echo "<script>alert('Error al crear el técnico.'); window.location='../UsuarioTecnicos.php';</script>";
         }
     } catch (PDOException $e) {
-        echo "<script>alert('Error: " . $e->getMessage() . "'); window.location='../UsuarioTecnico.php';</script>";
+        echo "<script>alert('Error: " . $e->getMessage() . "'); window.location='../UsuarioTecnicos.php';</script>";
     }
 }
 ?>

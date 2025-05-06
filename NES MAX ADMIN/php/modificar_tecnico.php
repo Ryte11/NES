@@ -16,12 +16,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            echo "<script>alert('Técnico modificado exitosamente.'); window.location='../UsuarioTecnico.php';</script>";
+            echo "<script>alert('Técnico modificado exitosamente.'); window.location='../UsuarioTecnicos.php';</script>";
         } else {
-            echo "<script>alert('Error al modificar el técnico.'); window.location='../UsuarioTecnico.php';</script>";
+            echo "<script>alert('Error al modificar el técnico.'); window.location='../UsuarioTecnicos.php';</script>";
         }
     } catch (PDOException $e) {
-        echo "<script>alert('Error: " . $e->getMessage() . "'); window.location='../UsuarioTecnico.php';</script>";
+        echo "<script>alert('Error: " . $e->getMessage() . "'); window.location='../UsuarioTecnicos.php';</script>";
     }
 }
 ?>

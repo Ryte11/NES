@@ -107,7 +107,7 @@
                             <ul class="submenu">
                                 <li><a href="Usuario.html">Usuarios Administrativos</a></li>
                                 <li><a href="UsuarioMaxAdmin.php">Máximo Administrador</a></li>
-                                <li><a href="UsuarioTecnico.php">Tecnico Usuario</a></li>
+                                <li><a href="UsuarioTecnicos.php">Tecnico Usuario</a></li>
                             </ul>
                         </li>
                         <a href="contactos.php" class="menu-item">
