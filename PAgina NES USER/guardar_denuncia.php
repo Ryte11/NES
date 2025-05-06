@@ -1,40 +1,68 @@
 <?php
-$host = "localhost"; 
-$usuario = "root"; 
-$password = ""; 
-$baseDeDatos = "nes"; 
+header('Content-Type: application/json');
 
-$conn = new mysqli($host, $usuario, $password, $baseDeDatos);
+$response = ['success' => false, 'message' => ''];
 
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
-}
+try {
+    $host = "localhost"; 
+    $usuario = "root"; 
+    $password = ""; 
+    $baseDeDatos = "nes"; 
 
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
-} else {
-    echo "Conexión exitosa a la base de datos";
-}
+    $conn = new mysqli($host, $usuario, $password, $baseDeDatos);
 
-$nombre = $_POST['nombre'];
-$cedula = $_POST['Cedula'];
-$ubicacion = $_POST['ubicacion'];
-$tipo = $_POST['tipo'];
-$descripcion = $_POST['descripcion'];
+    if ($conn->connect_error) {
+        throw new Exception("Error de conexión: " . $conn->connect_error);
+    }
 
-if (empty($nombre) || empty($cedula) || empty($ubicacion) || empty($tipo) || empty($descripcion)) {
-    echo "<script> 
-        alert('Por favor, completa todos los campos.');
-        window.location.href = 'index.html';
-    </script>";
-    exit();
-}
+    // Validate and sanitize input
+    $nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING);
+    $cedula = filter_input(INPUT_POST, 'cedula', FILTER_SANITIZE_STRING);
+    $provincia = filter_input(INPUT_POST, 'provincia', FILTER_SANITIZE_STRING);
+    $ubicacion = filter_input(INPUT_POST, 'ubicacion', FILTER_SANITIZE_STRING);
+    $tipo = filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_STRING);
+    $descripcion = filter_input(INPUT_POST, 'descripcion', FILTER_SANITIZE_STRING);
+    $severidad = filter_input(INPUT_POST, 'severidad', FILTER_SANITIZE_STRING) ?? 'media';
 
-$sql = $conn->prepare("INSERT INTO denuncias_users (nombre, cedula, ubicacion, tipo, descripcion, fecha) VALUES (?, ?, ?, ?, ?, NOW())");
+    // Validation rules
+    $validationErrors = [];
+    
+    if (strlen($nombre) < 3) {
+        $validationErrors[] = "El nombre debe tener al menos 3 caracteres";
+    }
+    
+    if (!preg_match('/^\d{8,11}$/', $cedula)) {
+        $validationErrors[] = "La cédula debe tener entre 8 y 11 dígitos";
+    }
+    
+    if (empty($provincia)) {
+        $validationErrors[] = "La provincia es requerida";
+    }
+    
+    if (strlen($ubicacion) < 10) {
+        $validationErrors[] = "La ubicación debe ser más específica";
+    }
+    
+    // Define valid complaint types
+    $validTipos = ['bocinas', 'vehiculos', 'construccion', 'ruido'];
+    if (!in_array($tipo, $validTipos)) {
+        $validationErrors[] = "Tipo de denuncia inválido";
+    }
+    
+    if (strlen($descripcion) < 20) {
+        $validationErrors[] = "La descripción debe tener al menos 20 caracteres";
+    }
 
-if (!$sql) {
-    die("Error en la preparación de la consulta: " . $conn->error);
-}
+    if (!empty($validationErrors)) {
+        throw new Exception(implode(", ", $validationErrors));
+    }
+
+    // Prepare statement to prevent SQL injection
+    $stmt = $conn->prepare("INSERT INTO denuncias (nombre, cedula, provincia, ubicacion, tipo, severidad, descripcion, fecha, estado) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), 'pendiente')");
+    
+    if (!$stmt) {
+        throw new Exception("Error en la preparación de la consulta: " . $conn->error);
+    }
 
 $sql->bind_param("sssss", $nombre, $cedula, $ubicacion, $tipo, $descripcion);
 
@@ -52,13 +80,26 @@ if (!is_dir($directorio)) {
     mkdir($directorio, 0777, true); // Crea la carpeta si no existe
 }
 
-$archivo = $directorio . '/denuncias.txt';
-$datos = "Nombre: $nombre\nCédula: $cedula\nUbicación: $ubicacion\nTipo: $tipo\nDescripción: $descripcion\nFecha: " . date('Y-m-d H:i:s') . "\n---------------------------\n";
+    $archivo = $directorio . '/denuncias.txt';
+    $datos = "Nombre: $nombre\nCédula: $cedula\nProvincia: $provincia\nUbicación: $ubicacion\n" .
+            "Tipo: $tipo\nSeveridad: $severidad\nDescripción: $descripcion\n" .
+            "Fecha: " . date('Y-m-d H:i:s') . "\nEstado: pendiente\n---------------------------\n";
 
-if (file_put_contents($archivo, $datos, FILE_APPEND)) {
-} else {
-    echo "Error al guardar los datos en el archivo.";
+    if (!file_put_contents($archivo, $datos, FILE_APPEND)) {
+        error_log("Error al guardar el respaldo de la denuncia en el archivo de texto");
+    }
+
+    $response['success'] = true;
+    $response['message'] = "Denuncia registrada exitosamente";
+    
+    // Close statement and connection
+    $stmt->close();
+    $conn->close();
+
+} catch (Exception $e) {
+    $response['message'] = $e->getMessage();
+    error_log("Error en guardar_denuncia.php: " . $e->getMessage());
 }
 
-$conn->close();
+echo json_encode($response);
 ?>
