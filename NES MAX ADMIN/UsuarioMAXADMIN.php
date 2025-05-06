@@ -4,8 +4,8 @@ session_start();
 
 // Configuración de conexión a la base de datos
 $servername = "localhost";
-$username = "root"; 
-$password = ""; 
+$username = "root";
+$password = "";
 $dbname = "nes";
 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
@@ -32,21 +32,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nombre']) && isset($_P
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
     $rol = 'normal'; // Asignar rol normal por defecto
-    
+
     // Verificar si el correo ya existe
     $check_email = "SELECT * FROM usuarios WHERE email = '$email'";
     $result_check = mysqli_query($conn, $check_email);
-    
+
     if (mysqli_num_rows($result_check) > 0) {
         $message = "Este correo electrónico ya está registrado.";
         $messageType = "error";
     } else {
         // Hashear la contraseña para mayor seguridad
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        
+
         // Insertar nuevo usuario
         $sql = "INSERT INTO usuarios (nombre, email, password, rol) VALUES ('$nombre', '$email', '$hashed_password', '$rol')";
-        
+
         if (mysqli_query($conn, $sql)) {
             $message = "Usuario creado con éxito!";
             $messageType = "success";
@@ -62,18 +62,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $id = mysqli_real_escape_string($conn, $_POST['id']);
     $nombre = mysqli_real_escape_string($conn, $_POST['nombre']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    
+
     $sql = "UPDATE usuarios SET nombre = '$nombre', email = '$email'";
-    
+
     // Si se proporciona una nueva contraseña, actualizarla
     if (!empty($_POST['password'])) {
         $password = mysqli_real_escape_string($conn, $_POST['password']);
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $sql .= ", password = '$hashed_password'";
     }
-    
+
     $sql .= " WHERE id = $id";
-    
+
     if (mysqli_query($conn, $sql)) {
         $message = "Usuario actualizado con éxito!";
         $messageType = "success";
@@ -86,9 +86,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 // Procesamiento para eliminar usuario
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'delete') {
     $id = mysqli_real_escape_string($conn, $_POST['id']);
-    
+
     $sql = "DELETE FROM usuarios WHERE id = $id";
-    
+
     if (mysqli_query($conn, $sql)) {
         $message = "Usuario eliminado con éxito!";
         $messageType = "success";
@@ -111,10 +111,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $nombre = $_POST['nombre'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    
+
     // Inicializar mensaje de éxito/error
     $mensaje = "";
-    
+
     // Validar entrada
     if (empty($nombre) || empty($email)) {
         $mensaje = "Error: Nombre y email son obligatorios";
@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             $stmt = mysqli_prepare($conn, $sql);
             mysqli_stmt_bind_param($stmt, "sssi", $nombre, $email, $password_hash, $id);
         }
-        
+
         if (mysqli_stmt_execute($stmt)) {
             $mensaje = "Usuario actualizado correctamente";
             // Recargar la página para ver los cambios
@@ -143,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         } else {
             $mensaje = "Error al actualizar usuario: " . mysqli_error($conn);
         }
-        
+
         mysqli_stmt_close($stmt);
     }
 }
@@ -151,11 +151,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 // Procesar eliminación de usuario
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'eliminar_usuario') {
     $id = $_POST['id'];
-    
+
     $sql = "DELETE FROM usuarios WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "i", $id);
-    
+
     if (mysqli_stmt_execute($stmt)) {
         echo "<script>
               alert('Usuario eliminado correctamente');
@@ -164,7 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     } else {
         echo "<script>alert('Error al eliminar usuario: " . mysqli_error($conn) . "');</script>";
     }
-    
+
     mysqli_stmt_close($stmt);
 }
 
@@ -358,7 +358,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             margin-top: 20px;
         }
 
-        .cancel-btn, .save-btn, .confirm-btn, .cancel-delete-btn {
+        .cancel-btn,
+        .save-btn,
+        .confirm-btn,
+        .cancel-delete-btn {
             padding: 10px 20px;
             border-radius: 6px;
             font-weight: 500;
@@ -367,12 +370,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             border: none;
         }
 
-        .cancel-btn, .cancel-delete-btn {
+        .cancel-btn,
+        .cancel-delete-btn {
             background-color: #f5f5f5;
             color: #555;
         }
 
-        .cancel-btn:hover, .cancel-delete-btn:hover {
+        .cancel-btn:hover,
+        .cancel-delete-btn:hover {
             background-color: #eaeaea;
         }
 
@@ -423,13 +428,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
         /* Animación para los modales */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-20px); }
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
         }
 
         .fadeIn {
@@ -439,257 +458,277 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         .fadeOut {
             animation: fadeOut 0.3s forwards;
         }
-        
 
 
-.modal.show .modal-content {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-}
 
-/* Cabecera del modal */
-.edit-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 22px 30px;
-    background-color: #ffffff;
-    border-bottom: 1px solid #eaedf3;
-}
+        .modal.show .modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
 
-.edit-modal-header h3 {
-    font-size: 22px;
-    color: #2c3e50;
-    margin: 0;
-    font-weight: 600;
-    position: relative;
-}
+        /* Cabecera del modal */
+        .edit-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 30px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #eaedf3;
+        }
 
-.close-modal {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f8f9fb;
-    color: #94a3b8;
-    font-size: 22px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: none;
-}
+        .edit-modal-header h3 {
+            font-size: 22px;
+            color: #2c3e50;
+            margin: 0;
+            font-weight: 600;
+            position: relative;
+        }
 
-.close-modal:hover {
-    background-color: #f1f5f9;
-    color: #64748b;
-    transform: rotate(90deg);
-}
+        .close-modal {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fb;
+            color: #94a3b8;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
 
-/* Contenido del formulario */
-.edit-modal-content {
-    display: flex;
-    flex-direction: column;
-    padding: 30px;
-}
+        .close-modal:hover {
+            background-color: #f1f5f9;
+            color: #64748b;
+            transform: rotate(90deg);
+        }
 
-.edit-form-group {
-    margin-bottom: 24px;
-    position: relative;
-}
+        /* Contenido del formulario */
+        .edit-modal-content {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+        }
 
-.edit-form-group label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: 500;
-    color: #64748b;
-    font-size: 15px;
-}
+        .edit-form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
 
-.edit-form-input {
-    width: 100%;
-    padding: 16px;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    font-size: 15px;
-    background-color: #f8fafc;
-    transition: all 0.25s ease;
-    box-sizing: border-box;
-    color: #1e293b;
-}
+        .edit-form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #64748b;
+            font-size: 15px;
+        }
 
-.edit-form-input:focus {
-    border-color: #3b82f6;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-    outline: none;
-}
+        .edit-form-input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            background-color: #f8fafc;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
+            color: #1e293b;
+        }
 
-.edit-form-input::placeholder {
-    color: #94a3b8;
-}
+        .edit-form-input:focus {
+            border-color: #3b82f6;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            outline: none;
+        }
 
-/* Botones del modal */
-.edit-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 10px;
-}
+        .edit-form-input::placeholder {
+            color: #94a3b8;
+        }
 
-.cancel-btn {
-    padding: 14px 24px;
-    border-radius: 10px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: 1px solid #e2e8f0;
-    background-color: #ffffff;
-    color: #64748b;
-    font-size: 15px;
-}
+        /* Botones del modal */
+        .edit-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 10px;
+        }
 
-.cancel-btn:hover {
-    background-color: #f8fafc;
-    color: #334155;
-}
+        .cancel-btn {
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+            background-color: #ffffff;
+            color: #64748b;
+            font-size: 15px;
+        }
 
-.save-btn, .guardar-btn {
-    padding: 14px 28px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    border: none;
-    background-color: #3b82f6;
-    color: white;
-    font-size: 15px;
-    position: relative;
-    overflow: hidden;
-}
+        .cancel-btn:hover {
+            background-color: #f8fafc;
+            color: #334155;
+        }
 
-.save-btn:hover, .guardar-btn:hover {
-    background-color: #2563eb;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(59, 130, 246, 0.25);
-}
+        .save-btn,
+        .guardar-btn {
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border: none;
+            background-color: #3b82f6;
+            color: white;
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+        }
 
-.save-btn:active, .guardar-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2);
-}
+        .save-btn:hover,
+        .guardar-btn:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.25);
+        }
 
-/* Efecto de ondas al hacer clic */
-.save-btn::after, .guardar-btn::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.4);
-    opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%, -50%);
-    transform-origin: 50% 50%;
-}
+        .save-btn:active,
+        .guardar-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2);
+        }
 
-.save-btn:focus:not(:active)::after, .guardar-btn:focus:not(:active)::after {
-    animation: ripple 0.6s ease-out;
-}
+        /* Efecto de ondas al hacer clic */
+        .save-btn::after,
+        .guardar-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.4);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%, -50%);
+            transform-origin: 50% 50%;
+        }
 
-@keyframes ripple {
-    0% {
-        transform: scale(0, 0);
-        opacity: 0.5;
-    }
-    100% {
-        transform: scale(20, 20);
-        opacity: 0;
-    }
-}
+        .save-btn:focus:not(:active)::after,
+        .guardar-btn:focus:not(:active)::after {
+            animation: ripple 0.6s ease-out;
+        }
 
-/* Estilos específicos para campos de edición de usuario */
-.user-form .edit-form-input {
-    padding-left: 45px;
-}
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
 
-.user-form .input-icon {
-    position: absolute;
-    left: 16px;
-    top: 46px;
-    color: #94a3b8;
-    font-size: 18px;
-}
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
 
-.user-form .edit-form-group:focus-within .input-icon {
-    color: #3b82f6;
-}
+        /* Estilos específicos para campos de edición de usuario */
+        .user-form .edit-form-input {
+            padding-left: 45px;
+        }
 
-/* Mensaje de validación */
-.input-validation {
-    font-size: 13px;
-    margin-top: 6px;
-    display: none;
-}
+        .user-form .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 46px;
+            color: #94a3b8;
+            font-size: 18px;
+        }
 
-.input-validation.error {
-    display: block;
-    color: #ef4444;
-}
+        .user-form .edit-form-group:focus-within .input-icon {
+            color: #3b82f6;
+        }
 
-.input-validation.success {
-    display: block;
-    color: #10b981;
-}
+        /* Mensaje de validación */
+        .input-validation {
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
 
-.edit-form-input.error {
-    border-color: #ef4444;
-}
+        .input-validation.error {
+            display: block;
+            color: #ef4444;
+        }
 
-.edit-form-input.success {
-    border-color: #10b981;
-}
+        .input-validation.success {
+            display: block;
+            color: #10b981;
+        }
 
-/* Área de contraseña */
-.password-container {
-    position: relative;
-}
+        .edit-form-input.error {
+            border-color: #ef4444;
+        }
 
-.toggle-password {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #94a3b8;
-    cursor: pointer;
-    font-size: 18px;
-}
+        .edit-form-input.success {
+            border-color: #10b981;
+        }
 
-.toggle-password:hover {
-    color: #64748b;
-}
+        /* Área de contraseña */
+        .password-container {
+            position: relative;
+        }
 
-/* Animaciones para el modal */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-30px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 18px;
+        }
 
-@keyframes fadeOut {
-    from { opacity: 1; transform: translateY(0) scale(1); }
-    to { opacity: 0; transform: translateY(-30px) scale(0.95); }
-}
+        .toggle-password:hover {
+            color: #64748b;
+        }
 
-.fadeIn {
-    animation: fadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
+        /* Animaciones para el modal */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
 
-.fadeOut {
-    animation: fadeOut 0.3s ease-out forwards;
-}
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.3s ease-out forwards;
+        }
     </style>
 </head>
 
@@ -776,9 +815,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                             <h3>Dispositivo</h3>
                         </a>
                         <li class="lista">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
                                 <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
@@ -792,6 +831,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                                 <li><a href="UsuarioTECNICO.php">Usurios tecnicos</a></li>
                             </ul>
                         </li>
+                        <a href="contactos.php" class="menu-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-address-book">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path
+                                    d="M20 6v12a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2z" />
+                                <path d="M10 16h6" />
+                                <path d="M13 11m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                <path d="M4 8h3" />
+                                <path d="M4 12h3" />
+                                <path d="M4 16h3" />
+                            </svg>
+                            <h3>Contactos</h3>
+                        </a>
                         <a href="Configuracion.html" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
@@ -868,9 +923,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                         </div>
                     </div>
                     <div class="Notificaciones" id="Notificaciones">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
-                            stroke-linejoin="round" width="32" height="32" stroke-width="1.75">
-                            <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-linecap="round" stroke-linejoin="round" width="32" height="32" stroke-width="1.75">
+                            <path
+                                d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6">
                             </path>
                             <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
                         </svg>
@@ -907,7 +963,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                     <h2 class="card-title">Maximo administrador</h2>
                     <button class="add-button">+</button>
                 </div>
-            
+
                 <table class="users-table">
                     <thead>
                         <tr>
@@ -919,10 +975,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
+                        <?php
                         // Mostrar los datos de la tabla usuarios
                         if (mysqli_num_rows($result) > 0) {
-                            while($row = mysqli_fetch_assoc($result)) {
+                            while ($row = mysqli_fetch_assoc($result)) {
                                 echo '<tr style="position: relative;">
                                         <td>
                                             <div class="user-info">
@@ -986,156 +1042,162 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                     <div class="modal-right">
                         <h3>Nuevo Usuario</h3>
                         <p>Llena los campos y agrega un nuevo Usuario!!</p>
-            
+
                         <form id="userForm" method="POST" action="php/user.php">
                             <div class="form-group">
                                 <input type="text" class="form-input" id="usuario" name="nombre" placeholder="Usuario">
                                 <div class="error-message" id="usuarioError">Este ID es incorrecto</div>
                             </div>
-                        
+
                             <div class="form-group">
-                                <input type="email" class="form-input" id="email" name="email" placeholder="Correo electrónico">
+                                <input type="email" class="form-input" id="email" name="email"
+                                    placeholder="Correo electrónico">
                                 <div class="error-message" id="emailError">Correo electrónico inválido</div>
                             </div>
-                        
+
                             <div class="form-group">
-                                <input type="password" class="form-input" id="password" name="password" placeholder="Contraseña">
+                                <input type="password" class="form-input" id="password" name="password"
+                                    placeholder="Contraseña">
                                 <div class="error-message" id="passwordError">Contraseña inválida</div>
                             </div>
-                        
+
                             <button type="submit" class="create-button">Crear usuario</button>
                         </form>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Modal para editar usuario -->
             <div class="modal" id="editModal">
-    <div class="modal-content">
-        <div class="edit-modal-content">
-            <div class="edit-modal-header">
-                <h3>Editar usuario</h3>
-                <span class="close-modal" id="closeEditModal">&times;</span>
-            </div>
-            
-            <!-- No usamos form tag porque lo manejaremos con JavaScript -->
-            <input type="hidden" id="edit_id" name="id">
-            
-            <div class="edit-form-group">
-                <label for="edit_nombre">Nombre de usuario</label>
-                <input type="text" class="edit-form-input" id="edit_nombre" name="nombre">
-            </div>
-            
-            <div class="edit-form-group">
-                <label for="edit_email">Correo electrónico</label>
-                <input type="email" class="edit-form-input" id="edit_email" name="email">
-            </div>
-            
-            <div class="edit-form-group">
-                <label for="edit_password">Nueva contraseña (dejar vacío para mantener actual)</label>
-                <input type="password" class="edit-form-input" id="edit_password" name="password" placeholder="Nueva contraseña">
-            </div>
-            
-            <div class="edit-buttons">
-                <button type="button" class="cancel-btn" id="cancelEdit">Cancelar</button>
-                <button type="button" class="save-btn">Guardar cambios</button>
-            </div>
-        </div>
-    </div>
-</div>
+                <div class="modal-content">
+                    <div class="edit-modal-content">
+                        <div class="edit-modal-header">
+                            <h3>Editar usuario</h3>
+                            <span class="close-modal" id="closeEditModal">&times;</span>
+                        </div>
 
-<!-- Modal para confirmar eliminación -->
-<div class="modal" id="deleteModal">
-    <div class="modal-content">
-        <div class="delete-modal-content">
-            <div class="delete-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="15" y1="9" x2="9" y2="15"></line>
-                    <line x1="9" y1="9" x2="15" y2="15"></line>
-                </svg>
+                        <!-- No usamos form tag porque lo manejaremos con JavaScript -->
+                        <input type="hidden" id="edit_id" name="id">
+
+                        <div class="edit-form-group">
+                            <label for="edit_nombre">Nombre de usuario</label>
+                            <input type="text" class="edit-form-input" id="edit_nombre" name="nombre">
+                        </div>
+
+                        <div class="edit-form-group">
+                            <label for="edit_email">Correo electrónico</label>
+                            <input type="email" class="edit-form-input" id="edit_email" name="email">
+                        </div>
+
+                        <div class="edit-form-group">
+                            <label for="edit_password">Nueva contraseña (dejar vacío para mantener actual)</label>
+                            <input type="password" class="edit-form-input" id="edit_password" name="password"
+                                placeholder="Nueva contraseña">
+                        </div>
+
+                        <div class="edit-buttons">
+                            <button type="button" class="cancel-btn" id="cancelEdit">Cancelar</button>
+                            <button type="button" class="save-btn">Guardar cambios</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h3 class="delete-title">¿Eliminar usuario?</h3>
-            <p class="delete-message">¿Estás seguro de que deseas eliminar a <span id="delete_user_name"></span>? Esta acción no se puede deshacer.</p>
-            <input type="hidden" id="delete_id" name="id">
-            <div class="edit-buttons">
-                <button type="button" class="cancel-delete-btn" id="cancelDelete">Cancelar</button>
-                <button type="button" class="confirm-btn">Sí, eliminar</button>
+
+            <!-- Modal para confirmar eliminación -->
+            <div class="modal" id="deleteModal">
+                <div class="modal-content">
+                    <div class="delete-modal-content">
+                        <div class="delete-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h3 class="delete-title">¿Eliminar usuario?</h3>
+                        <p class="delete-message">¿Estás seguro de que deseas eliminar a <span
+                                id="delete_user_name"></span>? Esta acción no se puede deshacer.</p>
+                        <input type="hidden" id="delete_id" name="id">
+                        <div class="edit-buttons">
+                            <button type="button" class="cancel-delete-btn" id="cancelDelete">Cancelar</button>
+                            <button type="button" class="confirm-btn">Sí, eliminar</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
         </div>
     </div>
 
     <script src="js/UserAdmin1.js"></script>
     <script>
         // Script para manejar los modales y acciones
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Referencias a los modales
             const userModal = document.getElementById('userModal');
             const editModal = document.getElementById('editModal');
             const deleteModal = document.getElementById('deleteModal');
-            
+
             // Botones para abrir/cerrar modales
             const addButton = document.querySelector('.add-button');
             const closeEditModal = document.getElementById('closeEditModal');
             const cancelEdit = document.getElementById('cancelEdit');
             const cancelDelete = document.getElementById('cancelDelete');
-            
+
             // Botones de editar y eliminar (delegación de eventos)
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 // Botón de editar
                 if (e.target.closest('.tooltip-btn.edit')) {
                     const btn = e.target.closest('.tooltip-btn.edit');
                     const id = btn.getAttribute('data-id');
                     const nombre = btn.getAttribute('data-nombre');
                     const email = btn.getAttribute('data-email');
-                    
+
                     // Rellenar el formulario con los datos del usuario
                     document.getElementById('edit_id').value = id;
                     document.getElementById('edit_nombre').value = nombre;
                     document.getElementById('edit_email').value = email;
-                    
+
                     // Mostrar el modal
                     openModal(editModal);
                 }
-                
+
                 // Botón de eliminar
                 if (e.target.closest('.tooltip-btn.delete')) {
                     const btn = e.target.closest('.tooltip-btn.delete');
                     const id = btn.getAttribute('data-id');
                     const nombre = btn.getAttribute('data-nombre');
-                    
+
                     // Establecer el ID del usuario a eliminar
                     document.getElementById('delete_id').value = id;
                     document.getElementById('delete_user_name').textContent = nombre;
-                    
+
                     // Mostrar el modal
                     openModal(deleteModal);
                 }
             });
-            
+
             // Abrir modal de nuevo usuario
-            addButton.addEventListener('click', function() {
+            addButton.addEventListener('click', function () {
                 openModal(userModal);
             });
-            
+
             // Cerrar modal de edición
-            closeEditModal.addEventListener('click', function() {
+            closeEditModal.addEventListener('click', function () {
                 closeModal(editModal);
             });
-            
+
             // Cancelar edición
-            cancelEdit.addEventListener('click', function() {
+            cancelEdit.addEventListener('click', function () {
                 closeModal(editModal);
             });
-            
+
             // Cancelar eliminación
-            cancelDelete.addEventListener('click', function() {
+            cancelDelete.addEventListener('click', function () {
                 closeModal(deleteModal);
             });
-            
+
             // Función para abrir modal con animación
             function openModal(modal) {
                 modal.style.display = 'block';
@@ -1144,21 +1206,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                     modal.querySelector('.modal-content').classList.add('fadeIn');
                 }, 10);
             }
-            
+
             // Función para cerrar modal con animación
             function closeModal(modal) {
                 modal.classList.remove('show');
                 modal.querySelector('.modal-content').classList.remove('fadeIn');
                 modal.querySelector('.modal-content').classList.add('fadeOut');
-                
+
                 setTimeout(() => {
                     modal.style.display = 'none';
                     modal.querySelector('.modal-content').classList.remove('fadeOut');
                 }, 300);
             }
-            
+
             // Cerrar modal al hacer clic fuera del contenido
-            window.addEventListener('click', function(e) {
+            window.addEventListener('click', function (e) {
                 if (e.target === editModal) {
                     closeModal(editModal);
                 }
@@ -1169,257 +1231,257 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                     closeModal(userModal);
                 }
             });
-            
+
             // Validación del formulario de edición
             const editForm = document.getElementById('editForm');
             if (editForm) {
-                editForm.addEventListener('submit', function(e) {
+                editForm.addEventListener('submit', function (e) {
                     let isValid = true;
-                    
+
                     const nombre = document.getElementById('edit_nombre').value.trim();
                     const email = document.getElementById('edit_email').value.trim();
-                    
+
                     if (nombre === '') {
                         isValid = false;
                         document.getElementById('edit_nombre').style.borderColor = '#F44336';
                     } else {
                         document.getElementById('edit_nombre').style.borderColor = '#ddd';
                     }
-                    
+
                     if (email === '' || !validateEmail(email)) {
                         isValid = false;
                         document.getElementById('edit_email').style.borderColor = '#F44336';
                     } else {
                         document.getElementById('edit_email').style.borderColor = '#ddd';
                     }
-                    
+
                     if (!isValid) {
                         e.preventDefault();
                     }
                 });
             }
-            
+
             // Función para validar email
             function validateEmail(email) {
                 const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return re.test(email);
             }
 
-            
+
         });
 
 
         // Script para manejar los modales y acciones
-document.addEventListener('DOMContentLoaded', function() {
-    // Referencias a los modales
-    const userModal = document.getElementById('userModal');
-    const editModal = document.getElementById('editModal');
-    const deleteModal = document.getElementById('deleteModal');
-    
-    // Botones para abrir/cerrar modales
-    const addButton = document.querySelector('.add-button');
-    const closeEditModal = document.getElementById('closeEditModal');
-    const cancelEdit = document.getElementById('cancelEdit');
-    const cancelDelete = document.getElementById('cancelDelete');
-    
-    // Botones de editar y eliminar (delegación de eventos)
-    document.addEventListener('click', function(e) {
-        // Botón de editar
-        if (e.target.closest('.tooltip-btn.edit')) {
-            const btn = e.target.closest('.tooltip-btn.edit');
-            const id = btn.getAttribute('data-id');
-            const nombre = btn.getAttribute('data-nombre');
-            const email = btn.getAttribute('data-email');
-            
-            // Rellenar el formulario con los datos del usuario
-            document.getElementById('edit_id').value = id;
-            document.getElementById('edit_nombre').value = nombre;
-            document.getElementById('edit_email').value = email;
-            document.getElementById('edit_password').value = ''; // Limpiar campo de contraseña
-            
-            // Mostrar el modal
-            openModal(editModal);
-        }
-        
-        // Botón de eliminar
-        if (e.target.closest('.tooltip-btn.delete')) {
-            const btn = e.target.closest('.tooltip-btn.delete');
-            const id = btn.getAttribute('data-id');
-            const nombre = btn.getAttribute('data-nombre');
-            
-            // Establecer el ID del usuario a eliminar
-            document.getElementById('delete_id').value = id;
-            document.getElementById('delete_user_name').textContent = nombre;
-            
-            // Mostrar el modal
-            openModal(deleteModal);
-        }
-    });
-    
-    // Abrir modal de nuevo usuario
-    if (addButton) {
-        addButton.addEventListener('click', function() {
-            openModal(userModal);
-        });
-    }
-    
-    // Cerrar modal de edición
-    if (closeEditModal) {
-        closeEditModal.addEventListener('click', function() {
-            closeModal(editModal);
-        });
-    }
-    
-    // Cancelar edición
-    if (cancelEdit) {
-        cancelEdit.addEventListener('click', function() {
-            closeModal(editModal);
-        });
-    }
-    
-    // Cancelar eliminación
-    if (cancelDelete) {
-        cancelDelete.addEventListener('click', function() {
-            closeModal(deleteModal);
-        });
-    }
-    
-    // Envío del formulario de edición
-    const saveEditBtn = editModal.querySelector('.save-btn');
-    if (saveEditBtn) {
-        saveEditBtn.addEventListener('click', function() {
-            const id = document.getElementById('edit_id').value;
-            const nombre = document.getElementById('edit_nombre').value;
-            const email = document.getElementById('edit_email').value;
-            const password = document.getElementById('edit_password').value;
-            
-            if (validateEditForm()) {
-                // Crear un formulario dinámico para enviar los datos
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.style.display = 'none';
-                
-                const actionInput = document.createElement('input');
-                actionInput.name = 'action';
-                actionInput.value = 'editar_usuario';
-                form.appendChild(actionInput);
-                
-                const idInput = document.createElement('input');
-                idInput.name = 'id';
-                idInput.value = id;
-                form.appendChild(idInput);
-                
-                const nombreInput = document.createElement('input');
-                nombreInput.name = 'nombre';
-                nombreInput.value = nombre;
-                form.appendChild(nombreInput);
-                
-                const emailInput = document.createElement('input');
-                emailInput.name = 'email';
-                emailInput.value = email;
-                form.appendChild(emailInput);
-                
-                const passwordInput = document.createElement('input');
-                passwordInput.name = 'password';
-                passwordInput.value = password;
-                form.appendChild(passwordInput);
-                
-                document.body.appendChild(form);
-                form.submit();
+        document.addEventListener('DOMContentLoaded', function () {
+            // Referencias a los modales
+            const userModal = document.getElementById('userModal');
+            const editModal = document.getElementById('editModal');
+            const deleteModal = document.getElementById('deleteModal');
+
+            // Botones para abrir/cerrar modales
+            const addButton = document.querySelector('.add-button');
+            const closeEditModal = document.getElementById('closeEditModal');
+            const cancelEdit = document.getElementById('cancelEdit');
+            const cancelDelete = document.getElementById('cancelDelete');
+
+            // Botones de editar y eliminar (delegación de eventos)
+            document.addEventListener('click', function (e) {
+                // Botón de editar
+                if (e.target.closest('.tooltip-btn.edit')) {
+                    const btn = e.target.closest('.tooltip-btn.edit');
+                    const id = btn.getAttribute('data-id');
+                    const nombre = btn.getAttribute('data-nombre');
+                    const email = btn.getAttribute('data-email');
+
+                    // Rellenar el formulario con los datos del usuario
+                    document.getElementById('edit_id').value = id;
+                    document.getElementById('edit_nombre').value = nombre;
+                    document.getElementById('edit_email').value = email;
+                    document.getElementById('edit_password').value = ''; // Limpiar campo de contraseña
+
+                    // Mostrar el modal
+                    openModal(editModal);
+                }
+
+                // Botón de eliminar
+                if (e.target.closest('.tooltip-btn.delete')) {
+                    const btn = e.target.closest('.tooltip-btn.delete');
+                    const id = btn.getAttribute('data-id');
+                    const nombre = btn.getAttribute('data-nombre');
+
+                    // Establecer el ID del usuario a eliminar
+                    document.getElementById('delete_id').value = id;
+                    document.getElementById('delete_user_name').textContent = nombre;
+
+                    // Mostrar el modal
+                    openModal(deleteModal);
+                }
+            });
+
+            // Abrir modal de nuevo usuario
+            if (addButton) {
+                addButton.addEventListener('click', function () {
+                    openModal(userModal);
+                });
+            }
+
+            // Cerrar modal de edición
+            if (closeEditModal) {
+                closeEditModal.addEventListener('click', function () {
+                    closeModal(editModal);
+                });
+            }
+
+            // Cancelar edición
+            if (cancelEdit) {
+                cancelEdit.addEventListener('click', function () {
+                    closeModal(editModal);
+                });
+            }
+
+            // Cancelar eliminación
+            if (cancelDelete) {
+                cancelDelete.addEventListener('click', function () {
+                    closeModal(deleteModal);
+                });
+            }
+
+            // Envío del formulario de edición
+            const saveEditBtn = editModal.querySelector('.save-btn');
+            if (saveEditBtn) {
+                saveEditBtn.addEventListener('click', function () {
+                    const id = document.getElementById('edit_id').value;
+                    const nombre = document.getElementById('edit_nombre').value;
+                    const email = document.getElementById('edit_email').value;
+                    const password = document.getElementById('edit_password').value;
+
+                    if (validateEditForm()) {
+                        // Crear un formulario dinámico para enviar los datos
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.style.display = 'none';
+
+                        const actionInput = document.createElement('input');
+                        actionInput.name = 'action';
+                        actionInput.value = 'editar_usuario';
+                        form.appendChild(actionInput);
+
+                        const idInput = document.createElement('input');
+                        idInput.name = 'id';
+                        idInput.value = id;
+                        form.appendChild(idInput);
+
+                        const nombreInput = document.createElement('input');
+                        nombreInput.name = 'nombre';
+                        nombreInput.value = nombre;
+                        form.appendChild(nombreInput);
+
+                        const emailInput = document.createElement('input');
+                        emailInput.name = 'email';
+                        emailInput.value = email;
+                        form.appendChild(emailInput);
+
+                        const passwordInput = document.createElement('input');
+                        passwordInput.name = 'password';
+                        passwordInput.value = password;
+                        form.appendChild(passwordInput);
+
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                });
+            }
+
+            // Envío del formulario de eliminación
+            const confirmDeleteBtn = deleteModal.querySelector('.confirm-btn');
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', function () {
+                    const id = document.getElementById('delete_id').value;
+
+                    // Crear un formulario dinámico para enviar los datos
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.style.display = 'none';
+
+                    const actionInput = document.createElement('input');
+                    actionInput.name = 'action';
+                    actionInput.value = 'eliminar_usuario';
+                    form.appendChild(actionInput);
+
+                    const idInput = document.createElement('input');
+                    idInput.name = 'id';
+                    idInput.value = id;
+                    form.appendChild(idInput);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                });
+            }
+
+            // Función para abrir modal con animación
+            function openModal(modal) {
+                modal.style.display = 'block';
+                setTimeout(() => {
+                    modal.classList.add('show');
+                    modal.querySelector('.modal-content').classList.add('fadeIn');
+                }, 10);
+            }
+
+            // Función para cerrar modal con animación
+            function closeModal(modal) {
+                modal.classList.remove('show');
+                modal.querySelector('.modal-content').classList.remove('fadeIn');
+                modal.querySelector('.modal-content').classList.add('fadeOut');
+
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modal.querySelector('.modal-content').classList.remove('fadeOut');
+                }, 300);
+            }
+
+            // Cerrar modal al hacer clic fuera del contenido
+            window.addEventListener('click', function (e) {
+                if (e.target === editModal) {
+                    closeModal(editModal);
+                }
+                if (e.target === deleteModal) {
+                    closeModal(deleteModal);
+                }
+                if (e.target === userModal) {
+                    closeModal(userModal);
+                }
+            });
+
+            // Validación del formulario de edición
+            function validateEditForm() {
+                let isValid = true;
+
+                const nombre = document.getElementById('edit_nombre').value.trim();
+                const email = document.getElementById('edit_email').value.trim();
+
+                if (nombre === '') {
+                    isValid = false;
+                    document.getElementById('edit_nombre').style.borderColor = '#F44336';
+                } else {
+                    document.getElementById('edit_nombre').style.borderColor = '#ddd';
+                }
+
+                if (email === '' || !validateEmail(email)) {
+                    isValid = false;
+                    document.getElementById('edit_email').style.borderColor = '#F44336';
+                } else {
+                    document.getElementById('edit_email').style.borderColor = '#ddd';
+                }
+
+                return isValid;
+            }
+
+            // Función para validar email
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
             }
         });
-    }
-    
-    // Envío del formulario de eliminación
-    const confirmDeleteBtn = deleteModal.querySelector('.confirm-btn');
-    if (confirmDeleteBtn) {
-        confirmDeleteBtn.addEventListener('click', function() {
-            const id = document.getElementById('delete_id').value;
-            
-            // Crear un formulario dinámico para enviar los datos
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.style.display = 'none';
-            
-            const actionInput = document.createElement('input');
-            actionInput.name = 'action';
-            actionInput.value = 'eliminar_usuario';
-            form.appendChild(actionInput);
-            
-            const idInput = document.createElement('input');
-            idInput.name = 'id';
-            idInput.value = id;
-            form.appendChild(idInput);
-            
-            document.body.appendChild(form);
-            form.submit();
-        });
-    }
-    
-    // Función para abrir modal con animación
-    function openModal(modal) {
-        modal.style.display = 'block';
-        setTimeout(() => {
-            modal.classList.add('show');
-            modal.querySelector('.modal-content').classList.add('fadeIn');
-        }, 10);
-    }
-    
-    // Función para cerrar modal con animación
-    function closeModal(modal) {
-        modal.classList.remove('show');
-        modal.querySelector('.modal-content').classList.remove('fadeIn');
-        modal.querySelector('.modal-content').classList.add('fadeOut');
-        
-        setTimeout(() => {
-            modal.style.display = 'none';
-            modal.querySelector('.modal-content').classList.remove('fadeOut');
-        }, 300);
-    }
-    
-    // Cerrar modal al hacer clic fuera del contenido
-    window.addEventListener('click', function(e) {
-        if (e.target === editModal) {
-            closeModal(editModal);
-        }
-        if (e.target === deleteModal) {
-            closeModal(deleteModal);
-        }
-        if (e.target === userModal) {
-            closeModal(userModal);
-        }
-    });
-    
-    // Validación del formulario de edición
-    function validateEditForm() {
-        let isValid = true;
-        
-        const nombre = document.getElementById('edit_nombre').value.trim();
-        const email = document.getElementById('edit_email').value.trim();
-        
-        if (nombre === '') {
-            isValid = false;
-            document.getElementById('edit_nombre').style.borderColor = '#F44336';
-        } else {
-            document.getElementById('edit_nombre').style.borderColor = '#ddd';
-        }
-        
-        if (email === '' || !validateEmail(email)) {
-            isValid = false;
-            document.getElementById('edit_email').style.borderColor = '#F44336';
-        } else {
-            document.getElementById('edit_email').style.borderColor = '#ddd';
-        }
-        
-        return isValid;
-    }
-    
-    // Función para validar email
-    function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
-});
     </script>
 </body>
 

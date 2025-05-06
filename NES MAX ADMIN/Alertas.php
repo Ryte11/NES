@@ -93,6 +93,39 @@
                             </svg>
                             <h3>Dispositivo</h3>
                         </a>
+                        <li class="lista">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+                            </svg>
+                            <a href="Usuario.html">Usuarios</a>
+                            <ul class="submenu">
+                                <li><a href="Usuario.html">Usuarios Administrativos</a></li>
+                                <li><a href="UsuarioMaxAdmin.php">Máximo Administrador</a></li>
+                                <li><a href="UsuarioTecnico.php">Tecnico Usuario</a></li>
+                            </ul>
+                        </li>
+                        <a href="contactos.php" class="menu-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-address-book">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path
+                                    d="M20 6v12a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2z" />
+                                <path d="M10 16h6" />
+                                <path d="M13 11m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                <path d="M4 8h3" />
+                                <path d="M4 12h3" />
+                                <path d="M4 16h3" />
+                            </svg>
+                            <h3>Contactos</h3>
+                        </a>
                         <a href="Configuracion.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="32"
@@ -275,7 +308,7 @@
                                                 <div class="alert-icon">i</div>
                                                 <div class="alert-info">
                                                     <div><?php echo htmlspecialchars($row['nombre']); ?></div>
-                                                    <div class="code"><?php echo htmlspecialchars($row['codigo']); ?></div>
+                                                    <div class="code"><?php echo htmlspecialchars($row['cedula']); ?></div>
                                                 </div>
                                             </div>
                                         </td>
@@ -454,11 +487,10 @@
     </div>
 
 
-<<<<<<< HEAD
+
     <script src="js/profile.js"></script>
-=======
+
     <script src="js/alertas.js"></script>         
->>>>>>> a746f909b623ea58037b3e41291a99728cf08681
     <script src="js/alertas4.js" defer></script>
     <script src="js/modoOscuro.js"></script>
 </body>
