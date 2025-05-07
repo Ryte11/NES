@@ -43,3 +43,8 @@ Nombre: Luisangel ramirez
 Email: luisangelgamer20@gmail.com
 Fecha y Hora: 2025-05-05 22:20:20
 ---------------------------
+ID Usuario: 30
+Nombre: Luisangel ramirez
+Email: luisangelgamer20@gmail.com
+Fecha y Hora: 2025-05-07 01:42:41
+---------------------------

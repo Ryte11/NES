@@ -1,6 +1,5 @@
 <?php
 session_start();
-<<<<<<< HEAD
 if (!isset($_SESSION['tecnico_id'])) {
     header("Location: index.php");
     exit();
@@ -69,7 +68,7 @@ if (!isset($_SESSION['tecnico_id'])) {
 </body>
 
 </html>
-=======
+<?php
 if (!isset($_SESSION['usuario'])) {
     header("Location: index.php");
     exit();
@@ -103,4 +102,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header("Location: dashboard.php");
 }
 ?>
->>>>>>> 9d6718ae2c90670f587fc7cc331cec67857e0bea

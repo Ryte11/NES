@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Conexión PHP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .test-section {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 3px;
+            white-space: pre-wrap;
+        }
+
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Test de Conexión PHP</h1>
+
+    <div class="test-section">
+        <h2>1. Prueba Directa</h2>
+        <p>Esta prueba intentará conectarse al archivo PHP usando la URL exacta que proporciones:</p>
+        <input type="text" id="directUrl" placeholder="URL exacta al archivo PHP (ej: /Nes/php/chat_response.php)"
+            value="/Nes/php/chat_response.php">
+        <button onclick="testDirectConnection()">Probar Conexión Directa</button>
+        <div id="directResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Prueba Automática de Rutas</h2>
+        <p>Esta prueba intentará varias rutas posibles basadas en la estructura común de proyectos:</p>
+        <button onclick="testMultipleRoutes()">Probar Múltiples Rutas</button>
+        <div id="autoResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Información del Sistema</h2>
+        <div id="sysInfo" class="result">
+            <strong>URL Actual:</strong> <span id="currentUrl"></span><br>
+            <strong>Ruta Actual:</strong> <span id="currentPath"></span><br>
+            <strong>Nombre del Host:</strong> <span id="hostname"></span><br>
+            <strong>Base URL (calculada):</strong> <span id="baseUrl"></span>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar información del sistema
+        document.getElementById('currentUrl').textContent = window.location.href;
+        document.getElementById('currentPath').textContent = window.location.pathname;
+        document.getElementById('hostname').textContent = window.location.hostname;
+        document.getElementById('baseUrl').textContent = window.location.pathname.split('/').slice(0, 2).join('/');
+
+        // Función para prueba directa
+        async function testDirectConnection() {
+            const resultDiv = document.getElementById('directResult');
+            const url = document.getElementById('directUrl').value;
+
+            resultDiv.className = 'result';
+            resultDiv.textContent = 'Probando conexión a ' + url + '...';
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: 'Test message' })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                resultDiv.className = 'result success';
+                resultDiv.textContent = '✅ Conexión exitosa!\n\nRespuesta:\n' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ Error: ' + error.message;
+            }
+        }
+
+        // Función para probar múltiples rutas
+        async function testMultipleRoutes() {
+            const resultDiv = document.getElementById('autoResult');
+            resultDiv.className = 'result';
+            resultDiv.textContent = 'Probando múltiples rutas...';
+
+            const possiblePaths = [
+                '/Nes/php/chat_response.php',
+                '/Nes/PAgina NES USER/php/chat_response.php',
+                '/Nes/PAgina%20NES%20USER/php/chat_response.php',
+                '/php/chat_response.php',
+                './php/chat_response.php',
+                '../php/chat_response.php',
+                '../../php/chat_response.php',
+                '/Nes/PAgina NES USER/chat_response.php',
+                '/Nes/PAgina%20NES%20USER/chat_response.php'
+            ];
+
+            let results = [];
+
+            for (const path of possiblePaths) {
+                try {
+                    const response = await fetch(path, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message: 'Test message' }),
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        results.push(`✅ Éxito con ruta: ${path}`);
+
+                        // Actualizar el campo de URL directa con la ruta correcta
+                        document.getElementById('directUrl').value = path;
+                        break;
+                    } else {
+                        results.push(`❌ Error ${response.status} con ruta: ${path}`);
+                    }
+                } catch (error) {
+                    results.push(`❌ Error con ruta: ${path} - ${error.message}`);
+                }
+            }
+
+            resultDiv.textContent = results.join('\n');
+
+            if (results.some(r => r.includes('✅'))) {
+                resultDiv.className = 'result success';
+            } else {
+                resultDiv.className = 'result error';
+            }
+        }
+    </script>
+</body>
+
+</html>

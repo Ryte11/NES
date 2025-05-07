@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 session_start();
 require 'php/conexion.php';
 
@@ -19,7 +18,6 @@ $dispositivos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         #map {
             height: 600px;
             width: 100%;
-=======
     session_start();
     if (!isset($_SESSION['usuario'])) {
         header("Location: index.php");

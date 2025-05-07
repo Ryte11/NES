@@ -31,9 +31,6 @@ try {
         $validationErrors[] = "El nombre debe tener al menos 3 caracteres";
     }
     
-    if (!preg_match('/^\d{8,11}$/', $cedula)) {
-        $validationErrors[] = "La cédula debe tener entre 8 y 11 dígitos";
-    }
     
     if (empty($provincia)) {
         $validationErrors[] = "La provincia es requerida";

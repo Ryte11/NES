@@ -11,13 +11,6 @@ error_reporting(E_ALL);
 
 error_log("Nueva petición recibida");
 
-// Cargar variables de entorno desde .env
-require_once __DIR__ . '/vendor/autoload.php';
-if (class_exists('Dotenv\\Dotenv')) {
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-    $dotenv->load();
-}
-
 $input = json_decode(file_get_contents('php://input'), true);
 error_log("Input recibido: " . print_r($input, true));
 
@@ -28,9 +21,11 @@ if (!isset($input['message'])) {
 }
 
 $message = $input['message'];
-$apiKey = getenv('OPENAI_API_KEY');
+$apiKey = "AIzaSyCb3iURuulygRq3aa9yzECBqofNg1HfxpM";
+
 
 $system_prompt = "Eres NESBot, el asistente virtual de NES (Noise Environment System). NES es un sistema dedicado a monitorear, controlar y reducir la contaminación sonora en comunidades de República Dominicana. Tu misión es ayudar a los usuarios a entender cómo funciona NES, cómo registrar denuncias por ruido, cómo consultar el mapa de zonas ruidosas, y cómo solicitar dispositivos sensoriales auditivos. También puedes explicar la misión, visión y valores de NES, y dar consejos sobre convivencia y reducción de ruido. Responde siempre de forma clara, empática y profesional, orientando al usuario a mejorar su calidad de vida y la de su comunidad. Si la pregunta no está relacionada con NES, responde de manera general, amigable y profesional.";
+
 
 if (!preg_match('/^AIza[0-9A-Za-z-_]{35}$/', $apiKey)) {
     error_log("Error: Invalid API key format");
@@ -47,8 +42,8 @@ $data = [
     'contents' => [
         [
             'parts' => [
-                [ 'text' => $system_prompt ],
-                [ 'text' => $message ]
+                ['text' => $system_prompt],
+                ['text' => $message]
             ]
         ]
     ]
