@@ -6,9 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/alertas1.css">
     <link rel="stylesheet" href="css/modoOscuro.css">
-    <link rel="stylesheet" href="css/editarprofile.css">
+    <link rel="stylesheet" href="css/edit_profile.css">
     <title>Alertas ax Admin</title>
 </head>
+<style>
+    /* Estilos para el modal */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal.active {
+        display: flex !important;
+    }
+
+    .modal-content {
+        background-color: white;
+        width: 90%;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #666;
+    }
+
+    .close-modal:hover {
+        color: #000;
+    }
+</style>
 
 <body>
     <?php include 'php/verificar_sesion.php' ?>
@@ -275,12 +317,20 @@
 
                     <table>
                         <thead>
-                            <tr>
+                            <!-- Headers for Sistema (default) -->
+                            <tr id="sistema-headers">
                                 <th>Nombre</th>
                                 <th>Ubicación</th>
                                 <th>Tipo de denuncia</th>
+                                <th>Ver más</th>
                                 <th></th>
-                                <th></th>
+                            </tr>
+                            <!-- Headers for Dispositivos (hidden initially) -->
+                            <tr id="dispositivos-headers" style="display: none;">
+                                <th>ID Dispositivo</th>
+                                <th>Ubicación</th>
+                                <th>Nivel De Decibeles</th>
+                                <th>Fecha</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-contenido">
@@ -302,7 +352,7 @@
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
                                     ?>
-                                    <tr class="data-row">
+                                    <tr class="data-row" data-id="<?php echo htmlspecialchars($row['id']); ?>">
                                         <td>
                                             <div class="alert-item">
                                                 <div class="alert-icon">i</div>
@@ -315,7 +365,8 @@
                                         <td><?php echo htmlspecialchars($row['ubicacion']); ?></td>
                                         <td><span class="tag"><?php echo htmlspecialchars($row['tipo']); ?></span></td>
                                         <td>
-                                        <button class="view-btn" onclick="toggleDetails(<?php echo $row['id']; ?>)">
+                                            <button class="view-btn"
+                                                onclick="viewDetails(<?php echo htmlspecialchars($row['id']); ?>)">
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                                     stroke="currentColor" stroke-width="2">
                                                     <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -325,90 +376,10 @@
                                                 Vista
                                             </button>
                                         </td>
-                                        <td><button class="more-btn" data-tooltip="Más opciones">...</button></td>
-                                    </tr>
-
-                                    <tr class="expandable-content" id="content-<?php echo $row['id']; ?>" data-content="<?php echo $row['id']; ?>"
-                                        style="display: none;">
-                                        <td colspan="5">
-                                            <div class="info-grid">
-                                                <div class="info-item">
-                                                    <i>📅</i>
-                                                    <span><?php echo htmlspecialchars($row['fecha']); ?></span>
-                                                </div>
-                                                <div class="info-item">
-                                                    <i>📍</i>
-                                                    <span><?php echo htmlspecialchars($row['ubicacion']); ?></span>
-                                                </div>
-                                                <div class="info-item">
-                                                    <i>✉️</i>
-                                                    <span><?php echo htmlspecialchars($row['nombre']); ?></span>
-                                                </div>
-                                            </div>
-                                            <div class="case-description">
-                                                <p><?php echo htmlspecialchars($row['descripcion']); ?></p>
-                                            </div>
-                                           <button class="view-case-btn" onclick="openModal(<?php echo $row['id']; ?>)">Ver caso</button>
+                                        <td class="fecha-column" style="display:none;">
+                                            <?php echo htmlspecialchars($row['fecha']); ?>
                                         </td>
                                     </tr>
-
-                                    
-                            <!-- Modal para ver detalles del caso -->
-                            <div id="caseModal" class="modal">
-                                <div class="modal-content">
-                                    <div class="case-header">
-                                    <div class="close-modal"
-                                            onclick="document.getElementById('caseModal').classList.remove('active');">✕
-                                        </div>
-                                        <h2 class="case-title">Caso <?php echo htmlspecialchars($row['id']); ?></h2>
-                                        <p class="case-subtitle">Reportado por <?php echo htmlspecialchars($row['nombre']); ?></p>
-                                        <span class="status-badge">En proceso</span>
-                                    </div>
-
-                                    <div class="case-info-grid">
-                                        <div class="info-card">
-                                            <div class="info-card-label">📅 Fecha de reporte</div>
-                                            <div class="info-card-value"><?php echo htmlspecialchars($row['fecha']); ?></div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">📍 Ubicación</div>
-                                            <div class="info-card-value"><?php echo htmlspecialchars($row['ubicacion']); ?></div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔊 Tipo de denuncia</div>
-                                            <div class="info-card-value"><?php echo htmlspecialchars($row['tipo']); ?></div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔢 Código</div>
-                                            <div class="info-card-value"><?php echo htmlspecialchars($row['cedula']); ?></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="case-description1">
-                                        <h3>Descripción del caso</h3>
-                                        <p><?php echo htmlspecialchars($row['descripcion']); ?></p>
-                                        
-                                    </div>
-
-                                    <div class="comment-section">
-                                        <textarea class="comment-input" placeholder="Escribe un comentario sobre este caso..."></textarea>
-                                        <div class="button-group">
-                                            <button class="btn btn-deny" onclick="updateStatus('denied')">
-                                                ✕ Denegar
-                                            </button>
-                                            <button class="btn btn-accept" onclick="updateStatus('accepted')">
-                                                ✓ Aceptar
-                                            </button>
-                                            <button class="demo-button" onclick="resetStatus()" style="margin-left: 10px; background: #64748b;">
-                                                Resetear Estado
-                                            </button>
-                                            <button class="Enviar">
-                                                Enviar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
                                     <?php
                                 }
                             } else {
@@ -418,81 +389,163 @@
                             $conn->close();
                             ?>
 
-
-                            <!-- Modal para ver detalles del caso -->
-                            <div id="caseModal" class="modal">
-                                <div class="modal-content">
-                                    <div class="case-header">
-                                    <div class="close-modal"
-                                            onclick="document.getElementById('caseModal').classList.remove('active');">✕
-                                        </div>
-                                        <h2 class="case-title">Caso 123-4567891-1</h2>
-                                        <p class="case-subtitle">Reportado por Manuel Alejandro</p>
-                                        <span class="status-badge">En proceso</span>
-                                    </div>
-
-                                    <div class="case-info-grid">
-                                        <div class="info-card">
-                                            <div class="info-card-label">📅 Fecha de reporte</div>
-                                            <div class="info-card-value">13/2/2024</div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">📍 Ubicación</div>
-                                            <div class="info-card-value">Santo Domingo ESTE</div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔊 Tipo de denuncia</div>
-                                            <div class="info-card-value">Ruidos Por Parlantes</div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔢 Código</div>
-                                            <div class="info-card-value">123-4567891-1</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="case-description1">
-                                        <h3>Descripción del caso</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                            ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                            eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                                            officia deserunt mollit anim id est laborum.</p>
-                                    </div>
-
-                                    <div class="comment-section">
-                                        <textarea class="comment-input" placeholder="Escribe un comentario sobre este caso..."></textarea>
-                                        <div class="button-group">
-                                            <button class="btn btn-deny" onclick="updateStatus('denied')">
-                                                ✕ Denegar
-                                            </button>
-                                            <button class="btn btn-accept" onclick="updateStatus('accepted')">
-                                                ✓ Aceptar
-                                            </button>
-                                            <button class="demo-button" onclick="resetStatus()" style="margin-left: 10px; background: #64748b;">
-                                                Resetear Estado
-                                            </button>
-                                            <button class="Enviar">
-                                                Enviar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </tbody>
-                    </table> 
+                    </table>
                 </div>
             </main>
         </div>
     </div>
+    <div id="caseModal" class="modal">
+        <div class="modal-content">
+            <div class="case-header">
+                <div class="close-modal" onclick="document.getElementById('caseModal').classList.remove('active');">✕
+                </div>
+                <h2 class="case-title">Caso <?php echo htmlspecialchars($row['id']); ?></h2>
+                <p class="case-subtitle">Reportado por
+                    <?php echo htmlspecialchars($row['nombre']); ?>
+                </p>
+                <span class="status-badge">En proceso</span>
+            </div>
 
+            <div class="case-info-grid">
+                <div class="info-card">
+                    <div class="info-card-label">📅 Fecha de reporte</div>
+                    <div class="info-card-value" id="fecha_report"><?php echo htmlspecialchars($row['fecha']); ?>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-label">📍 Ubicación</div>
+                    <div class="info-card-value">
+                        <?php echo htmlspecialchars($row['ubicacion']); ?>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-label">🔊 Tipo de denuncia</div>
+                    <div class="info-card-value"><?php echo htmlspecialchars($row['tipo']); ?>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-label">🔢 Código</div>
+                    <div class="info-card-value"><?php echo htmlspecialchars($row['cedula']); ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-description1">
+                <h3>Descripción del caso</h3>
+                <p><?php echo htmlspecialchars($row['descripcion']); ?></p>
+
+            </div>
+
+            <div class="comment-section">
+                <textarea class="comment-input" placeholder="Escribe un comentario sobre este caso..."></textarea>
+                <div class="button-group">
+                    <button class="btn btn-deny" onclick="updateStatus('denied')">
+                        ✕ Denegar
+                    </button>
+                    <button class="btn btn-accept" onclick="updateStatus('accepted')">
+                        ✓ Aceptar
+                    </button>
+                    <button class="demo-button" onclick="resetStatus()" style="margin-left: 10px; background: #64748b;">
+                        Resetear Estado
+                    </button>
+                    <button class="Enviar">
+                        Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script src="js/profile.js"></script>
 
-    <script src="js/alertas.js"></script>         
-    <script src="js/alertas4.js" defer></script>
+    <script src="js/alertas.js"></script>
     <script src="js/modoOscuro.js"></script>
+    <script>
+        // Función para ver detalles y abrir el modal
+        function viewDetails(id) {
+            if (!id) {
+                console.error('ID no válido');
+                return;
+            }
+
+            const modal = document.getElementById('caseModal');
+            if (!modal) {
+                console.error('Modal no encontrado');
+                return;
+            }
+
+            // Guardar el ID actual
+            currentCaseId = id;
+
+            // Obtener los datos de la fila
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (!row) {
+                console.error('Fila no encontrada');
+                return;
+            }
+
+            // Obtener los elementos con mejor manejo de errores
+            const nombre = row.querySelector('.alert-info div:first-child')?.textContent?.trim() || 'N/A';
+            const cedula = row.querySelector('.code')?.textContent?.trim() || 'N/A';
+            const ubicacion = row.querySelector('td:nth-child(2)')?.textContent?.trim() || 'N/A';
+            const tipo = row.querySelector('.tag')?.textContent?.trim() || 'N/A';
+            const fecha = row.querySelector('.fecha-column')?.textContent?.trim() || 'N/A';
+
+            // Actualizar el contenido del modal
+            modal.innerHTML = `
+        <div class="modal-content">
+            <div class="case-header">
+                <div class="close-modal" onclick="closeModal()">✕</div>
+                <h2 class="case-title">Caso ${cedula}</h2>
+                <p class="case-subtitle">Reportado por ${nombre}</p>
+                <span class="status-badge">En proceso</span>
+            </div>
+
+            <div class="case-info-grid">
+                <div class="info-card">
+                    <div class="info-card-label">📅 Fecha de reporte</div>
+                    <div class="info-card-value">${fecha}</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-label">📍 Ubicación</div>
+                    <div class="info-card-value">${ubicacion}</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-label">🔊 Tipo de denuncia</div>
+                    <div class="info-card-value">${tipo}</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-label">🔢 Código</div>
+                    <div class="info-card-value">${cedula}</div>
+                </div>
+            </div>
+            
+
+            <div class="comment-section">
+                <textarea class="comment-input" placeholder="Escribe un comentario sobre este caso..."></textarea>
+                <div class="button-group">
+                    <button class="btn btn-deny" onclick="updateStatus('denied')">✕ Denegar</button>
+                    <button class="btn btn-accept" onclick="updateStatus('accepted')">✓ Aceptar</button>
+                    <button class="demo-button" onclick="resetStatus()">Resetear Estado</button>
+                    <button class="Enviar">Enviar</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+            // Mostrar el modal
+            modal.classList.add('active');
+        } // Función para cerrar el modal
+        function closeModal() {
+            const modal = document.getElementById('caseModal');
+            if (modal) {
+                modal.classList.remove('active');
+                currentCaseId = null;
+            }
+        }
+    </script>
 </body>
 
 </html>

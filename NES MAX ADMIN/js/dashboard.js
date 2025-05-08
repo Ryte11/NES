@@ -1,27 +1,127 @@
-// Fetch dashboard statistics and update numbers dynamically
-async function fetchDashboardData() {
-  try {
-    const response = await fetch("php/dashboard_data.php");
-    const data = await response.json();
 
-    if (data.error) {
-      console.error("Error fetching dashboard data:", data.error);
-      showErrorNotification("Error al cargar datos del dashboard");
-      return;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize charts
+    initializeCharts();
+    
+    // Initialize map
+    initializeMap();
+    
+    // Fetch data
+    fetchDashboardData();
+});
+
+function initializeCharts() {
+    const provinciasCtx = document.getElementById('provinciasChart');
+    const denunciasCtx = document.getElementById('denunciasChart');
+
+    if (provinciasCtx) {
+        provinciasChart = new Chart(provinciasCtx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Denuncias por Provincia',
+                    data: [],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
     }
 
-    // Update basic statistics
-    updateBasicStats(data);
+    if (denunciasCtx) {
+        denunciasChart = new Chart(denunciasCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Denuncias Mensuales',
+                    data: [],
+                    borderColor: 'rgba(75, 192, 192, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+}
 
-    // Update enhanced analytics
-    updateEnhancedAnalytics(data);
+function initializeMap() {
+    const mapContainer = document.getElementById('mapa');
+    if (!mapContainer) return;
 
-    // Update maps and charts
-    updateVisualizations(data);
-  } catch (error) {
-    console.error("Error fetching dashboard data:", error);
-    showErrorNotification("Error de conexión al servidor");
-  }
+    map = L.map('mapa').setView([18.7357, -70.1627], 8);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    cargarDispositivos();
+}
+
+async function cargarDispositivos() {
+    try {
+        const response = await fetch('php/obtener_dispositivos.php');
+        if (!response.ok) throw new Error('Error al obtener dispositivos');
+        const dispositivos = await response.json();
+
+        dispositivos.forEach(d => {
+            if (d.latitud && d.longitud) {
+                L.marker([parseFloat(d.latitud), parseFloat(d.longitud)])
+                    .addTo(map)
+                    .bindPopup(`
+                        <div class="popup-content">
+                            <h3>Dispositivo ${d.id_dispositivo}</h3>
+                            <p><b>Instalador:</b> ${d.nombre_instalador || 'No especificado'}</p>
+                            <p><b>Fecha:</b> ${d.fecha_instalacion || 'No especificada'}</p>
+                            <p><b>Zona:</b> ${d.zona_referencia || 'No especificada'}</p>
+                        </div>
+                    `);
+            }
+        });
+    } catch (error) {
+        console.error('Error cargando dispositivos:', error);
+    }
+}
+
+async function fetchDashboardData() {
+    try {
+        const response = await fetch('php/dashboard_data.php');
+        if (!response.ok) throw new Error('Error en la respuesta del servidor');
+        
+        const data = await response.json();
+        updateDashboardStats(data);
+        updateCharts(data);
+    } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+    }
+}
+
+function updateDashboardStats(data) {
+    // Update statistics
+    document.querySelector('.stat-card:nth-child(1) .number').textContent = data.totalDevices || 0;
+    document.querySelector('.stat-card:nth-child(2) .number').textContent = data.totalUsers || 0;
+    document.querySelector('.stat-card:nth-child(3) .number').textContent = data.activeComplaints || 0;
+    document.querySelector('.stat-card:nth-child(4) .number').textContent = data.resolvedComplaints || 0;
+}
+
+function updateCharts(data) {
+    if (provinciasChart && data.provinciasData) {
+        provinciasChart.data.labels = data.provinciasData.map(item => item.provincia);
+        provinciasChart.data.datasets[0].data = data.provinciasData.map(item => item.count);
+        provinciasChart.update();
+    }
+
+    if (denunciasChart && data.monthlyData) {
+        denunciasChart.data.labels = data.monthlyData.map(item => item.month);
+        denunciasChart.data.datasets[0].data = data.monthlyData.map(item => item.count);
+        denunciasChart.update();
+    }
 }
 
 function updateBasicStats(data) {
@@ -102,35 +202,7 @@ function calculateTrend(weeklyData) {
   return (((recent - previous) / previous) * 100).toFixed(1);
 }
 
-function updateHeatmap(heatmapData) {
-  if (!map) return;
 
-  // Remove existing heatmap layer if it exists
-  if (window.heatmapLayer) {
-    map.removeLayer(window.heatmapLayer);
-  }
-
-  // Create new heatmap layer
-  window.heatmapLayer = L.heatLayer(
-    heatmapData.map((point) => ({
-      lat: point.lat,
-      lng: point.lng,
-      intensity: point.count,
-    })),
-    {
-      radius: 25,
-      blur: 15,
-      maxZoom: 10,
-      gradient: {
-        0.4: "blue",
-        0.6: "cyan",
-        0.7: "lime",
-        0.8: "yellow",
-        1.0: "red",
-      },
-    }
-  ).addTo(map);
-}
 
 // Error handling and notifications
 function showErrorNotification(message) {
@@ -166,63 +238,7 @@ function updateDenunciasChart(data) {
   denunciasChart.update("active");
 }
 
-// Initialize dashboard on load
-document.addEventListener("DOMContentLoaded", () => {
-  fetchDashboardData();
-  // Refresh dashboard data every 5 minutes
-  setInterval(fetchDashboardData, 300000);
-});
 
-// Configuración del mapa
-const map = L.map("map").setView([18.7357, -70.1627], 8);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "© OpenStreetMap contributors",
-}).addTo(map);
-
-// Datos actualizados de dispositivos en RD
-const dispositivos = [
-  // Santo Domingo y alrededores
-  { lat: 18.4861, lng: -69.9312, nombre: "Dispositivo Santo Domingo Este" },
-  { lat: 18.4755, lng: -69.8845, nombre: "Dispositivo Santo Domingo Norte" },
-  { lat: 18.4539, lng: -69.9689, nombre: "Dispositivo Santo Domingo Oeste" },
-  { lat: 18.4718, lng: -69.9115, nombre: "Dispositivo Zona Colonial" },
-  { lat: 18.4982, lng: -69.8712, nombre: "Dispositivo Los Mina" },
-
-  // Santiago y región norte
-  { lat: 19.4517, lng: -70.6973, nombre: "Dispositivo Santiago Centro" },
-  { lat: 19.4389, lng: -70.6913, nombre: "Dispositivo Santiago Sur" },
-  { lat: 19.4661, lng: -70.7088, nombre: "Dispositivo Santiago Norte" },
-  { lat: 19.7892, lng: -70.6897, nombre: "Dispositivo Puerto Plata" },
-  { lat: 19.7934, lng: -70.6871, nombre: "Dispositivo Playa Dorada" },
-
-  // Región Este
-  { lat: 18.5601, lng: -68.3725, nombre: "Dispositivo Punta Cana" },
-  { lat: 18.4314, lng: -68.9719, nombre: "Dispositivo La Romana" },
-  { lat: 18.7655, lng: -69.0339, nombre: "Dispositivo Higuey" },
-  { lat: 18.4504, lng: -69.2395, nombre: "Dispositivo San Pedro de Macorís" },
-  { lat: 18.4539, lng: -68.4242, nombre: "Dispositivo Bávaro" },
-
-  // Región Sur
-  { lat: 18.2714, lng: -70.3087, nombre: "Dispositivo San Cristóbal" },
-  { lat: 18.2048, lng: -71.0993, nombre: "Dispositivo Barahona" },
-  { lat: 18.4539, lng: -70.1198, nombre: "Dispositivo Bani" },
-  { lat: 18.8082, lng: -71.2459, nombre: "Dispositivo San Juan" },
-  { lat: 18.5539, lng: -70.5032, nombre: "Dispositivo Azua" },
-
-  // Región Norte/Cibao
-  { lat: 19.3815, lng: -70.4159, nombre: "Dispositivo La Vega" },
-  { lat: 19.2257, lng: -70.5245, nombre: "Dispositivo Bonao" },
-  { lat: 19.5652, lng: -70.8849, nombre: "Dispositivo Mao" },
-  { lat: 19.3012, lng: -69.5513, nombre: "Dispositivo Samaná" },
-  { lat: 19.1821, lng: -70.1498, nombre: "Dispositivo Cotuí" },
-];
-
-// Agregar marcadores al mapa
-dispositivos.forEach((dispositivo) => {
-  L.marker([dispositivo.lat, dispositivo.lng])
-    .bindPopup(dispositivo.nombre)
-    .addTo(map);
-});
 
 // Gráfico de denuncias por provincia
 const provinciasChart = new Chart(document.getElementById("provinciasChart"), {

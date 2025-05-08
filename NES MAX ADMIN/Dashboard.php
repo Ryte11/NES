@@ -1,3 +1,98 @@
+<?php
+// Conexión a la base de datos
+$servername = "localhost";
+$username = "root"; // Ajusta según tu configuración
+$password = ""; // Ajusta según tu configuración
+$dbname = "nes";
+
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
+
+// Configurar el conjunto de caracteres a utf8
+$conn->set_charset("utf8");
+
+// 1. Total de dispositivos
+$sql_dispositivos = "SELECT COUNT(*) as total FROM dispositivos";
+$result = $conn->query($sql_dispositivos);
+$dispositivos = $result->fetch_assoc();
+$total_dispositivos = $dispositivos['total'];
+
+// 2. Total de usuarios registrados
+$sql_usuarios = "SELECT COUNT(*) as total FROM usuarios";
+$result = $conn->query($sql_usuarios);
+$usuarios = $result->fetch_assoc();
+$total_usuarios = $usuarios['total'];
+
+// 3. Denuncias activas (estado = 'en proceso')
+$sql_denuncias_activas = "SELECT COUNT(*) as total FROM denuncias_users WHERE estado = 'en proceso'";
+$result = $conn->query($sql_denuncias_activas);
+$denuncias_activas = $result->fetch_assoc();
+$total_denuncias_activas = $denuncias_activas['total'];
+
+// 4. Denuncias resueltas (estado = 'aceptado')
+$sql_denuncias_resueltas = "SELECT COUNT(*) as total FROM denuncias_users WHERE estado = 'aceptado'";
+$result = $conn->query($sql_denuncias_resueltas);
+$denuncias_resueltas = $result->fetch_assoc();
+$total_denuncias_resueltas = $denuncias_resueltas['total'];
+
+// 5. Denuncias por categoría específica
+
+// Denuncias por Bocinas
+$sql_bocinas = "SELECT COUNT(*) as total FROM denuncias_users WHERE tipo LIKE '%bocina%'";
+$result = $conn->query($sql_bocinas);
+$bocinas = $result->fetch_assoc();
+$total_bocinas = $bocinas['total'];
+
+// Denuncias por Vehículos
+$sql_vehiculos = "SELECT COUNT(*) as total FROM denuncias_users WHERE tipo LIKE '%vehiculo%' OR tipo LIKE '%vehículo%'";
+$result = $conn->query($sql_vehiculos);
+$vehiculos = $result->fetch_assoc();
+$total_vehiculos = $vehiculos['total'];
+
+// Denuncias por Construcciones
+$sql_construcciones = "SELECT COUNT(*) as total FROM denuncias_users WHERE tipo LIKE '%construccion%' OR tipo LIKE '%construcción%'";
+$result = $conn->query($sql_construcciones);
+$construcciones = $result->fetch_assoc();
+$total_construcciones = $construcciones['total'];
+
+// 6. Total de denuncias
+$sql_total_denuncias = "SELECT COUNT(*) as total FROM denuncias_users";
+$result = $conn->query($sql_total_denuncias);
+$total_denuncias = $result->fetch_assoc();
+$total_denuncias = $total_denuncias['total'];
+
+// 7. Datos para los gráficos (en formato JSON para usar con JavaScript)
+// Gráfico de provincias
+$sql_provincias = "SELECT ubicacion, COUNT(*) as total FROM alertas WHERE ubicacion != '' GROUP BY ubicacion";
+$result = $conn->query($sql_provincias);
+$provincias_labels = [];
+$provincias_data = [];
+while ($row = $result->fetch_assoc()) {
+    $provincias_labels[] = $row['ubicacion'];
+    $provincias_data[] = $row['total'];
+}
+
+// Gráfico de denuncias por tipo
+$sql_denuncias_chart = "SELECT tipo, COUNT(*) as total FROM alertas WHERE tipo != '' GROUP BY tipo";
+$result = $conn->query($sql_denuncias_chart);
+$tipos_labels = [];
+$tipos_data = [];
+while ($row = $result->fetch_assoc()) {
+    $tipos_labels[] = $row['tipo'];
+    $tipos_data[] = $row['total'];
+}
+
+// Formatear números para mejor legibilidad
+function formatearNumero($numero)
+{
+    return number_format($numero, 0, ',', '.');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +105,10 @@
     <link rel="stylesheet" href="css/edit_profile.css">
     <title>Panel De Control dashboard</title>
 </head>
-<?php include 'php/verificar_sesion.php' ?>
+
+<?php
+include 'php/verificar_sesion.php'
+    ?>
 
 <body>
     <div class="principal">
@@ -109,7 +207,7 @@
                                 <li><a href="UsuarioMaxAdmin.php">Máximo Administrador</a></li>
                             </ul>
                         </li>
-                         <a href="contactos.php" class="menu-item">
+                        <a href="contactos.php" class="menu-item">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -243,7 +341,7 @@
                     <div class="stat-card">
                         <div>
                             <h3>Total Dispositivos</h3>
-                            <div class="number">156</div>
+                            <div class="number"><?php echo $total_dispositivos; ?></div>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -257,7 +355,7 @@
                     <div class="stat-card">
                         <div>
                             <h3>Usuarios Registrados</h3>
-                            <div class="number">2,847</div>
+                            <div class="number"><?php echo formatearNumero($total_usuarios); ?></div>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -268,12 +366,11 @@
                             <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                             <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
                         </svg>
-
                     </div>
                     <div class="stat-card">
                         <div>
                             <h3>Denuncias Activas</h3>
-                            <div class="number">342</div>
+                            <div class="number"><?php echo $total_denuncias_activas; ?></div>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="currentColor"
@@ -286,7 +383,7 @@
                     <div class="stat-card">
                         <div>
                             <h3>Denuncias Resueltas</h3>
-                            <div class="number">1,205</div>
+                            <div class="number"><?php echo formatearNumero($total_denuncias_resueltas); ?></div>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -298,8 +395,6 @@
                     </div>
                 </div>
 
-
-
                 <div class="charts-grid">
                     <div class="chart-container">
                         <canvas id="provinciasChart"></canvas>
@@ -308,80 +403,130 @@
                         <canvas id="denunciasChart"></canvas>
                     </div>
                 </div>
-            <div class="stats-modern">
-                <div class="stat-modern-card">
-                    <div class="stat-content">
-                        <h3>Denuncias por Bocinas</h3>
-                        <div class="number">723</div>
+
+                <div class="stats-modern">
+                    <div class="stat-modern-card">
+                        <div class="stat-content">
+                            <h3>Denuncias por Bocinas</h3>
+                            <div class="number"><?php echo $total_bocinas; ?></div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 8a5 5 0 0 1 0 8" />
+                            <path d="M17.7 5a9 9 0 0 1 0 14" />
+                            <path
+                                d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5" />
+                        </svg>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 8a5 5 0 0 1 0 8" />
-                        <path d="M17.7 5a9 9 0 0 1 0 14" />
-                        <path
-                            d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5" />
-                    </svg>
-                </div>
-            
-                <div class="stat-modern-card">
-                    <div class="stat-content">
-                        <h3>Denuncias por Vehículos</h3>
-                        <div class="number">133</div>
+
+                    <div class="stat-modern-card">
+                        <div class="stat-content">
+                            <h3>Denuncias por Vehículos</h3>
+                            <div class="number"><?php echo $total_vehiculos; ?></div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5" />
+                        </svg>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                        <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                        <path d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5" />
-                    </svg>
-                </div>
-            
-                <div class="stat-modern-card">
-                    <div class="stat-content">
-                        <h3>Denuncias por Construcciones</h3>
-                        <div class="number">226</div>
+
+                    <div class="stat-modern-card">
+                        <div class="stat-content">
+                            <h3>Denuncias por Construcciones</h3>
+                            <div class="number"><?php echo $total_construcciones; ?></div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 21l18 0" />
+                            <path d="M9 8l1 0" />
+                            <path d="M9 12l1 0" />
+                            <path d="M9 16l1 0" />
+                            <path d="M14 8l1 0" />
+                            <path d="M14 12l1 0" />
+                            <path d="M14 16l1 0" />
+                            <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16" />
+                        </svg>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 21l18 0" />
-                        <path d="M9 8l1 0" />
-                        <path d="M9 12l1 0" />
-                        <path d="M9 16l1 0" />
-                        <path d="M14 8l1 0" />
-                        <path d="M14 12l1 0" />
-                        <path d="M14 16l1 0" />
-                        <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16" />
-                    </svg>
-                </div>
-            
-                <div class="stat-modern-card">
-                    <div class="stat-content">
-                        <h3>Total de Denuncias</h3>
-                        <div class="number">1,547</div>
+
+                    <div class="stat-modern-card">
+                        <div class="stat-content">
+                            <h3>Total de Denuncias</h3>
+                            <div class="number"><?php echo formatearNumero($total_denuncias); ?></div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 12l5 5l10 -10" />
+                            <path d="M2 12l5 5m5 -5l5 -5" />
+                        </svg>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M7 12l5 5l10 -10" />
-                        <path d="M2 12l5 5m5 -5l5 -5" />
-                    </svg>
                 </div>
+
+                
             </div>
-                <div class="chart-container-map">
-                    <div id="map"></div>
-                </div>
 
+            <!-- Mapa de dispositivos -->
+            <div class="map-container">
+                <div id="mapa" style="height: 500px; width: 100%;"></div>
             </div>
-
-
         </div>
     </div>
+    </div>
 
+    <!-- Enlaces a Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="js/dashboard.js"></script>
-    <script src="js/PanelControl.js"></script>
     <script src="js/modoOscuro.js"></script>
     <script src="js/profile.js"></script>
-</body>
 
+    <!-- Script para el mapa de dispositivos -->
+    <script>
+        // Inicializar el mapa
+        const map = L.map('mapa').setView([18.7357, -70.1627], 8);
+
+        // Agregar el tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Función para cargar los dispositivos
+        async function cargarDispositivos() {
+            try {
+                const response = await fetch('php/obtener_dispositivos.php');
+                if (!response.ok) {
+                    throw new Error('Error al obtener los dispositivos');
+                }
+                const dispositivos = await response.json();
+
+                dispositivos.forEach(d => {
+                    if (d.latitud && d.longitud) {
+                        const marker = L.marker([parseFloat(d.latitud), parseFloat(d.longitud)])
+                            .addTo(map)
+                            .bindPopup(`
+                            <div style="min-width: 200px;">
+                                <h3 style="margin: 0 0 10px 0;">Dispositivo ${d.id_dispositivo}</h3>
+                                <p style="margin: 5px 0;"><b>Instalador:</b> ${d.nombre_instalador || 'No especificado'}</p>
+                                <p style="margin: 5px 0;"><b>Fecha:</b> ${d.fecha_instalacion || 'No especificada'}</p>
+                                <p style="margin: 5px 0;"><b>Zona:</b> ${d.zona_referencia || 'No especificada'}</p>
+                            </div>
+                        `);
+                    }
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Cargar los dispositivos cuando el mapa esté listo
+        map.whenReady(() => {
+            cargarDispositivos();
+        });
+    </script>
+    
+</body>
 </html>

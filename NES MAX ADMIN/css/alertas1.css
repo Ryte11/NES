@@ -743,7 +743,7 @@ table {
 }
 
 th {
-    text-align: center;
+    text-align: left;
     padding: 12px 15px;
     color: #666;
     border-bottom: 1px solid #eee;
@@ -989,7 +989,6 @@ td {
             width: 95%;
             max-width: 1000px;
             /* Aumentado de 700px */
-            border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             animation: slideIn 0.3s ease;
@@ -1258,4 +1257,100 @@ td {
 .pagination-btn:not(:disabled):active {
     transform: translateY(0);
     box-shadow: none;
+}
+
+
+/* Estilos de la tabla de alertas  y paginacion*/
+/* Pagination Styles */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.pagination-btn {
+    padding: 8px 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+    color: #333;
+}
+
+.pagination-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.pagination-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    margin-left: 10px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pagination-container {
+        margin: 15px 0;
+    }
+    
+    .pagination-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+/* Table loading state */
+.loading-row td {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+/* Active button state for stat buttons */
+.stat-button.active {
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Improve hover effect */
+.stat-button:hover {
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+}
+
+
+/* si9 */
+/* Add to your existing CSS */
+#sistema-headers, #dispositivos-headers {
+    transition: all 0.3s ease;
+}
+
+#sistema-headers th, #dispositivos-headers th {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.active-headers {
+    display: table-row !important;
+}
+
+.inactive-headers {
+    display: none !important;
 }

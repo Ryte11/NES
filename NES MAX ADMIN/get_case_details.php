@@ -1,45 +1,49 @@
 <?php
-    // Iniciar sesión
-    session_start();
+header('Content-Type: application/json');
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 
-    // Configuración de conexión a la base de datos
-    $servername = "localhost";
-    $username = "root"; 
-    $password = ""; 
-    $dbname = "nes";
+require_once 'php/conexion.php';
 
-    // Crear conexión
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
-    if (!$conn) {
-        die("Error de conexión: " . mysqli_connect_error());
-    }
-
-    // Verificar si se ha proporcionado un ID
-    if (isset($_GET["id"])) {
-        $id = $_GET["id"];
-        
-        // Consultar los detalles del caso
-        $sql = "SELECT * FROM denuncias_users WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result->num_rows > 0) {
-            // Devolver los datos como JSON
-            $row = $result->fetch_assoc();
-            echo json_encode($row);
-        } else {
-            // No se encontró el caso
-            http_response_code(404);
-            echo json_encode(["error" => "Caso no encontrado"]);
-        }
+try {
+    $sql = "SELECT id, nombre, cedula, ubicacion, tipo, fecha, descripcion, estado 
+            FROM denuncias_users 
+            ORDER BY fecha DESC";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $denuncias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    if (empty($denuncias)) {
+        echo json_encode([]);
     } else {
-        // No se proporcionó un ID
-        http_response_code(400);
-        echo json_encode(["error" => "Se requiere un ID"]);
+        $formattedData = array_map(function($row) {
+            return [
+                'id' => $row['id'],
+                'nombre' => $row['nombre'],
+                'codigo' => $row['cedula'],
+                'ubicacion' => $row['ubicacion'],
+                'tipo' => $row['tipo'],
+                'fecha' => $row['fecha'],
+                'descripcion' => $row['descripcion'],
+                'estado' => $row['estado']
+            ];
+        }, $denuncias);
+        
+        echo json_encode($formattedData);
     }
 
-    // Cerrar la conexión
-    $conn->close();
-    ?>
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode([
+        'error' => true,
+        'message' => 'Database error: ' . $e->getMessage()
+    ]);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode([
+        'error' => true,
+        'message' => 'Server error: ' . $e->getMessage()
+    ]);
+}
+?>

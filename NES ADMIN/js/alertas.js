@@ -154,36 +154,10 @@ perfilImagen.addEventListener('change', function(e) {
 // Variable global para almacenar el ID del caso actual
 let currentCaseId = null;
 
-// Datos de sistemas (asumiendo que está definido en otra parte o incluye estos datos de ejemplo)
-// Si no está definido, creamos un array vacío para evitar errores
+
 if (typeof sistemasData === 'undefined') {
     var sistemasData = [];
 }
-
-// Datos de dispositivos
-const dispositivosData = [
-    {
-        id: 10,
-        nombre: "Carlos Rodriguez",
-        codigo: "456-7891234-2",
-        ubicacion: "Santiago",
-        tipo: "Fallo de Equipo",
-        fecha: "14/2/2024",
-        direccion: "Calle Principal #123",
-        email: "carlos.rodriguez@email.com"
-    },
-    {
-        id: 11,
-        nombre: "María López",
-        codigo: "789-1234567-3",
-        ubicacion: "La Romana",
-        tipo: "Error de Sistema",
-        fecha: "15/2/2024",
-        direccion: "Calle Segunda #78",
-        email: "maria.lopez@email.com"
-    }
-];
-
 // Variable global para mantener el conjunto de datos actual
 let currentData = sistemasData.length > 0 ? sistemasData : [];
 
@@ -247,9 +221,7 @@ function updateTable(data) {
     data.forEach((item, index) => {
         tbody.innerHTML += createTableRow(item, index);
     });
-}
-
-// Función para filtrar los datos
+}// Función para filtrar los datos
 function filterData(searchTerm) {
     if (!searchTerm || searchTerm.trim() === '') {
         return currentData;
@@ -280,12 +252,13 @@ function toggleDetails(rowId) {
     }
 }
 
+
 // Función para abrir el modal del caso
 function openModal(id) {
     // Guardar el ID del caso actual
     currentCaseId = id;
     
-    // Prevenir propagación y comportamiento por defecto si es llamado desde un evento
+    // Prevenir propagación del evento si existe
     if (event) {
         event.preventDefault();
         event.stopPropagation();
@@ -298,92 +271,81 @@ function openModal(id) {
     if (caseModal) {
         caseModal.classList.add('active');
         
-        // Buscar el caso en datos existentes o en la base de datos
+        // Buscar el caso y cargar sus detalles
         fetchCaseDetails(id);
+    } else {
+        console.error('Modal no encontrado');
     }
 }
 
-// Función mejorada para cargar detalles del caso
+// Función para cargar los detalles del caso
 function fetchCaseDetails(id) {
-    // Para entornos con PHP, podríamos hacer una petición AJAX para obtener datos
-    // Pero para este ejemplo, vamos a trabajar con los datos existentes
+    // Intentar obtener los datos directamente desde la fila
+    // Primera opción: buscar por data-id en la fila visible
+    let nombreElement = document.querySelector(`tr[data-id="${id}"] .alert-info div:first-child`);
+    let cedulaElement = document.querySelector(`tr[data-id="${id}"] .code`);
+    let ubicacionElement = document.querySelector(`tr[data-id="${id}"] td:nth-child(2)`);
+    let tipoElement = document.querySelector(`tr[data-id="${id}"] .tag`);
     
-    let caseData = null;
+    // Segunda opción: buscar en la fila expandible
+    const descripcionElement = document.querySelector(`#content-${id} .case-description p`);
+    const fechaElement = document.querySelector(`#content-${id} .info-item:first-child span`);
     
-    // Buscar en sistemas
-    if (window.sistemasData && sistemasData.length > 0) {
-        const sistemasCase = sistemasData.find(item => item.id === id);
-        if (sistemasCase) caseData = sistemasCase;
-    }
-    
-    // Buscar en dispositivos si no se encontró en sistemas
-    if (!caseData && window.dispositivosData) {
-        const dispositivosCase = dispositivosData.find(item => item.id === id);
-        if (dispositivosCase) caseData = dispositivosCase;
-    }
-    
-    // Si encontramos el caso, actualizar la información en el modal
-    if (caseData) {
-        document.querySelector('.case-title').textContent = `Caso ${caseData.codigo}`;
-        document.querySelector('.case-subtitle').textContent = `Reportado por ${caseData.nombre}`;
-        document.querySelector('.info-card:nth-child(1) .info-card-value').textContent = caseData.fecha;
-        document.querySelector('.info-card:nth-child(2) .info-card-value').textContent = caseData.ubicacion;
-        document.querySelector('.info-card:nth-child(3) .info-card-value').textContent = caseData.tipo;
-        document.querySelector('.info-card:nth-child(4) .info-card-value').textContent = caseData.codigo;
+    // Si encontramos al menos los datos básicos
+    if (nombreElement && cedulaElement) {
+        const nombre = nombreElement.textContent || '';
+        const cedula = cedulaElement.textContent || '';
+        const ubicacion = ubicacionElement ? ubicacionElement.textContent : '';
+        const tipo = tipoElement ? tipoElement.textContent : '';
+        const fecha = fechaElement ? fechaElement.textContent : '';
+        const descripcion = descripcionElement ? descripcionElement.textContent : '';
         
-        // Actualizar el estado en la interfaz si está disponible
-        if (caseData.estado) {
-            const statusBadge = document.querySelector('.status-badge');
-            statusBadge.textContent = caseData.estado.charAt(0).toUpperCase() + caseData.estado.slice(1);
-            
-            // Aplicar clase según el estado
-            if (caseData.estado === 'aceptado') {
-                statusBadge.className = 'status-badge accepted';
-            } else if (caseData.estado === 'denegado') {
-                statusBadge.className = 'status-badge denied';
-            } else {
-                statusBadge.className = 'status-badge';
-            }
+        // Actualizar modal con los datos
+        document.querySelector('#caseModal .case-title').textContent = `Caso ${cedula}`;
+        document.querySelector('#caseModal .case-subtitle').textContent = `Reportado por ${nombre}`;
+        
+        // Actualizar valores de los info-cards
+        const infoCards = document.querySelectorAll('#caseModal .info-card-value');
+        if (infoCards.length >= 4) {
+            infoCards[0].textContent = fecha;
+            infoCards[1].textContent = ubicacion;
+            infoCards[2].textContent = tipo;
+            infoCards[3].textContent = cedula;
+        }
+        
+        // Actualizar descripción si está disponible
+        const descripcionModal = document.querySelector('#caseModal .case-description1 p');
+        if (descripcionModal && descripcion) {
+            descripcionModal.textContent = descripcion;
         }
     } else {
-        // Si no encontramos el caso en los datos locales, intentar obtenerlo mediante AJAX
-        // Este código se ejecutará en un entorno de producción con PHP
+        // Si no pudimos obtener datos de la interfaz, intentar con AJAX
+        console.log("No se encontraron datos en la interfaz, intentando con AJAX...");
         
-        // Simulando una llamada AJAX para obtener datos del servidor
+        // Hacer petición AJAX
         fetch(`get_case_details.php?id=${id}`)
             .then(response => response.json())
             .then(data => {
                 if (data) {
-                    document.querySelector('.case-title').textContent = `Caso ${data.codigo}`;
-                    document.querySelector('.case-subtitle').textContent = `Reportado por ${data.nombre}`;
-                    document.querySelector('.info-card:nth-child(1) .info-card-value').textContent = data.fecha;
-                    document.querySelector('.info-card:nth-child(2) .info-card-value').textContent = data.ubicacion;
-                    document.querySelector('.info-card:nth-child(3) .info-card-value').textContent = data.tipo;
-                    document.querySelector('.info-card:nth-child(4) .info-card-value').textContent = data.codigo;
+                    // Actualizar modal con datos recibidos
+                    document.querySelector('#caseModal .case-title').textContent = `Caso ${data.cedula}`;
+                    document.querySelector('#caseModal .case-subtitle').textContent = `Reportado por ${data.nombre}`;
                     
-                    // Si hay un campo de descripción en los datos
-                    if (data.descripcion) {
-                        document.querySelector('.case-description1 p').textContent = data.descripcion;
+                    const infoCards = document.querySelectorAll('#caseModal .info-card-value');
+                    if (infoCards.length >= 4) {
+                        infoCards[0].textContent = data.fecha;
+                        infoCards[1].textContent = data.ubicacion;
+                        infoCards[2].textContent = data.tipo;
+                        infoCards[3].textContent = data.cedula;
                     }
                     
-                    // Actualizar el estado en la interfaz si está disponible
-                    if (data.estado) {
-                        const statusBadge = document.querySelector('.status-badge');
-                        statusBadge.textContent = data.estado.charAt(0).toUpperCase() + data.estado.slice(1);
-                        
-                        // Aplicar clase según el estado
-                        if (data.estado === 'aceptado') {
-                            statusBadge.className = 'status-badge accepted';
-                        } else if (data.estado === 'denegado') {
-                            statusBadge.className = 'status-badge denied';
-                        } else {
-                            statusBadge.className = 'status-badge';
-                        }
+                    if (data.descripcion) {
+                        document.querySelector('#caseModal .case-description1 p').textContent = data.descripcion;
                     }
                 }
             })
             .catch(error => {
-                console.error('Error fetching case details:', error);
+                console.error('Error al obtener detalles del caso:', error);
             });
     }
 }
@@ -471,6 +433,7 @@ function updateStatus(status) {
         alert('Error en la comunicación con el servidor');
     });
 }
+// Función para resetear el estado del caso
 
 // Función para resetear el estado del caso
 function resetStatus() {
@@ -544,9 +507,11 @@ function resetStatus() {
         alert('Error en la comunicación con el servidor');
     });
 }
-
 // Inicialización y configuración de eventos
-document.addEventListener('DOMContentLoaded', () => {
+// Inicialización y configuración de eventos
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM cargado correctamente");
+    
     // Actualizar la tabla con los datos iniciales
     if (currentData.length > 0) {
         updateTable(currentData);
@@ -560,36 +525,75 @@ document.addEventListener('DOMContentLoaded', () => {
             updateTable(filteredData);
         });
     }
-
-    // Configurar botones de cambio
-    const sistemasBtn = document.getElementById('sistemas-btn');
-    const dispositivosBtn = document.getElementById('dispositivos-btn');
     
-    if (sistemasBtn) {
-        sistemasBtn.addEventListener('click', function() {
-            document.querySelectorAll('.stat-button').forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            currentData = sistemasData;
-            if (searchInput) searchInput.value = '';
-            updateTable(currentData);
+    // CORREGIDO: Asignar eventos a botones "Ver caso" para abrir el modal
+    document.querySelectorAll('.view-case-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Obtener el ID del caso del data-id del tr padre
+            const rowId = this.closest('tr').getAttribute('data-content');
+            console.log("Abriendo modal para caso ID:", rowId);
+            openModal(rowId);
         });
-    }
+    });
     
-    if (dispositivosBtn) {
-        dispositivosBtn.addEventListener('click', function() {
-            document.querySelectorAll('.stat-button').forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            currentData = dispositivosData;
-            if (searchInput) searchInput.value = '';
-            updateTable(currentData);
-        });
-    }
+    // AÑADIDO: Configurar CSS del modal para que funcione con la clase active
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow: auto;
+        }
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+        }
+    `;
+    document.head.appendChild(styleElement);
     
-    // Configurar botón de cierre del modal de caso
-    const closeModalBtn = document.querySelector('.close-modal');
-    if (closeModalBtn) {
-        closeModalBtn.addEventListener('click', function() {
+    // Configurar botón de cierre del modal
+    const closeModalBtns = document.querySelectorAll('.close-modal');
+    closeModalBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
             closeModal();
+        });
+    });
+    
+    // Asignar funciones de botones de aceptar/denegar/resetear
+    const btnAccept = document.querySelector('.btn-accept');
+    if (btnAccept) {
+        btnAccept.addEventListener('click', function() {
+            updateStatus('accepted');
+        });
+    }
+    
+    const btnDeny = document.querySelector('.btn-deny');
+    if (btnDeny) {
+        btnDeny.addEventListener('click', function() {
+            updateStatus('denied');
+        });
+    }
+    
+    const btnReset = document.querySelector('.demo-button');
+    if (btnReset) {
+        btnReset.addEventListener('click', function() {
+            resetStatus();
         });
     }
     
@@ -636,4 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+    
+    // AÑADIDO: Debug para botones Ver caso
+    console.log("Botones 'Ver caso' encontrados:", document.querySelectorAll('.view-case-btn').length);
 });

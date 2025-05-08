@@ -101,22 +101,21 @@
                             <li><a href="UsuarioTecnicos.php">Usuario Tecnico</a></li>
                         </ul>
                     </li>
-                     <a href="contactos.php" class="menu-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-address-book">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M20 6v12a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2z" />
-                                <path d="M10 16h6" />
-                                <path d="M13 11m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                <path d="M4 8h3" />
-                                <path d="M4 12h3" />
-                                <path d="M4 16h3" />
-                            </svg>
-                            <h3>Contactos</h3>
-                        </a>
+                    <a href="contactos.php" class="menu-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-address-book">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M20 6v12a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2z" />
+                            <path d="M10 16h6" />
+                            <path d="M13 11m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M4 8h3" />
+                            <path d="M4 12h3" />
+                            <path d="M4 16h3" />
+                        </svg>
+                        <h3>Contactos</h3>
+                    </a>
                     <a href="Configuracion.php" class="menu-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-linecap="round" stroke-linejoin="round" width="32" height="32" stroke-width="1.75">
@@ -171,19 +170,13 @@
 
         <div class="content-card">
             <div class="search-container">
-                <div>
-                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <input type="text" class="search-input" placeholder="Buscador" id="searchInput">
-                </div>
-                <!-- <button id="openModalBtn"><i class="fas fa-plus">+</i></button> -->
-
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="search-input" placeholder="Buscar dispositivo...">
             </div>
-
 
             <!-- Formulario oculto -->
             <!-- <div class="overlay" id="modalOverlay">

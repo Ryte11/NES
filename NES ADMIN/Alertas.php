@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -284,7 +282,7 @@
                                         <td><?php echo htmlspecialchars($row['ubicacion']); ?></td>
                                         <td><span class="tag"><?php echo htmlspecialchars($row['tipo']); ?></span></td>
                                         <td>
-                                        <button class="view-btn" onclick="toggleDetails(<?php echo $row['id']; ?>)">
+                                            <button class="view-btn" onclick="toggleDetails(<?php echo $row['id']; ?>)">
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                                     stroke="currentColor" stroke-width="2">
                                                     <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -297,13 +295,13 @@
                                         <td><button class="more-btn" data-tooltip="Más opciones">...</button></td>
                                     </tr>
 
-                                    <tr class="expandable-content" id="content-<?php echo $row['id']; ?>" data-content="<?php echo $row['id']; ?>"
-                                        style="display: none;">
+                                    <tr class="expandable-content" id="content-<?php echo $row['id']; ?>"
+                                        data-content="<?php echo $row['id']; ?>" style="display: none;">
                                         <td colspan="5">
                                             <div class="info-grid">
                                                 <div class="info-item">
                                                     <i>📅</i>
-                                                    <span><?php echo htmlspecialchars($row['fecha']); ?></span>
+                                                    <span><?php echo htmlspecialchars($row['Fecha']); ?></span>
                                                 </div>
                                                 <div class="info-item">
                                                     <i>📍</i>
@@ -317,68 +315,76 @@
                                             <div class="case-description">
                                                 <p><?php echo htmlspecialchars($row['descripcion']); ?></p>
                                             </div>
-                                           <button class="view-case-btn" onclick="openModal(<?php echo $row['id']; ?>)">Ver caso</button>
+                                            <button class="view-case-btn" onclick="openModal(<?php echo $row['id']; ?>)">Ver
+                                                caso</button>
                                         </td>
                                     </tr>
 
-                                    
-                            <!-- Modal para ver detalles del caso -->
-                            <div id="caseModal" class="modal">
-                                <div class="modal-content">
-                                    <div class="case-header">
-                                    <div class="close-modal"
-                                            onclick="document.getElementById('caseModal').classList.remove('active');">✕
-                                        </div>
-                                        <h2 class="case-title">Caso <?php echo htmlspecialchars($row['id']); ?></h2>
-                                        <p class="case-subtitle">Reportado por <?php echo htmlspecialchars($row['nombre']); ?></p>
-                                        <span class="status-badge">En proceso</span>
-                                    </div>
 
-                                    <div class="case-info-grid">
-                                        <div class="info-card">
-                                            <div class="info-card-label">📅 Fecha de reporte</div>
-                                            <div class="info-card-value"><?php echo htmlspecialchars($row['fecha']); ?></div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">📍 Ubicación</div>
-                                            <div class="info-card-value"><?php echo htmlspecialchars($row['ubicacion']); ?></div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔊 Tipo de denuncia</div>
-                                            <div class="info-card-value"><?php echo htmlspecialchars($row['tipo']); ?></div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔢 Código</div>
-                                            <div class="info-card-value"><?php echo htmlspecialchars($row['cedula']); ?></div>
-                                        </div>
-                                    </div>
+                                    <!-- Modal para ver detalles del caso -->
+                                    <div id="caseModal" class="modal">
+                                        <div class="modal-content">
+                                            <div class="case-header">
+                                                <div class="close-modal"
+                                                    onclick="document.getElementById('caseModal').classList.remove('active');">✕
+                                                </div>
+                                                <h2 class="case-title">Caso <?php echo htmlspecialchars($row['id']); ?></h2>
+                                                <p class="case-subtitle">Reportado por
+                                                    <?php echo htmlspecialchars($row['nombre']); ?></p>
+                                                <span class="status-badge">En proceso</span>
+                                            </div>
 
-                                    <div class="case-description1">
-                                        <h3>Descripción del caso</h3>
-                                        <p><?php echo htmlspecialchars($row['descripcion']); ?></p>
-                                        
-                                    </div>
+                                            <div class="case-info-grid">
+                                                <div class="info-card">
+                                                    <div class="info-card-label">📅 Fecha de reporte</div>
+                                                    <div class="info-card-value"><?php echo htmlspecialchars($row['fecha']); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="info-card">
+                                                    <div class="info-card-label">📍 Ubicación</div>
+                                                    <div class="info-card-value">
+                                                        <?php echo htmlspecialchars($row['ubicacion']); ?></div>
+                                                </div>
+                                                <div class="info-card">
+                                                    <div class="info-card-label">🔊 Tipo de denuncia</div>
+                                                    <div class="info-card-value"><?php echo htmlspecialchars($row['tipo']); ?>
+                                                    </div>
+                                                </div>
+                                                <div class="info-card">
+                                                    <div class="info-card-label">🔢 Código</div>
+                                                    <div class="info-card-value"><?php echo htmlspecialchars($row['cedula']); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                    <div class="comment-section">
-                                        <textarea class="comment-input" placeholder="Escribe un comentario sobre este caso..."></textarea>
-                                        <div class="button-group">
-                                            <button class="btn btn-deny" onclick="updateStatus('denied')">
-                                                ✕ Denegar
-                                            </button>
-                                            <button class="btn btn-accept" onclick="updateStatus('accepted')">
-                                                ✓ Aceptar
-                                            </button>
-                                            <button class="demo-button" onclick="resetStatus()" style="margin-left: 10px; background: #64748b;">
-                                                Resetear Estado
-                                            </button>
-                                            <button class="Enviar">
-                                                Enviar
-                                            </button>
+                                            <div class="case-description1">
+                                                <h3>Descripción del caso</h3>
+                                                <p><?php echo htmlspecialchars($row['descripcion']); ?></p>
+
+                                            </div>
+
+                                            <div class="comment-section">
+                                                <textarea class="comment-input"
+                                                    placeholder="Escribe un comentario sobre este caso..."></textarea>
+                                                <div class="button-group">
+                                                    <button class="btn btn-deny" onclick="updateStatus('denied')">
+                                                        ✕ Denegar
+                                                    </button>
+                                                    <button class="btn btn-accept" onclick="updateStatus('accepted')">
+                                                        ✓ Aceptar
+                                                    </button>
+                                                    <button class="demo-button" onclick="resetStatus()"
+                                                        style="margin-left: 10px; background: #64748b;">
+                                                        Resetear Estado
+                                                    </button>
+                                                    <button class="Enviar">
+                                                        Enviar
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                                    <?php
+                                        <?php
                                 }
                             } else {
                                 echo "<tr><td colspan='5'>No hay datos disponibles</td></tr>";
@@ -388,68 +394,74 @@
                             ?>
 
 
-                            <!-- Modal para ver detalles del caso -->
-                            <div id="caseModal" class="modal">
-                                <div class="modal-content">
-                                    <div class="case-header">
-                                    <div class="close-modal"
-                                            onclick="document.getElementById('caseModal').classList.remove('active');">✕
+                                <!-- Modal para ver detalles del caso -->
+                                <div id="caseModal" class="modal">
+                                    <div class="modal-content">
+                                        <div class="case-header">
+                                            <div class="close-modal"
+                                                onclick="document.getElementById('caseModal').classList.remove('active');">
+                                                ✕
+                                            </div>
+                                            <h2 class="case-title">Caso 123-4567891-1</h2>
+                                            <p class="case-subtitle">Reportado por Manuel Alejandro</p>
+                                            <span class="status-badge">En proceso</span>
                                         </div>
-                                        <h2 class="case-title">Caso 123-4567891-1</h2>
-                                        <p class="case-subtitle">Reportado por Manuel Alejandro</p>
-                                        <span class="status-badge">En proceso</span>
-                                    </div>
 
-                                    <div class="case-info-grid">
-                                        <div class="info-card">
-                                            <div class="info-card-label">📅 Fecha de reporte</div>
-                                            <div class="info-card-value">13/2/2024</div>
+                                        <div class="case-info-grid">
+                                            <div class="info-card">
+                                                <div class="info-card-label">📅 Fecha de reporte</div>
+                                                <div class="info-card-value">13/2/2024</div>
+                                            </div>
+                                            <div class="info-card">
+                                                <div class="info-card-label">📍 Ubicación</div>
+                                                <div class="info-card-value">Santo Domingo ESTE</div>
+                                            </div>
+                                            <div class="info-card">
+                                                <div class="info-card-label">🔊 Tipo de denuncia</div>
+                                                <div class="info-card-value">Ruidos Por Parlantes</div>
+                                            </div>
+                                            <div class="info-card">
+                                                <div class="info-card-label">🔢 Código</div>
+                                                <div class="info-card-value">123-4567891-1</div>
+                                            </div>
                                         </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">📍 Ubicación</div>
-                                            <div class="info-card-value">Santo Domingo ESTE</div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔊 Tipo de denuncia</div>
-                                            <div class="info-card-value">Ruidos Por Parlantes</div>
-                                        </div>
-                                        <div class="info-card">
-                                            <div class="info-card-label">🔢 Código</div>
-                                            <div class="info-card-value">123-4567891-1</div>
-                                        </div>
-                                    </div>
 
-                                    <div class="case-description1">
-                                        <h3>Descripción del caso</h3>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                            ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                            eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                                            officia deserunt mollit anim id est laborum.</p>
-                                    </div>
+                                        <div class="case-description1">
+                                            <h3>Descripción del caso</h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                                                veniam, quis nostrud exercitation
+                                                ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                                            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                                                dolore
+                                                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                                proident, sunt in culpa qui
+                                                officia deserunt mollit anim id est laborum.</p>
+                                        </div>
 
-                                    <div class="comment-section">
-                                        <textarea class="comment-input" placeholder="Escribe un comentario sobre este caso..."></textarea>
-                                        <div class="button-group">
-                                            <button class="btn btn-deny" onclick="updateStatus('denied')">
-                                                ✕ Denegar
-                                            </button>
-                                            <button class="btn btn-accept" onclick="updateStatus('accepted')">
-                                                ✓ Aceptar
-                                            </button>
-                                            <button class="demo-button" onclick="resetStatus()" style="margin-left: 10px; background: #64748b;">
-                                                Resetear Estado
-                                            </button>
-                                            <button class="Enviar">
-                                                Enviar
-                                            </button>
+                                        <div class="comment-section">
+                                            <textarea class="comment-input"
+                                                placeholder="Escribe un comentario sobre este caso..."></textarea>
+                                            <div class="button-group">
+                                                <button class="btn btn-deny" onclick="updateStatus('denied')">
+                                                    ✕ Denegar
+                                                </button>
+                                                <button class="btn btn-accept" onclick="updateStatus('accepted')">
+                                                    ✓ Aceptar
+                                                </button>
+                                                <button class="demo-button" onclick="resetStatus()"
+                                                    style="margin-left: 10px; background: #64748b;">
+                                                    Resetear Estado
+                                                </button>
+                                                <button class="Enviar">
+                                                    Enviar
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                         </tbody>
-                    </table> 
+                    </table>
                 </div>
             </main>
         </div>
@@ -458,8 +470,8 @@
 
 
     <script src="js/alertas.js"></script>
-    
-    
+
+
 </body>
 
 </html>
