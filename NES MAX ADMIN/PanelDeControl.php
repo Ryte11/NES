@@ -1,3 +1,128 @@
+<?php
+// Iniciar sesión
+
+
+$servername = "localhost:";
+$username = "root"; 
+$password = ""; 
+$dbname = "nes";
+
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    // En producción, es mejor no mostrar detalles específicos del error
+    die(json_encode(['error' => 'Error de conexión a la base de datos']));
+}
+
+// Consulta para contar tipos de denuncias
+$sql = "SELECT tipo, COUNT(*) AS cantidad FROM denuncias_users GROUP BY tipo";
+$result = $conn->query($sql);
+
+// Preparamos los datos para el gráfico
+$tipos = [];
+$valores = [];
+
+while ($row = $result->fetch_assoc()) {
+    $tipos[] = $row['tipo'];
+    $valores[] = $row['cantidad'];
+}
+
+
+
+// Obtener total de denuncias
+$sqlTotal = "SELECT COUNT(*) AS total FROM denuncias_users";
+$resultTotal = $conn->query($sqlTotal);
+$totalDenuncias = 0;
+
+if ($resultTotal && $row = $resultTotal->fetch_assoc()) {
+    $totalDenuncias = $row['total'];
+}
+
+// Función para formatear el tipo de denuncia en un mensaje más descriptivo
+function formatearTipoDenuncia($tipo) {
+    switch (strtolower($tipo)) {
+        case 'vehiculos':
+            return "Alerta por fuerte ruido vehicular o bocinas";
+        case 'construccion':
+            return "Alerta por ruido de construcción fuera del horario permitido";
+        case 'parlantes':
+            return "Alerta por ruido excesivo de parlantes o música";
+        default:
+            return "Alerta por ruido de " . $tipo;
+    }
+}
+
+// Obtener las denuncias más recientes
+$sql = "SELECT id, nombre, ubicacion, tipo, descripcion, fecha FROM denuncias_users ORDER BY fecha DESC LIMIT 4";
+$result = $conn->query($sql);
+
+// Contador de alertas activas
+$sqlContador = "SELECT COUNT(*) as total FROM denuncias_users WHERE fecha > DATE_SUB(NOW(), INTERVAL 24 HOUR)";
+$resultContador = $conn->query($sqlContador);
+$rowContador = $resultContador->fetch_assoc();
+$alertasActivas = $rowContador['total'];
+
+// Obtener la denuncia más reciente para mostrar "hace cuánto tiempo"
+$sqlReciente = "SELECT fecha, ubicacion FROM denuncias_users ORDER BY fecha DESC LIMIT 1";
+$resultReciente = $conn->query($sqlReciente);
+$rowReciente = $resultReciente->fetch_assoc();
+
+// Calcular tiempo transcurrido
+$tiempoTranscurrido = "";
+$ubicacionReciente = "";
+if ($rowReciente) {
+    $fechaReciente = new DateTime($rowReciente['fecha']);
+    $ahora = new DateTime();
+    $intervalo = $fechaReciente->diff($ahora);
+    
+    if ($intervalo->days > 0) {
+        $tiempoTranscurrido = $intervalo->days . " días atrás";
+    } elseif ($intervalo->h > 0) {
+        $tiempoTranscurrido = $intervalo->h . " horas atrás";
+    } elseif ($intervalo->i > 0) {
+        $tiempoTranscurrido = $intervalo->i . " min atrás";
+    } else {
+        $tiempoTranscurrido = "hace un momento";
+    }
+    
+    $ubicacionReciente = $rowReciente['ubicacion'];
+}
+
+// Obtener conteo por ubicación
+$sqlUbicacion = "SELECT ubicacion, COUNT(*) as cantidad FROM denuncias_users GROUP BY ubicacion ORDER BY cantidad DESC LIMIT 1";
+$resultUbicacion = $conn->query($sqlUbicacion);
+$rowUbicacion = $resultUbicacion->fetch_assoc();
+$ubicacionConMasDenuncias = "";
+$cantidadDenuncias = 0;
+if ($rowUbicacion) {
+    $ubicacionConMasDenuncias = $rowUbicacion['ubicacion'];
+    $cantidadDenuncias = $rowUbicacion['cantidad'];
+}
+
+// Obtener tipo más común
+$sqlTipoComun = "SELECT tipo, COUNT(*) as cantidad FROM denuncias_users GROUP BY tipo ORDER BY cantidad DESC LIMIT 1";
+$resultTipoComun = $conn->query($sqlTipoComun);
+$rowTipoComun = $resultTipoComun->fetch_assoc();
+$tipoComun = "";
+$ubicacionTipoComun = "";
+if ($rowTipoComun) {
+    $tipoComun = $rowTipoComun['tipo'];
+    
+    // Obtener ubicación más común para este tipo
+    $sqlUbicacionTipo = "SELECT ubicacion, COUNT(*) as cantidad FROM denuncias_users WHERE tipo = '{$tipoComun}' 
+                          GROUP BY ubicacion ORDER BY cantidad DESC LIMIT 1";
+    $resultUbicacionTipo = $conn->query($sqlUbicacionTipo);
+    $rowUbicacionTipo = $resultUbicacionTipo->fetch_assoc();
+    if ($rowUbicacionTipo) {
+        $ubicacionTipoComun = $rowUbicacionTipo['ubicacion'];
+    }
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,6 +139,24 @@
     .hidden {
         display: none;
     }
+
+    #myChart{
+      width: 280px !important;  
+      height: 280px !important;
+      margin-left: 80px !important;
+    }
+
+    .total {
+            position: absolute;
+            top: -49% !important;
+            left: 52% !important;
+            transform: translate(-50%, -50%);
+            font-size: 47px;
+            font-weight: bold;
+            font-family: arimo-bold;
+        }
+        
+    
 </style>
 <?php include 'php/verificar_sesion.php' ?>
 
@@ -261,24 +404,48 @@
                     </div>
                     <div>
                         <h3 class="titulo-chart">Denuncias Totales</h3>
+                        <canvas id="myChart" ></canvas>
+                        <script>
+                            
+                            const tipos = <?= json_encode($tipos); ?>;
+                            const valores = <?= json_encode($valores); ?>;
+
+                            const ctx = document.getElementById('myChart').getContext('2d');
+                            new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: tipos,
+                                    datasets: [{
+                                        data: valores,
+                                        backgroundColor: [
+                                            '#4B0082',
+                                            '#00BCD4',
+                                            '#FF4444',
+                                            '#FFC107',
+                                            '#8BC34A',
+                                            '#FF9800'
+                                        ],
+                                        borderWidth: 0,
+                                        cutout: '80%'
+                                    }]
+                                },
+                                options: {
+                                    plugins: {
+                                        legend: {
+                                            display: true,
+                                            position: 'bottom'
+                                        }
+                                    },
+                                    responsive: true,
+                                    maintainAspectRatio: false
+                                }
+                            });
+                        </script>
                         <div class="chart-container">
                             <canvas id="myChart"></canvas>
-                            <div class="total">1230</div>
+                            <div class="total"><?= $totalDenuncias ?></div>
                         </div>
-                        <div class="legend">
-                            <div class="legend-item">
-                                <div class="legend-color" style="background-color: #4B0082;"></div>
-                                <span>Vehículos</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color" style="background-color: #00BCD4;"></div>
-                                <span>Construcción</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color" style="background-color: #FF4444;"></div>
-                                <span>Parlantes</span>
-                            </div>
-                        </div>
+                      
                     </div>
                     <div class="alertas-panel">
                         <div class="alertas-titulo">Alertas Recientes</div>
@@ -286,26 +453,26 @@
                             <li class="alerta-item">
                                 <div class="alerta-punto"></div>
                                 <div class="alerta-contenido">
-                                    <div class="alertas-activas">15 alertas activas</div>
+                                    <div class="alertas-activas"><?php echo $alertasActivas; ?> alertas activas</div>
                                 </div>
                             </li>
                             <li class="alerta-item">
                                 <div class="alerta-punto"></div>
                                 <div class="alerta-contenido">
-                                    Ultima alerta: 2 min atras
-                                    en Boca chica, La caleta
+                                    Ultima alerta <?php echo $tiempoTranscurrido; ?>
+                                    en <?php echo $ubicacionReciente; ?>
                                 </div>
                             </li>
                             <li class="alerta-item">
                                 <div class="alerta-punto"></div>
                                 <div class="alerta-contenido">
-                                    55 denuncias en Santo Domingo
+                                <?php echo $cantidadDenuncias; ?> denuncias en <?php echo $ubicacionConMasDenuncias; ?>
                                 </div>
                             </li>
                             <li class="alerta-item">
                                 <div class="alerta-punto"></div>
                                 <div class="alerta-contenido">
-                                    Alertas por ruido vehicular en santiago
+                                <?php echo formatearTipoDenuncia($tipoComun); ?> en <?php echo $ubicacionTipoComun; ?>
                                 </div>
                             </li>
                         </ul>
@@ -335,11 +502,15 @@
                         <div class="leyenda">
                             <div class="leyenda-item">
                                 <div class="leyenda-color" style="background-color: #000080;"></div>
-                                <span>M</span>
+                                <span>Denuncias</span>
                             </div>
                             <div class="leyenda-item">
                                 <div class="leyenda-color" style="background-color: #00BCD4;"></div>
-                                <span>F</span>
+                                <span>Dispositvos</span>
+                            </div>
+                            <div class="leyenda-item">
+                                <div class="leyenda-color" style="background-color: #FF4444;"></div>
+                                <span>Vehiculos</span>
                             </div>
                         </div>
                         <div class="chart-wrapper">
@@ -448,6 +619,7 @@
     </div>
 
 
+    <script src="denunciasChart.js"></script>
 
     <script src="js/profile.js"></script>
     <script src="js/PanelControl.js"></script>

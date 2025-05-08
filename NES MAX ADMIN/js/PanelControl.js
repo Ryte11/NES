@@ -39,31 +39,7 @@ document.addEventListener('click', (event) => {
 
 // js del primer grafico
 
-        const ctx = document.getElementById('myChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    data: [33.33, 33.33, 33.33],
-                    backgroundColor: [
-                        '#4B0082',
-                        '#00BCD4',
-                        '#FF4444'
-                    ],
-                    borderWidth: 0,
-                    cutout: '80%'
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                responsive: true,
-                maintainAspectRatio: true
-            }
-        });
+      
 
 // js segundo grafico
  const ctx2 = document.getElementById('denunciasChart').getContext('2d');
@@ -73,19 +49,22 @@ document.addEventListener('click', (event) => {
                 labels: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
                 datasets: [
                     {
-                        label: 'M',
-                        data: [35, 33, 29, 25, 23, 25, 25],
+                        label: 'Denuncias',
+                        data: [1, 0, 0, 2, 1, 0, 0],
                         backgroundColor: '#000080',
                         barPercentage: 0.8,
                         categoryPercentage: 0.7
                     },
                     {
-                        label: 'F',
-                        data: [28, 30, 27, 15, 15, 25, 15],
+                        label: 'Dispositivos',
+                        data: [0, 0, 18, 0, 0, 0, 0],
                         backgroundColor: '#00BCD4',
                         barPercentage: 0.8,
                         categoryPercentage: 0.7
-                    }
+                    },
+                   
+                    
+                    
                 ]
             },
             options: {
@@ -99,7 +78,7 @@ document.addEventListener('click', (event) => {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 50,
+                        max: 30,
                         ticks: {
                             stepSize: 5,
                             font: {

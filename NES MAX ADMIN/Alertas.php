@@ -407,6 +407,24 @@
                 <span class="status-badge">En proceso</span>
             </div>
 
+                                    <div class="case-info-grid">
+                                        <div class="info-card">
+                                            <div class="info-card-label">📅 Fecha de reporte</div>
+                                            <div class="info-card-value"><?php echo htmlspecialchars($row['fecha']); ?></div>
+                                        </div>
+                                        <div class="info-card">
+                                            <div class="info-card-label">📍 Ubicación</div>
+                                            <div class="info-card-value"><?php echo htmlspecialchars($row['ubicacion']); ?></div>
+                                        </div>
+                                        <div class="info-card">
+                                            <div class="info-card-label">🔊 Tipo de denuncia</div>
+                                            <div class="info-card-value"><?php echo htmlspecialchars($row['tipo']); ?></div>
+                                        </div>
+                                        <div class="info-card">
+                                            <div class="info-card-label">🔢 Código</div>
+                                            <div class="info-card-value"><?php echo htmlspecialchars($row['codigo']); ?></div>
+                                        </div>
+                                    </div>
             <div class="case-info-grid">
                 <div class="info-card">
                     <div class="info-card-label">📅 Fecha de reporte</div>
