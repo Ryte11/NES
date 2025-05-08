@@ -249,7 +249,7 @@
                         </thead>
                         <tbody id="tabla-contenido">
                             <?php
-                            $host = "localhost:3307";
+                            $host = "localhost:";
                             $usuario = "root";
                             $password = "";
                             $baseDeDatos = "nes";

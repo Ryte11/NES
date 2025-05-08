@@ -3,7 +3,7 @@
 session_start();
 
 // Configuración de conexión a la base de datos
-$servername = "localhost:3307";
+$servername = "localhost:";
 $username = "root"; 
 $password = ""; 
 $dbname = "nes";
