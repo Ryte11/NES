@@ -240,7 +240,6 @@
         </div>
       </div>
 
-      <<<<<<< HEAD:PAgina NES USER/Denuncias-html.html=======<!-- Modal de Configuración -->
         <div id="configModal" class="config-modal">
           <div class="config-modal-content">
             <div class="config-header">
@@ -272,7 +271,6 @@
         </div>
 
 
-        >>>>>>> 62b13fd5f5b783e51704ef8f9f85f0d5cd3dc2b7:PAgina NES USER/Denuncias-html.php
     </div>
 
     <div class="footer-basic">
