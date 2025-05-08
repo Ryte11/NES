@@ -2,7 +2,7 @@
 // Iniciar sesión
 
 
-$servername = "localhost:";
+$servername = "localhost";
 $username = "root"; 
 $password = ""; 
 $dbname = "nes";
@@ -141,20 +141,11 @@ if ($rowTipoComun) {
     }
 
     #myChart{
-      width: 280px !important;  
-      height: 280px !important;
-      margin-left: 80px !important;
+      width: 75% !important;  
+      height: 75% !important;
     }
 
-    .total {
-            position: absolute;
-            top: -49% !important;
-            left: 52% !important;
-            transform: translate(-50%, -50%);
-            font-size: 47px;
-            font-weight: bold;
-            font-family: arimo-bold;
-        }
+    
         
     
 </style>
@@ -386,7 +377,7 @@ if ($rowTipoComun) {
             </div>
             <div class="contenido">
                 <div class="arriba">
-                    <div class="div-gradiant">
+                    <div class="div-gradiant" >
                         <div class="text">
                             <h3>Alertas</h3>
                             <p>Sistema de alertas, Este refleja todas las alertas enviadas por el usuario y el
@@ -402,7 +393,7 @@ if ($rowTipoComun) {
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div class="arribaChart">
                         <h3 class="titulo-chart">Denuncias Totales</h3>
                         <canvas id="myChart" ></canvas>
                         <script>

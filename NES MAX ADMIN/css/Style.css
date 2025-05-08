@@ -626,6 +626,17 @@ body{
     width: 100%;
 }
 .arriba > div{
+    
+    align-items: center;
+    background-color: white;
+    width: 33%;
+    border-radius: 25px;
+}
+.arribaChart{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background-color: white;
     width: 33%;
     border-radius: 25px;
@@ -707,7 +718,7 @@ body{
             color: var(--title-color);
         }
         .chart-container {
-            position: relative;
+            position: absolute;
             width: 100%;
             max-width: 170px;
             margin: 0 auto;
@@ -715,10 +726,9 @@ body{
         
         .total {
             position: absolute;
-            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 24px;
+            font-size: 34px;
             font-weight: bold;
             font-family: arimo-bold;
         }
