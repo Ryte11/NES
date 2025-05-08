@@ -249,7 +249,7 @@
                         </thead>
                         <tbody id="tabla-contenido">
                             <?php
-                            $host = "localhost";
+                            $host = "localhost:3307";
                             $usuario = "root";
                             $password = "";
                             $baseDeDatos = "nes";
@@ -344,7 +344,7 @@
                                         </div>
                                         <div class="info-card">
                                             <div class="info-card-label">🔢 Código</div>
-                                            <div class="info-card-value"><?php echo htmlspecialchars($row['cedula']); ?></div>
+                                            <div class="info-card-value"><?php echo htmlspecialchars($row['codigo']); ?></div>
                                         </div>
                                     </div>
 
