@@ -19,13 +19,9 @@ function initializeFormValidation() {
         "El nombre debe tener al menos 3 caracteres",
     },
     cedula: {
-      element: document.getElementById("cedula"),
+      element: document.getElementById("Cedula"),
       validate: (value) =>
         /^\d{8,11}$/.test(value) || "La cédula debe tener entre 8 y 11 dígitos",
-    },
-    provincia: {
-      element: document.getElementById("provincia"),
-      validate: (value) => value !== "" || "Seleccione una provincia",
     },
     ubicacion: {
       element: document.getElementById("ubicacion"),
@@ -47,19 +43,25 @@ function initializeFormValidation() {
   // Add real-time validation
   Object.entries(inputs).forEach(([key, input]) => {
     const errorElement = document.getElementById(`${key}-error`);
+    if (!errorElement) return;
 
     input.element.addEventListener("input", () => {
-      const result = input.validate(input.element.value);
-      if (typeof result === "string") {
-        errorElement.textContent = result;
-        input.element.classList.add("invalid");
-      } else {
-        errorElement.textContent = "";
-        input.element.classList.remove("invalid");
-      }
-      updateSubmitButton();
+      validateField(key, input, errorElement);
     });
   });
+}
+
+function validateField(key, input, errorElement) {
+  const result = input.validate(input.element.value);
+  if (typeof result === "string") {
+    errorElement.textContent = result;
+    input.element.classList.add("invalid");
+    return false;
+  } else {
+    errorElement.textContent = "";
+    input.element.classList.remove("invalid");
+    return true;
+  }
 }
 
 async function handleSubmit(event) {
@@ -67,9 +69,12 @@ async function handleSubmit(event) {
   const form = event.target;
   const submitBtn = form.querySelector('button[type="submit"]');
 
-  if (!validateForm()) {
+  // Validate all fields first
+  const isValid = validateAllFields();
+
+  if (!isValid) {
     showNotification(
-      "Por favor, corrija los errores en el formulario",
+      "Por favor, complete todos los campos correctamente",
       "error"
     );
     return;
@@ -96,47 +101,84 @@ async function handleSubmit(event) {
     }
   } catch (error) {
     console.error("Error:", error);
-    showNotification(error.message || "Error al enviar la denuncia", "error");
+    const errorMessage = error.message || "Error al enviar la denuncia";
+    showNotification(errorMessage, "error");
+
+    // Mostrar errores específicos en los campos correspondientes
+    const errorElement = document.getElementById("form-errors");
+    if (errorElement) {
+      errorElement.textContent = errorMessage;
+      errorElement.style.display = "block";
+    }
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = "Enviar tu Denuncia";
   }
 }
 
-function validateForm() {
-  const inputs = document.querySelectorAll(
-    "#denunciaForm input, #denunciaForm select, #denunciaForm textarea"
-  );
+function validateAllFields() {
+  const inputs = {
+    nombre: {
+      element: document.getElementById("nombre"),
+      validate: (value) =>
+        value.trim().length >= 3 ||
+        "El nombre debe tener al menos 3 caracteres",
+    },
+    cedula: {
+      element: document.getElementById("Cedula"),
+      validate: (value) =>
+        /^\d{8,11}$/.test(value) || "La cédula debe tener entre 8 y 11 dígitos",
+    },
+    ubicacion: {
+      element: document.getElementById("ubicacion"),
+      validate: (value) =>
+        value.trim().length >= 10 || "La ubicación debe ser más específica",
+    },
+    tipo: {
+      element: document.getElementById("tipo"),
+      validate: (value) => value !== "" || "Seleccione un tipo de denuncia",
+    },
+    descripcion: {
+      element: document.getElementById("descripcion"),
+      validate: (value) =>
+        value.trim().length >= 20 ||
+        "La descripción debe tener al menos 20 caracteres",
+    },
+  };
+
   let isValid = true;
 
-  inputs.forEach((input) => {
-    const event = new Event("input");
-    input.dispatchEvent(event);
-    if (input.classList.contains("invalid")) {
+  Object.entries(inputs).forEach(([key, input]) => {
+    const errorElement = document.getElementById(`${key}-error`);
+    if (!errorElement) return;
+
+    const fieldIsValid = validateField(key, input, errorElement);
+    if (!fieldIsValid) {
       isValid = false;
+      input.element.classList.add("invalid");
     }
   });
 
   return isValid;
 }
 
-function updateSubmitButton() {
-  const submitBtn = document.querySelector(
-    '#denunciaForm button[type="submit"]'
-  );
-  const hasErrors = document.querySelectorAll(".invalid").length > 0;
-  submitBtn.disabled = hasErrors;
-}
-
 function showNotification(message, type = "info") {
   const notification = document.createElement("div");
   notification.className = `notification ${type}`;
   notification.textContent = message;
+  notification.style.position = "fixed";
+  notification.style.top = "20px";
+  notification.style.right = "20px";
+  notification.style.padding = "15px";
+  notification.style.borderRadius = "5px";
+  notification.style.backgroundColor = type === "error" ? "#f44336" : "#4CAF50";
+  notification.style.color = "white";
+  notification.style.zIndex = "1000";
 
   document.body.appendChild(notification);
 
   setTimeout(() => {
-    notification.classList.add("fade-out");
+    notification.style.opacity = "0";
     setTimeout(() => notification.remove(), 300);
   }, 4000);
 }
