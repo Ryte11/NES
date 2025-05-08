@@ -144,7 +144,9 @@
           <button class="close-btn" onclick="closeModalform()">&times;</button>
           <h2 style="margin-top: 0; color: #1F2937; margin-bottom: 1.5rem;">Formulario de Denuncia</h2>
 
-          <form id="denunciaForm" onsubmit="handleSubmit(event)" action="guardar_denuncia.php" method="POST">
+          <form id="denunciaForm" novalidate>
+            <div id="form-errors" class="error-message" style="display: none; margin-bottom: 1rem; color: #f44336;"></div>
+            
             <div class="form-group">
               <label class="form-label">Nombre Completo</label>
               <input type="text" class="form-input" id="nombre" name="nombre">
@@ -152,60 +154,46 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">Cedula</label>
-              <input type="text" class="form-input" id="Cedula" name="Cedula">
-              <span class="error-message" id="Cedula-error"></span>
+              <label class="form-label">Cédula</label>
+              <input type="text" class="form-input" id="Cedula" name="cedula" maxlength="11">
+              <span class="error-message" id="cedula-error"></span>
             </div>
 
             <div class="form-group">
               <label class="form-label">Provincia</label>
-              <select class="form-select" id="provincia" name="provincia" required>
+              <select class="form-select" id="provincia" name="provincia">
                 <option value="">Seleccione una provincia</option>
-                <option value="Azua">Azua</option>
-                <option value="Baoruco">Baoruco</option>
-                <option value="Barahona">Barahona</option>
-                <option value="Dajabon">Dajabón</option>
-                <option value="Distrito Nacional">Distrito Nacional</option>
-                <option value="Duarte">Duarte</option>
-                <option value="El Seibo">El Seibo</option>
-                <option value="Elias Piña">Elías Piña</option>
-                <option value="Espaillat">Espaillat</option>
-                <option value="Hato Mayor">Hato Mayor</option>
-                <option value="Hermanas Mirabal">Hermanas Mirabal</option>
-                <option value="Independencia">Independencia</option>
-                <option value="La Altagracia">La Altagracia</option>
-                <option value="La Romana">La Romana</option>
-                <option value="La Vega">La Vega</option>
-                <option value="Maria Trinidad Sanchez">María Trinidad Sánchez</option>
-                <option value="Monseñor Nouel">Monseñor Nouel</option>
-                <option value="Monte Cristi">Monte Cristi</option>
-                <option value="Monte Plata">Monte Plata</option>
-                <option value="Pedernales">Pedernales</option>
-                <option value="Peravia">Peravia</option>
-                <option value="Puerto Plata">Puerto Plata</option>
-                <option value="Samana">Samaná</option>
-                <option value="San Cristobal">San Cristóbal</option>
-                <option value="San Jose de Ocoa">San José de Ocoa</option>
-                <option value="San Juan">San Juan</option>
-                <option value="San Pedro de Macoris">San Pedro de Macorís</option>
-                <option value="Santiago">Santiago</option>
-                <option value="Santiago Rodriguez">Santiago Rodríguez</option>
-                <option value="Santo Domingo">Santo Domingo</option>
-                <option value="Valverde">Valverde</option>
+                <?php
+                  // Conectar a la base de datos
+                  $conn = new mysqli("localhost", "root", "", "nes");
+                  if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                  }
+
+                  // Obtener las provincias
+                  $sql = "SELECT nombre FROM provincias ORDER BY nombre";
+                  $result = $conn->query($sql);
+
+                  if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                      echo '<option value="' . htmlspecialchars($row['nombre']) . '">' . htmlspecialchars($row['nombre']) . '</option>';
+                    }
+                  }
+                  $conn->close();
+                ?>
               </select>
               <span class="error-message" id="provincia-error"></span>
             </div>
 
             <div class="form-group">
-              <label class="form-label">Dirección Específica</label>
-              <input type="text" class="form-input" id="ubicacion" name="ubicacion"
-                placeholder="Calle, sector, número, punto de referencia" required>
-              <span class="error-message" id="ubicacion-error"></span>
+              <label class="form-label">Dirección</label>
+              <input type="text" class="form-input" id="direccion" name="direccion" placeholder="Ingrese sector, calle, número...">
+              <span class="error-message" id="direccion-error"></span>
             </div>
 
             <div class="form-group">
               <label class="form-label">Tipo de Denuncia</label>
-              <select class="form-select" id="tipo" name="tipo" required>
+              <select class="form-select" id="tipo" name="tipo">
                 <option value="">Seleccione un tipo</option>
                 <option value="bocinas">Bocinas</option>
                 <option value="vehiculos">Vehículos</option>
@@ -252,39 +240,36 @@
         </div>
       </div>
 
-      <<<<<<< HEAD:PAgina NES USER/Denuncias-html.html=======<!-- Modal de Configuración -->
-        <div id="configModal" class="config-modal">
-          <div class="config-modal-content">
-            <div class="config-header">
-              <h2>Configuración de perfil</h2>
-              <span class="close-config" onclick="closeConfigModal()">&times;</span>
-            </div>
-            <div class="config-body">
-              <form id="configForm" onsubmit="return saveConfig(event)">
-                <div class="config-group">
-                  <label for="configNombre">Nombre</label>
-                  <input type="text" id="configNombre" name="nombre" required>
-                </div>
-                <div class="config-group">
-                  <label for="configEmail">Email</label>
-                  <input type="email" id="configEmail" name="email" required>
-                </div>
-                <div class="config-group">
-                  <label for="configPassword">Nueva Contraseña</label>
-                  <input type="password" id="configPassword" name="password">
-                  <small>Dejar en blanco si no desea cambiarla</small>
-                </div>
-                <div class="config-buttons">
-                  <button type="submit" class="btn-guardar">Guardar cambios</button>
-                  <button type="button" class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
-                </div>
-              </form>
-            </div>
+      <!-- Modal de Configuración -->
+      <div id="configModal" class="config-modal">
+        <div class="config-modal-content">
+          <div class="config-header">
+            <h2>Configuración de perfil</h2>
+            <span class="close-config" onclick="closeConfigModal()">&times;</span>
+          </div>
+          <div class="config-body">
+            <form id="configForm" onsubmit="return saveConfig(event)">
+              <div class="config-group">
+                <label for="configNombre">Nombre</label>
+                <input type="text" id="configNombre" name="nombre" required>
+              </div>
+              <div class="config-group">
+                <label for="configEmail">Email</label>
+                <input type="email" id="configEmail" name="email" required>
+              </div>
+              <div class="config-group">
+                <label for="configPassword">Nueva Contraseña</label>
+                <input type="password" id="configPassword" name="password">
+                <small>Dejar en blanco si no desea cambiarla</small>
+              </div>
+              <div class="config-buttons">
+                <button type="submit" class="btn-guardar">Guardar cambios</button>
+                <button type="button" class="btn-cerrar" onclick="cerrarSesion()">Cerrar sesión</button>
+              </div>
+            </form>
           </div>
         </div>
-
-
-        >>>>>>> 62b13fd5f5b783e51704ef8f9f85f0d5cd3dc2b7:PAgina NES USER/Denuncias-html.php
+      </div>
     </div>
 
     <div class="footer-basic">
@@ -326,7 +311,7 @@
               // Obtener datos del usuario desde el servidor
               fetch('php/get_user_data.php')
                 .then(response => response.json())
-                .then(data => {
+                .then((data) => {
                   if (!data.error) {
                     updateProfileIcon(data.nombre);
                   }
@@ -336,7 +321,7 @@
           }
         }
 
-        // Función para actualizar el ícono de perfil con las iniciales
+        // Función para actualizar el ícono de perfil with las iniciales
         function updateProfileIcon(nombre) {
           const profileInitials = document.getElementById('profileInitials');
           const profileName = document.getElementById('profileName');
@@ -363,13 +348,10 @@
 
     <script src="javascript/alertas1.js"></script>
     <script src="javascript/mapa.js"></script>
-    <script src="php/ai_chat.js">
-      </script>
-  
-      <script src="javascript/chat1.js" defer></script>
-      <script src="javascript/config.js"></script>
-      <script src="javascript/menu_usuario.js"></script>
-
+    <script src="php/ai_chat.js"></script>
+    <script src="javascript/chat1.js" defer></script>
+    <script src="javascript/config.js"></script>
+    <script src="javascript/menu_usuario.js"></script>
+    <script src="javascript/form-validation.js"></script>
 </body>
-
 </html>
