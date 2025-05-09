@@ -103,6 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/usuario.css">
+    <link rel="stylesheet" href="css/notificaciones.css">
     <title>Usuarios Admins</title>
     <style>
         /* Estilos para los botones de acción y tooltips */
@@ -806,36 +807,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                         </div>
                     </div>
                     <div class="Notificaciones" id="Notificaciones">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
-                            stroke-linejoin="round" width="32" height="32" stroke-width="1.75">
-                            <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6">
-                            </path>
-                            <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
-                        </svg>
-                        <div class="notificaciones-container">
-                            <p class="recientes">Notificaciones recientes</p>
-                            <div class="noti-1">
-                                <img src="IMG/circle-noti.png" alt="notificacion" class="circulo">
-                                <p class="p1">Alertas: Dispositivo</p>
-                                <p class="p2">+7 Reportes en Santo Domingo</p>
-                            </div>
-                            <div class="noti-2">
-                                <img src="IMG/circle-noti.png" alt="notificacion" class="circulo-2">
-                                <p class="p1">Alertas: Dispositivo</p>
-                                <p class="p2">+7 Reportes en Santo Domingo</p>
-                            </div>
-                            <div class="noti-3">
-                                <img src="IMG/circle-noti.png" alt="notificacion" class="circulo-3">
-                                <p class="p1">Alertas: Dispositivo</p>
-                                <p class="p2">+7 Reportes en Santo Domingo</p>
-                            </div>
-                            <div class="noti-4">
-                                <img src="IMG/circle-noti.png" alt="notificacion" class="circulo-4">
-                                <p class="p1">Alertas: Dispositivo</p>
-                                <p class="p2">+7 Reportes en Santo Domingo</p>
-                            </div>
-                        </div>
-                    </div>
+    <span class="notification-count-badge" id="notificationCountBadge">0</span> <!-- Badge para el conteo general -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-linecap="round" stroke-linejoin="round" width="32" height="32" stroke-width="1.75">
+        <path
+            d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6">
+        </path>
+        <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
+    </svg>
+    <div class="notificaciones-container">
+        <div class="notificaciones-header">
+            <p class="recientes">Notificaciones</p>
+        </div>
+        <div class="notificaciones-body">
+            <div class="notification-category" id="categoryDispositivo">
+                <h4>Dispositivo <span class="count" id="notifCountDispositivo">(0)</span></h4>
+                <!-- <p class="detalle-noti">Ver detalles de dispositivos</p> -->
+            </div>
+            <div class="notification-category" id="categorySistema">
+                <h4>Sistema <span class="count" id="notifCountSistema">(0)</span></h4>
+                <!-- <p class="detalle-noti">Ver detalles de denuncias</p> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
                 </div>
             </div>
 
@@ -1359,6 +1356,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
     </script>
+    <script src="js/notificaciones.js"></script>
 </body>
 
 </html>

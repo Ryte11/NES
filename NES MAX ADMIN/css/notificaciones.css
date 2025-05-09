@@ -1,0 +1,144 @@
+/* En c:\xampp\htdocs\NES\NES MAX ADMIN\css\dashboard.css o un nuevo css\notificaciones.css */
+
+.Notificaciones {
+  position: relative; /* Necesario para posicionar el badge */
+  cursor: pointer;
+}
+
+.notification-count-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.75rem; /* 12px */
+  font-weight: bold;
+  display: none; /* Se mostrará con JS si hay notificaciones */
+  line-height: 1;
+  min-width: 18px;
+  text-align: center;
+  border: 1px solid white;
+  z-index: 1; /* Para que esté sobre el ícono de la campana */
+}
+
+.notificaciones-container {
+  display: none; /* Oculto por defecto, se muestra con JS */
+  position: absolute;
+  top: 100%; /* Debajo del ícono */
+  right: 0;
+  width: 320px;
+  background-color: #fff; /* Fondo blanco */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1050; /* Asegurar que esté sobre otros elementos */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.Notificaciones.active .notificaciones-container {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.notificaciones-header {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e9ecef; /* Línea divisoria más suave */
+}
+
+.notificaciones-header .recientes {
+  margin: 0;
+  font-weight: 600; /* Un poco más de peso */
+  font-size: 1rem; /* 16px */
+  color: #343a40; /* Color de texto oscuro */
+}
+
+.notificaciones-body {
+  padding: 0;
+  max-height: 300px; /* Limitar altura y permitir scroll si hay muchas categorías */
+  overflow-y: auto;
+}
+
+.notification-category {
+  padding: 12px 15px;
+  border-bottom: 1px solid #f1f3f5; /* Línea divisoria muy suave */
+  cursor: pointer; /* Para indicar que se puede hacer clic */
+  transition: background-color 0.15s ease;
+}
+
+.notification-category:last-child {
+  border-bottom: none;
+}
+
+.notification-category:hover {
+  background-color: #f8f9fa; /* Un hover sutil */
+}
+
+.notification-category h4 {
+  margin: 0;
+  font-size: 0.9rem; /* 14.4px */
+  color: #495057;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}
+
+.notification-category h4 .count {
+  font-weight: 600; /* Hacer el número un poco más prominente */
+  color: #007bff; /* Color azul para el contador */
+  font-size: 0.9rem;
+  background-color: #e7f3ff; /* Fondo suave para el contador */
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.notification-category .detalle-noti {
+  /* Estilo opcional para "Ver detalles" */
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+/* Estilos para modo oscuro */
+.dark-mode .notificaciones-container {
+  background-color: #2f3136; /* Fondo oscuro para el contenedor */
+  border-color: #40444b; /* Borde más oscuro */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .notificaciones-header {
+  border-bottom-color: #40444b;
+}
+
+.dark-mode .notificaciones-header .recientes {
+  color: #dcddde; /* Texto claro */
+}
+
+.dark-mode .notification-category {
+  border-bottom-color: #3a3d42;
+}
+
+.dark-mode .notification-category:hover {
+  background-color: #36393f; /* Hover oscuro */
+}
+
+.dark-mode .notification-category h4 {
+  color: #b9bbbe;
+}
+
+.dark-mode .notification-category h4 .count {
+  color: #7289da; /* Color distintivo para el contador en modo oscuro */
+  background-color: #40444b;
+}
+
+.dark-mode .notification-category .detalle-noti {
+  color: #72767d;
+}
