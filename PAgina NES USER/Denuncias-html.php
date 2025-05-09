@@ -219,7 +219,7 @@
       <div class="contenedor">
         <div class="chat-caja">
           <div class="chat-header">
-            <img src="img/logo.png" alt="NES Logo">
+            <img src="logo1.png" alt="NES Logo" style="width: 50px; height: 50px; object-fit: cover;" />
             <div class="chat-header-info">
               <h2 class="chat-header-title">Asistente NES</h2>
               <p class="chat-header-subtitle">Noise Environment System</p>
@@ -240,7 +240,7 @@
         </div>
       </div>
 
-      <<<<<<< HEAD:PAgina NES USER/Denuncias-html.html=======<!-- Modal de Configuración -->
+    <!-- Modal de Configuración -->
         <div id="configModal" class="config-modal">
           <div class="config-modal-content">
             <div class="config-header">
@@ -272,7 +272,7 @@
         </div>
 
 
-        >>>>>>> 62b13fd5f5b783e51704ef8f9f85f0d5cd3dc2b7:PAgina NES USER/Denuncias-html.php
+     
     </div>
 
     <div class="footer-basic">
