@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-05-2025 a las 06:09:24
+-- Tiempo de generación: 09-05-2025 a las 03:31:19
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -191,7 +191,7 @@ INSERT INTO `denuncias_users` (`id`, `nombre`, `cedula`, `provincia`, `ubicacion
 (17, 'Luisangel', '232132321312', '', 'sadasdasdasdsadsadwadwadwadwadwadwa', 'construccion', 'ijdiajd9iasdiasjidjasdjasdjasdjassa', '2025-01-23 15:04:49', 'en proceso'),
 (18, 'Luisangel ', '12345678901', '', 'caleta rd', 'ruido', 'jkldhjashdjkashdsjkahdjkashdjkashdjkash soy frayyyyyyyyyy', '2025-04-25 19:58:00', 'en proceso'),
 (19, 'Luisangel ', '232132321312', '', 'caleta rd', 'ruido', 'Soy el goat\r\n', '2025-04-28 11:53:24', 'en proceso'),
-(20, 'Luisangel felipe', '1234567789', '', 'caleta rd mi casa 05', 'ruido', 'njandjasndandas hola soy luis\r\n', '2025-05-01 13:44:29', 'aceptado');
+(20, 'Luisangel felipe', '1234567789', '', 'caleta rd mi casa 05', 'Vehiculos', 'njandjasndandas hola soy luis\r\n', '2025-05-01 13:44:29', 'aceptado');
 
 -- --------------------------------------------------------
 
@@ -340,24 +340,25 @@ CREATE TABLE `sound_data` (
 --
 
 INSERT INTO `sound_data` (`id`, `db_value`, `timestamp`, `id_dispositivo`, `zona`) VALUES
-(76, 55, '2025-05-01 02:01:12', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(77, 100, '2025-05-01 02:01:24', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(78, 55, '2025-05-01 02:01:47', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(144, 84, '2025-05-07 12:41:20', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(145, 100, '2025-05-07 12:45:12', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(146, 100, '2025-05-07 12:45:22', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(147, 100, '2025-05-07 12:45:25', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(148, 58, '2025-05-07 12:45:45', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(149, 98, '2025-05-07 12:45:54', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(150, 83, '2025-05-07 12:45:56', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(151, 75, '2025-05-07 12:46:02', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(152, 70, '2025-05-07 12:46:12', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(153, 100, '2025-05-07 12:46:20', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(154, 67, '2025-05-07 12:46:49', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(155, 82, '2025-05-07 12:46:55', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(156, 82, '2025-05-07 12:47:01', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(157, 76, '2025-05-07 12:47:15', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
-(158, 100, '2025-05-07 12:47:28', 'DISP-680d82d7c168a', 'La Caleta, ITLA');
+(1, 61, '2025-05-08 18:59:16', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(2, 84, '2025-05-08 19:01:57', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(3, 100, '2025-05-08 19:07:15', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(4, 100, '2025-05-08 19:08:46', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(5, 75, '2025-05-08 19:22:14', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(6, 67, '2025-05-08 19:22:37', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(7, 100, '2025-05-08 19:37:10', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(8, 73, '2025-05-08 19:37:52', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(9, 92, '2025-05-08 19:38:04', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(10, 89, '2025-05-08 19:38:22', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(11, 100, '2025-05-08 19:41:32', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(12, 100, '2025-05-08 19:43:23', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(13, 100, '2025-05-08 19:43:34', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(14, 79, '2025-05-08 19:47:44', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(15, 66, '2025-05-08 19:50:36', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(16, 100, '2025-05-08 19:50:44', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(17, 100, '2025-05-08 19:50:50', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(18, 60, '2025-05-08 19:50:57', 'DISP-680d82d7c168a', 'La Caleta, ITLA'),
+(19, 88, '2025-05-08 19:51:30', 'DISP-680d82d7c168a', 'La Caleta, ITLA');
 
 -- --------------------------------------------------------
 
@@ -643,7 +644,7 @@ ALTER TABLE `provincias`
 -- AUTO_INCREMENT de la tabla `sound_data`
 --
 ALTER TABLE `sound_data`
-  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
+  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `tecnicos`
